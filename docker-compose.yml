@@ -1,0 +1,66 @@
+name: ipi
+
+services:
+  db:
+    image: mysql:8.4
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-root}
+      MYSQL_DATABASE: ${DB_NAME:-wordpress}
+      MYSQL_USER: ${DB_USER:-wordpress}
+      MYSQL_PASSWORD: ${DB_PASSWORD:-wordpress}
+    volumes:
+      - db_data:/var/lib/mysql
+      # Semente com o conteúdo real do site (páginas, menu, Personalizador).
+      # Só roda na PRIMEIRA vez que o volume "db_data" é criado — se o time
+      # já tiver dados no volume, este arquivo é ignorado (comportamento
+      # padrão da imagem oficial do MySQL).
+      - ./docker/mysql-init:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${DB_ROOT_PASSWORD:-root}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  wordpress:
+    image: wordpress:php8.2-apache
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "${WORDPRESS_PORT:-8080}:80"
+    environment:
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_NAME: ${DB_NAME:-wordpress}
+      WORDPRESS_DB_USER: ${DB_USER:-wordpress}
+      WORDPRESS_DB_PASSWORD: ${DB_PASSWORD:-wordpress}
+      WORDPRESS_TABLE_PREFIX: wp_
+      WORDPRESS_DEBUG: ${WORDPRESS_DEBUG:-0}
+      # Faz home_url()/site_url() (usados em todo o tema — header, footer,
+      # menu, links de página) resolverem para a URL do container, em vez
+      # da URL "http://ipi.local" gravada no banco pelo ambiente Local. Sem
+      # isso, precisaríamos reescrever dados serializados no dump — arriscado.
+      WORDPRESS_CONFIG_EXTRA: |
+        define('WP_HOME', 'http://localhost:${WORDPRESS_PORT:-8080}');
+        define('WP_SITEURL', 'http://localhost:${WORDPRESS_PORT:-8080}');
+    volumes:
+      # Só o wp-content é montado — o core do WordPress vem da imagem
+      # oficial. O time edita o tema aqui e vê o resultado na hora, sem
+      # rebuild.
+      - ./app/public/wp-content:/var/www/html/wp-content
+
+  phpmyadmin:
+    image: phpmyadmin
+    restart: unless-stopped
+    depends_on:
+      - db
+    ports:
+      - "${PHPMYADMIN_PORT:-8081}:80"
+    environment:
+      PMA_HOST: db
+      PMA_USER: root
+      PMA_PASSWORD: ${DB_ROOT_PASSWORD:-root}
+
+volumes:
+  db_data:

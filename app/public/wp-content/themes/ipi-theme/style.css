@@ -1,0 +1,1043 @@
+/*
+Theme Name:   IPI Theme
+Theme URI:    https://institutopernambucanodeinfectologia.com.br
+Author:       Instituto Pernambucano de Infectologia
+Author URI:   https://institutopernambucanodeinfectologia.com.br
+Description:  Tema WordPress institucional, moderno e acessível, desenvolvido para o Instituto Pernambucano de Infectologia (IPI). Construído com HTML5 semântico, CSS moderno (custom properties, Grid e Flexbox) e JavaScript vanilla, com foco em desempenho, SEO e acessibilidade (WCAG 2.1 AA).
+Version:      1.0.0
+Requires at least: 6.4
+Tested up to: 6.6
+Requires PHP: 8.2
+License:      GNU General Public License v2 or later
+License URI:  https://www.gnu.org/licenses/gpl-2.0.html
+Text Domain:  ipi-theme
+Tags:         blog, one-column, two-columns, custom-colors, custom-logo, custom-menu, featured-images, threaded-comments, translation-ready, accessibility-ready, block-styles, wide-blocks
+
+IPI Theme is distributed under the terms of the GNU GPL v2 or later.
+*/
+
+/* =============================================================
+   ÍNDICE
+   1. Reset & Base
+   2. Custom Properties (Design Tokens)
+   3. Tipografia
+   4. Acessibilidade
+   5. Layout & Containers
+   6. Header & Navegação
+   7. Componentes (botões, cards, badges)
+   8. Front page (hero, seções institucionais)
+   9. Conteúdo (posts, páginas, arquivos)
+   10. Comentários
+   11. Sidebar & Widgets
+   12. Footer
+   13. Formulários
+   14. Utilitários
+   15. Responsividade
+   ============================================================= */
+
+/* -------------------------------------------------------------
+   1. Reset & Base
+   ------------------------------------------------------------- */
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+html {
+	-webkit-text-size-adjust: 100%;
+	scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	html {
+		scroll-behavior: auto;
+	}
+
+	*,
+	*::before,
+	*::after {
+		animation-duration: 0.01ms !important;
+		animation-iteration-count: 1 !important;
+		transition-duration: 0.01ms !important;
+		scroll-behavior: auto !important;
+	}
+}
+
+body {
+	margin: 0;
+	background-color: var(--color-bg);
+	color: var(--color-text);
+	font-family: var(--font-body);
+	font-size: var(--font-size-base);
+	line-height: 1.6;
+	text-rendering: optimizeSpeed;
+}
+
+img,
+svg,
+video,
+canvas {
+	max-width: 100%;
+	height: auto;
+	display: block;
+}
+
+img {
+	font-style: italic; /* mostra o alt caso a imagem não carregue */
+}
+
+figure {
+	margin: 0;
+}
+
+ul,
+ol {
+	padding-left: 1.25em;
+}
+
+a {
+	color: var(--color-primary);
+	text-decoration-thickness: max(1px, 0.06em);
+	text-underline-offset: 0.15em;
+}
+
+a:hover,
+a:focus {
+	color: var(--color-primary-dark);
+}
+
+/* -------------------------------------------------------------
+   2. Custom Properties (Design Tokens)
+
+   ATENÇÃO: esta paleta é duplicada manualmente em theme.json (bloco
+   settings.color.palette), pois o editor de blocos não lê custom
+   properties do style.css. Ao mudar uma cor aqui, replique em
+   theme.json — não existe build automatizado sincronizando os dois.
+   ------------------------------------------------------------- */
+:root {
+	/* Cores institucionais — paleta clínica/confiança */
+	--color-primary: #0a6e79;        /* azul-petróleo principal */
+	--color-primary-dark: #054a52;
+	--color-primary-light: #e6f3f4;
+	--color-secondary: #1c8c6b;      /* verde saúde, uso em acentos/CTA secundário */
+	--color-accent: #f5a623;         /* alerta/destaque pontual (ex: campanhas) */
+	--color-text: #1c2b2e;
+	--color-text-muted: #52666b;
+	--color-bg: #ffffff;
+	--color-bg-alt: #f4f8f9;
+	--color-border: #dde6e7;
+	--color-danger: #b3261e;
+	--color-focus: #f5a623;
+
+	/* Tipografia — pilha de fontes de sistema (zero requisições externas) */
+	--font-body: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+	--font-heading: var(--font-body);
+
+	/* Escala tipográfica fluida (clamp: mínimo, ideal com vw, máximo) */
+	--font-size-base: clamp(1rem, 0.95rem + 0.2vw, 1.125rem);
+	--font-size-sm: clamp(0.85rem, 0.82rem + 0.15vw, 0.9375rem);
+	--font-size-lg: clamp(1.125rem, 1.05rem + 0.3vw, 1.375rem);
+	--font-size-xl: clamp(1.375rem, 1.2rem + 0.7vw, 1.875rem);
+	--font-size-2xl: clamp(1.75rem, 1.4rem + 1.4vw, 2.75rem);
+	--font-size-3xl: clamp(2.25rem, 1.7rem + 2.2vw, 3.75rem);
+
+	/* Espaçamento */
+	--space-3xs: 0.25rem;
+	--space-2xs: 0.5rem;
+	--space-xs: 0.75rem;
+	--space-sm: 1rem;
+	--space-md: 1.5rem;
+	--space-lg: 2.5rem;
+	--space-xl: 4rem;
+	--space-2xl: 6rem;
+
+	/* Layout */
+	--container-max: 1200px;
+	--container-narrow: 780px;
+	--radius-sm: 6px;
+	--radius-md: 12px;
+	--radius-lg: 20px;
+	--shadow-sm: 0 1px 3px rgba(10, 40, 45, 0.08);
+	--shadow-md: 0 8px 24px rgba(10, 40, 45, 0.12);
+	--header-height: 84px;
+}
+
+/* -------------------------------------------------------------
+   3. Tipografia
+   ------------------------------------------------------------- */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	font-family: var(--font-heading);
+	color: var(--color-text);
+	line-height: 1.2;
+	font-weight: 700;
+	margin: 0 0 var(--space-sm);
+}
+
+h1 {
+	font-size: var(--font-size-3xl);
+}
+
+h2 {
+	font-size: var(--font-size-2xl);
+}
+
+h3 {
+	font-size: var(--font-size-xl);
+}
+
+h4 {
+	font-size: var(--font-size-lg);
+}
+
+p {
+	margin: 0 0 var(--space-sm);
+}
+
+.entry-content p,
+.entry-content ul,
+.entry-content ol {
+	max-width: 70ch;
+}
+
+small {
+	font-size: var(--font-size-sm);
+}
+
+/* -------------------------------------------------------------
+   4. Acessibilidade
+   ------------------------------------------------------------- */
+.skip-link {
+	position: absolute;
+	top: -100px;
+	left: 0;
+	z-index: 100000;
+	padding: 0.75em 1.25em;
+	background: var(--color-primary);
+	color: #fff;
+	border-radius: 0 0 var(--radius-sm) 0;
+	transition: top 0.2s ease-in-out;
+}
+
+.skip-link:focus {
+	top: 0;
+}
+
+.screen-reader-text {
+	border: 0;
+	clip: rect(1px, 1px, 1px, 1px);
+	clip-path: inset(50%);
+	height: 1px;
+	margin: -1px;
+	overflow: hidden;
+	padding: 0;
+	position: absolute !important;
+	width: 1px;
+	word-wrap: normal !important;
+}
+
+:focus-visible {
+	outline: 3px solid var(--color-focus);
+	outline-offset: 2px;
+}
+
+/* -------------------------------------------------------------
+   5. Layout & Containers
+   ------------------------------------------------------------- */
+.container {
+	width: 100%;
+	max-width: var(--container-max);
+	margin-inline: auto;
+	padding-inline: var(--space-md);
+}
+
+.container--narrow {
+	max-width: var(--container-narrow);
+}
+
+.site {
+	display: flex;
+	flex-direction: column;
+	min-height: 100vh;
+}
+
+.site-content {
+	flex: 1 0 auto;
+}
+
+.section {
+	padding-block: var(--space-2xl);
+}
+
+.section--alt {
+	background-color: var(--color-bg-alt);
+}
+
+.section-header {
+	max-width: var(--container-narrow);
+	margin-bottom: var(--space-lg);
+}
+
+.section-header .eyebrow {
+	display: inline-block;
+	color: var(--color-secondary);
+	font-weight: 700;
+	letter-spacing: 0.06em;
+	text-transform: uppercase;
+	font-size: var(--font-size-sm);
+	margin-bottom: var(--space-2xs);
+}
+
+/* -------------------------------------------------------------
+   6. Header & Navegação
+   ------------------------------------------------------------- */
+.site-header {
+	position: sticky;
+	top: 0;
+	z-index: 40;
+	background: var(--color-bg);
+	border-bottom: 1px solid var(--color-border);
+	transition: box-shadow 0.2s ease;
+}
+
+.site-header.is-scrolled {
+	box-shadow: var(--shadow-sm);
+}
+
+.submenu-toggle {
+	display: none;
+}
+
+.header-inner {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: var(--space-md);
+	min-height: var(--header-height);
+}
+
+.site-branding {
+	display: flex;
+	align-items: center;
+	gap: var(--space-2xs);
+	min-width: 0;
+}
+
+.site-branding img {
+	max-height: 56px;
+	width: auto;
+}
+
+.site-title {
+	font-size: var(--font-size-lg);
+	margin: 0;
+	line-height: 1.1;
+}
+
+.site-title a {
+	color: var(--color-text);
+	text-decoration: none;
+}
+
+.site-description {
+	margin: 0;
+	font-size: var(--font-size-sm);
+	color: var(--color-text-muted);
+}
+
+.menu-toggle {
+	display: none;
+	align-items: center;
+	gap: var(--space-2xs);
+	background: transparent;
+	border: 2px solid var(--color-border);
+	border-radius: var(--radius-sm);
+	padding: 0.5em 0.9em;
+	font: inherit;
+	color: var(--color-text);
+	cursor: pointer;
+}
+
+.menu-toggle .icon-bars {
+	display: block;
+	width: 22px;
+	height: 2px;
+	background: currentColor;
+	position: relative;
+}
+
+.menu-toggle .icon-bars::before,
+.menu-toggle .icon-bars::after {
+	content: "";
+	position: absolute;
+	left: 0;
+	width: 22px;
+	height: 2px;
+	background: currentColor;
+}
+
+.menu-toggle .icon-bars::before {
+	top: -6px;
+}
+
+.menu-toggle .icon-bars::after {
+	top: 6px;
+}
+
+.primary-navigation ul {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	display: flex;
+	align-items: center;
+	gap: var(--space-md);
+}
+
+.primary-navigation a {
+	display: inline-block;
+	padding: 0.5em 0;
+	color: var(--color-text);
+	text-decoration: none;
+	font-weight: 600;
+	border-bottom: 2px solid transparent;
+}
+
+.primary-navigation a:hover,
+.primary-navigation a:focus,
+.primary-navigation .current-menu-item > a,
+.primary-navigation .current_page_item > a {
+	color: var(--color-primary);
+	border-bottom-color: var(--color-primary);
+}
+
+.primary-navigation .sub-menu {
+	display: none;
+	position: absolute;
+	background: var(--color-bg);
+	border: 1px solid var(--color-border);
+	border-radius: var(--radius-sm);
+	box-shadow: var(--shadow-md);
+	padding: var(--space-2xs);
+	min-width: 220px;
+	flex-direction: column;
+	gap: 0;
+	z-index: 50;
+}
+
+.primary-navigation li {
+	position: relative;
+}
+
+.primary-navigation li:hover > .sub-menu,
+.primary-navigation li:focus-within > .sub-menu {
+	display: flex;
+}
+
+.primary-navigation .sub-menu a {
+	padding: 0.6em 0.8em;
+	width: 100%;
+}
+
+.header-cta {
+	display: none;
+}
+
+/* -------------------------------------------------------------
+   7. Componentes
+   ------------------------------------------------------------- */
+.btn {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 0.5em;
+	padding: 0.85em 1.5em;
+	border-radius: var(--radius-sm);
+	font-weight: 700;
+	text-decoration: none;
+	border: 2px solid transparent;
+	cursor: pointer;
+	font-size: var(--font-size-base);
+	transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease, transform 0.15s ease;
+}
+
+.btn:hover,
+.btn:focus {
+	transform: translateY(-1px);
+}
+
+.btn-primary {
+	background: var(--color-primary);
+	color: #fff;
+}
+
+.btn-primary:hover,
+.btn-primary:focus {
+	background: var(--color-primary-dark);
+	color: #fff;
+}
+
+.btn-secondary {
+	background: transparent;
+	color: var(--color-primary);
+	border-color: var(--color-primary);
+}
+
+.btn-secondary:hover,
+.btn-secondary:focus {
+	background: var(--color-primary-light);
+	color: var(--color-primary-dark);
+}
+
+.card {
+	background: var(--color-bg);
+	border: 1px solid var(--color-border);
+	border-radius: var(--radius-md);
+	padding: var(--space-md);
+	height: 100%;
+	transition: box-shadow 0.15s ease, transform 0.15s ease;
+}
+
+.card:hover {
+	box-shadow: var(--shadow-md);
+	transform: translateY(-2px);
+}
+
+.card-icon {
+	width: 48px;
+	height: 48px;
+	border-radius: var(--radius-sm);
+	background: var(--color-primary-light);
+	color: var(--color-primary);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin-bottom: var(--space-sm);
+	font-size: 1.5rem;
+}
+
+.grid {
+	display: grid;
+	gap: var(--space-md);
+	grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+}
+
+.badge {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.4em;
+	padding: 0.3em 0.75em;
+	border-radius: 999px;
+	background: var(--color-primary-light);
+	color: var(--color-primary-dark);
+	font-size: var(--font-size-sm);
+	font-weight: 700;
+}
+
+/* Card de equipe médica (Corpo Clínico) — foto sangrada no topo, corpo com padding. */
+.team-card {
+	background: var(--color-bg);
+	border: 1px solid var(--color-border);
+	border-radius: var(--radius-md);
+	overflow: hidden;
+	height: 100%;
+	transition: box-shadow 0.15s ease, transform 0.15s ease;
+}
+
+.team-card:hover {
+	box-shadow: var(--shadow-md);
+	transform: translateY(-2px);
+}
+
+.team-photo {
+	display: block;
+	width: 100%;
+	aspect-ratio: 4 / 5;
+	object-fit: cover;
+	background: var(--color-primary-light);
+}
+
+.team-body {
+	padding: var(--space-md);
+}
+
+.team-name {
+	margin: 0 0 var(--space-3xs);
+	font-size: var(--font-size-lg);
+}
+
+.team-crm {
+	margin: var(--space-2xs) 0 0;
+	color: var(--color-text-muted);
+	font-size: var(--font-size-sm);
+}
+
+/* -------------------------------------------------------------
+   8. Front page — seções institucionais
+   ------------------------------------------------------------- */
+.hero {
+	background: linear-gradient(160deg, var(--color-primary-light) 0%, var(--color-bg) 60%);
+	padding-block: var(--space-2xl);
+}
+
+.hero-inner {
+	display: grid;
+	grid-template-columns: 1.1fr 0.9fr;
+	gap: var(--space-xl);
+	align-items: center;
+}
+
+.hero-content h1 {
+	margin-bottom: var(--space-sm);
+}
+
+.hero-content .lede {
+	font-size: var(--font-size-lg);
+	color: var(--color-text-muted);
+	max-width: 60ch;
+	margin-bottom: var(--space-md);
+}
+
+.hero-actions {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--space-sm);
+}
+
+.hero-media {
+	border-radius: var(--radius-lg);
+	overflow: hidden;
+	box-shadow: var(--shadow-md);
+	aspect-ratio: 4 / 3;
+	background: var(--color-primary-light);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: var(--color-primary);
+}
+
+.trust-strip {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--space-lg);
+	justify-content: space-between;
+	align-items: center;
+	padding-block: var(--space-md);
+	border-top: 1px solid var(--color-border);
+	border-bottom: 1px solid var(--color-border);
+	color: var(--color-text-muted);
+	font-weight: 600;
+}
+
+.cta-banner {
+	background: var(--color-primary);
+	color: #fff;
+	border-radius: var(--radius-lg);
+	padding: var(--space-xl);
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--space-md);
+	align-items: center;
+	justify-content: space-between;
+}
+
+.cta-banner h2,
+.cta-banner p {
+	color: #fff;
+	margin-bottom: 0;
+}
+
+.cta-banner .btn-secondary {
+	background: #fff;
+	color: var(--color-primary);
+	border-color: #fff;
+}
+
+.cta-banner .btn-secondary:hover {
+	background: var(--color-primary-light);
+}
+
+/* -------------------------------------------------------------
+   9. Conteúdo — posts, páginas, arquivos
+   ------------------------------------------------------------- */
+.entry-header {
+	margin-bottom: var(--space-md);
+}
+
+.entry-meta {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--space-sm);
+	color: var(--color-text-muted);
+	font-size: var(--font-size-sm);
+	margin-bottom: var(--space-2xs);
+}
+
+.entry-meta a {
+	color: inherit;
+}
+
+.post-thumbnail {
+	margin-bottom: var(--space-md);
+	border-radius: var(--radius-md);
+	overflow: hidden;
+}
+
+.entry-footer {
+	margin-top: var(--space-md);
+	padding-top: var(--space-sm);
+	border-top: 1px solid var(--color-border);
+	font-size: var(--font-size-sm);
+	color: var(--color-text-muted);
+}
+
+.posts-grid {
+	display: grid;
+	gap: var(--space-md);
+	grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+
+.pagination {
+	display: flex;
+	gap: var(--space-2xs);
+	flex-wrap: wrap;
+	margin-top: var(--space-lg);
+}
+
+.pagination .page-numbers {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	min-width: 2.5em;
+	height: 2.5em;
+	padding: 0 0.5em;
+	border-radius: var(--radius-sm);
+	border: 1px solid var(--color-border);
+	text-decoration: none;
+	color: var(--color-text);
+}
+
+.pagination .page-numbers.current {
+	background: var(--color-primary);
+	border-color: var(--color-primary);
+	color: #fff;
+}
+
+.post-navigation {
+	display: flex;
+	justify-content: space-between;
+	gap: var(--space-md);
+	margin-top: var(--space-lg);
+	padding-top: var(--space-lg);
+	border-top: 1px solid var(--color-border);
+}
+
+.post-navigation a {
+	text-decoration: none;
+	font-weight: 600;
+}
+
+.alignwide {
+	width: 100%;
+}
+
+.alignfull {
+	width: 100vw;
+	margin-left: calc(50% - 50vw);
+}
+
+/* -------------------------------------------------------------
+   10. Comentários
+   ------------------------------------------------------------- */
+.comments-area {
+	margin-top: var(--space-xl);
+}
+
+.comment-list {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+.comment-list .children {
+	list-style: none;
+	padding-left: var(--space-md);
+}
+
+.comment-body {
+	padding: var(--space-md) 0;
+	border-bottom: 1px solid var(--color-border);
+}
+
+.comment-author {
+	display: flex;
+	align-items: center;
+	gap: var(--space-2xs);
+	font-weight: 700;
+}
+
+.comment-author img {
+	border-radius: 50%;
+}
+
+.comment-metadata {
+	font-size: var(--font-size-sm);
+	color: var(--color-text-muted);
+}
+
+.comment-reply-link {
+	font-size: var(--font-size-sm);
+}
+
+/* -------------------------------------------------------------
+   11. Sidebar & Widgets
+   ------------------------------------------------------------- */
+.content-area-with-sidebar {
+	display: grid;
+	grid-template-columns: 2fr 1fr;
+	gap: var(--space-xl);
+	align-items: start;
+}
+
+.widget {
+	margin-bottom: var(--space-lg);
+}
+
+.widget-title {
+	font-size: var(--font-size-lg);
+	margin-bottom: var(--space-sm);
+}
+
+.widget ul {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+
+.widget li {
+	padding-block: 0.4em;
+	border-bottom: 1px solid var(--color-border);
+}
+
+/* -------------------------------------------------------------
+   12. Footer
+   ------------------------------------------------------------- */
+.site-footer {
+	background: #0c2b30;
+	color: #cfe3e5;
+	margin-top: var(--space-2xl);
+}
+
+.footer-widgets {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+	gap: var(--space-lg);
+	padding-block: var(--space-2xl);
+}
+
+.site-footer .widget-title {
+	color: #fff;
+}
+
+.site-footer a {
+	color: #cfe3e5;
+}
+
+.site-footer a:hover,
+.site-footer a:focus {
+	color: #fff;
+}
+
+.footer-bottom {
+	border-top: 1px solid rgba(255, 255, 255, 0.12);
+	padding-block: var(--space-md);
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--space-sm);
+	justify-content: space-between;
+	font-size: var(--font-size-sm);
+}
+
+.social-links {
+	list-style: none;
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--space-sm);
+	margin: 0;
+	padding: 0;
+}
+
+.footer-bottom-nav ul {
+	list-style: none;
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--space-md);
+	margin: 0;
+	padding: 0;
+}
+
+.emergency-strip {
+	background: var(--color-danger);
+	color: #fff;
+	text-align: center;
+	font-weight: 700;
+	padding: 0.6em 1em;
+	font-size: var(--font-size-sm);
+}
+
+.emergency-strip a {
+	color: #fff;
+	text-decoration: underline;
+}
+
+/* -------------------------------------------------------------
+   13. Formulários
+   ------------------------------------------------------------- */
+input,
+textarea,
+select,
+button {
+	font-family: inherit;
+	font-size: var(--font-size-base);
+}
+
+.search-form,
+.comment-form p {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--space-2xs);
+}
+
+label {
+	font-weight: 600;
+	display: block;
+	margin-bottom: 0.3em;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="url"],
+input[type="tel"],
+input[type="search"],
+textarea {
+	width: 100%;
+	padding: 0.75em 1em;
+	border: 1px solid var(--color-border);
+	border-radius: var(--radius-sm);
+	background: var(--color-bg);
+	color: var(--color-text);
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+	border-color: var(--color-primary);
+}
+
+/* -------------------------------------------------------------
+   14. Utilitários
+   ------------------------------------------------------------- */
+.text-center {
+	text-align: center;
+}
+
+/*
+ * Esconder-visualmente-mas-manter-acessível já é coberto por
+ * .screen-reader-text (seção 4, Acessibilidade) — usada em todo o tema.
+ * Não duplicar essa técnica aqui como um segundo utilitário.
+ */
+
+/* -------------------------------------------------------------
+   15. Responsividade
+   ------------------------------------------------------------- */
+@media (max-width: 782px) {
+	.menu-toggle {
+		display: inline-flex;
+	}
+
+	.primary-navigation {
+		display: none;
+		width: 100%;
+		order: 3;
+	}
+
+	.primary-navigation.is-open {
+		display: block;
+	}
+
+	.header-inner {
+		flex-wrap: wrap;
+	}
+
+	.primary-navigation ul {
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 0;
+		padding-block: var(--space-sm);
+	}
+
+	.primary-navigation .sub-menu {
+		display: none;
+		position: static;
+		box-shadow: none;
+		border: none;
+		padding-left: var(--space-sm);
+	}
+
+	.primary-navigation li.is-submenu-open > .sub-menu {
+		display: flex;
+	}
+
+	.menu-item-has-children {
+		position: relative;
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+	}
+
+	.submenu-toggle {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 2em;
+		height: 2em;
+		margin-left: auto;
+		background: transparent;
+		border: 1px solid var(--color-border);
+		border-radius: var(--radius-sm);
+		cursor: pointer;
+		color: var(--color-text);
+	}
+
+	.submenu-toggle::before {
+		content: "+";
+		font-size: 1.1em;
+		line-height: 1;
+	}
+
+	.is-submenu-open > .submenu-toggle::before {
+		content: "−";
+	}
+
+	.hero-inner {
+		grid-template-columns: 1fr;
+	}
+
+	.hero-media {
+		order: -1;
+	}
+
+	.content-area-with-sidebar {
+		grid-template-columns: 1fr;
+	}
+}
+
+@media (min-width: 783px) {
+	.header-cta {
+		display: inline-flex;
+	}
+}

@@ -1,0 +1,10 @@
+# Segredos locais — cada dev/máquina tem o seu, a partir de .env.example
+.env
+
+# Sistema operacional
+.DS_Store
+Thumbs.db
+
+# Editores
+.vscode/
+.idea/
