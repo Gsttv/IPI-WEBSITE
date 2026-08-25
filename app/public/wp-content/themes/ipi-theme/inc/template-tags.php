@@ -55,14 +55,18 @@ if ( ! function_exists( 'ipi_theme_entry_footer' ) ) :
 	 */
 	function ipi_theme_entry_footer(): void {
 		if ( 'post' === get_post_type() ) {
+			// Sem os prefixos "Categorias:"/"Tags:" — jargão de painel de blog
+			// que não agrega para quem está lendo. As próprias categorias/tags
+			// já se leem como assunto graças ao estilo de pill em .cat-links/
+			// .tags-links (ver style.css).
 			$categories_list = get_the_category_list( wp_kses( __( ', ', 'ipi-theme' ), array() ) );
 			if ( $categories_list ) {
-				printf( '<span class="cat-links">%1$s %2$s</span> ', esc_html__( 'Categorias:', 'ipi-theme' ), wp_kses_post( $categories_list ) );
+				printf( '<span class="cat-links">%1$s</span> ', wp_kses_post( $categories_list ) );
 			}
 
 			$tags_list = get_the_tag_list( '', wp_kses( __( ', ', 'ipi-theme' ), array() ) );
 			if ( $tags_list ) {
-				printf( '<span class="tags-links">%1$s %2$s</span>', esc_html__( 'Tags:', 'ipi-theme' ), wp_kses_post( $tags_list ) );
+				printf( '<span class="tags-links">%1$s</span>', wp_kses_post( $tags_list ) );
 			}
 		}
 
@@ -118,6 +122,47 @@ if ( ! function_exists( 'ipi_theme_post_thumbnail' ) ) :
 			</a>
 			<?php
 		endif;
+	}
+endif;
+
+if ( ! function_exists( 'ipi_theme_post_format_badge' ) ) :
+	/**
+	 * Exibe um selo indicando o formato do post (vídeo, galeria, imagem)
+	 * nos cards de listagem da área de conteúdo. Posts em formato "standard"
+	 * não recebem selo — só os formatos que se destacam visualmente.
+	 */
+	function ipi_theme_post_format_badge(): void {
+		$format = get_post_format();
+
+		if ( ! $format ) {
+			return;
+		}
+
+		$labels = array(
+			'video'   => array(
+				'icon'  => '▶',
+				'label' => __( 'Vídeo', 'ipi-theme' ),
+			),
+			'gallery' => array(
+				'icon'  => '🖼',
+				'label' => __( 'Galeria', 'ipi-theme' ),
+			),
+			'image'   => array(
+				'icon'  => '📷',
+				'label' => __( 'Imagem', 'ipi-theme' ),
+			),
+		);
+
+		if ( ! isset( $labels[ $format ] ) ) {
+			return;
+		}
+
+		printf(
+			'<span class="post-format-badge post-format-badge--%1$s"><span aria-hidden="true">%2$s</span> %3$s</span>',
+			esc_attr( $format ),
+			esc_html( $labels[ $format ]['icon'] ),
+			esc_html( $labels[ $format ]['label'] )
+		);
 	}
 endif;
 

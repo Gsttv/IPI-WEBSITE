@@ -14,15 +14,15 @@
 			"customGradient": false,
 			"defaultPalette": false,
 			"palette": [
-				{ "slug": "primary", "name": "Azul institucional", "color": "#0a6e79" },
-				{ "slug": "primary-dark", "name": "Azul institucional (escuro)", "color": "#054a52" },
-				{ "slug": "primary-light", "name": "Azul institucional (claro)", "color": "#e6f3f4" },
-				{ "slug": "secondary", "name": "Verde saúde", "color": "#1c8c6b" },
+				{ "slug": "primary", "name": "Verde institucional", "color": "#667058" },
+				{ "slug": "primary-dark", "name": "Verde institucional (escuro)", "color": "#49513d" },
+				{ "slug": "primary-light", "name": "Verde institucional (claro)", "color": "#eef2e9" },
+				{ "slug": "secondary", "name": "Terracota", "color": "#b6673a" },
 				{ "slug": "accent", "name": "Destaque", "color": "#f5a623" },
-				{ "slug": "text", "name": "Texto", "color": "#1c2b2e" },
-				{ "slug": "text-muted", "name": "Texto secundário", "color": "#52666b" },
+				{ "slug": "text", "name": "Texto", "color": "#242720" },
+				{ "slug": "text-muted", "name": "Texto secundário", "color": "#606657" },
 				{ "slug": "background", "name": "Fundo", "color": "#ffffff" },
-				{ "slug": "background-alt", "name": "Fundo alternativo", "color": "#f4f8f9" },
+				{ "slug": "background-alt", "name": "Fundo alternativo", "color": "#f5f7f3" },
 				{ "slug": "danger", "name": "Alerta/Emergência", "color": "#b3261e" }
 			]
 		},

@@ -76,6 +76,14 @@ function ipi_theme_setup(): void {
 	add_theme_support( 'wp-block-styles' );
 	add_editor_style( 'assets/css/editor-style.css' );
 
+	// Formatos de post: permite que a equipe publique vídeos, galerias de
+	// imagem e imagens avulsas na área de conteúdo, além do texto padrão —
+	// sem precisar de um Custom Post Type dedicado para isso.
+	add_theme_support(
+		'post-formats',
+		array( 'video', 'gallery', 'image' )
+	);
+
 	// Selective refresh para widgets no Personalizador.
 	add_theme_support( 'customize-selective-refresh-widgets' );
 

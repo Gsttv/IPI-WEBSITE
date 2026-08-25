@@ -19,41 +19,43 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 get_header();
 
-// ATENÇÃO: foto de teste temporária, repetida para os 5 médicos só para
-// visualizar o layout do grid. Trocar por uma foto real e individual de
-// cada médico antes de publicar — ver TODO no fim do arquivo.
-$ipi_placeholder_photo = get_template_directory_uri() . '/images/ImagenTESTE.jpeg';
+// Fotos individuais de cada médico, nomeadas pelo primeiro nome em
+// /images/. Nota: a badge "Responsável Técnica" foi removida do card da
+// Dra. Fabiana Gonzaga a pedido do cliente — todos os médicos aparecem no
+// grid com o mesmo peso visual. A informação de responsabilidade técnica
+// segue exibida no rodapé do site, conforme exigência do CFM.
+$ipi_images_uri = get_template_directory_uri() . '/images/';
 
 $ipi_team = array(
 	array(
 		'name'  => 'Dr. Paulo Sérgio Ramos',
 		'crm'   => 'CRM-PE 11049',
 		'role'  => __( 'Infectologia', 'ipi-theme' ),
-		'photo' => $ipi_placeholder_photo,
+		'photo' => $ipi_images_uri . 'paulo.jpeg',
 	),
 	array(
 		'name'  => 'Dra. Fabiana Gonzaga',
 		'crm'   => 'CRM-PE 16724 | RQE 2246',
-		'role'  => __( 'Infectologia · Responsável Técnica', 'ipi-theme' ),
-		'photo' => $ipi_placeholder_photo,
+		'role'  => __( 'Infectologia', 'ipi-theme' ),
+		'photo' => $ipi_images_uri . 'fabiana.jpeg',
 	),
 	array(
 		'name'  => 'Dra. Marcelia Soares',
 		'crm'   => 'CRM-PE 19196',
 		'role'  => __( 'Infectologia', 'ipi-theme' ),
-		'photo' => $ipi_placeholder_photo,
+		'photo' => $ipi_images_uri . 'marcelia.jpeg',
 	),
 	array(
 		'name'  => 'Dr. Lucas Caheté',
 		'crm'   => 'CRM-PE 19711',
 		'role'  => __( 'Infectologia', 'ipi-theme' ),
-		'photo' => $ipi_placeholder_photo,
+		'photo' => $ipi_images_uri . 'lucas.jpeg',
 	),
 	array(
 		'name'  => 'Dra. Marta Iglis',
 		'crm'   => 'CRM-PE 17246',
 		'role'  => __( 'Infectologia', 'ipi-theme' ),
-		'photo' => $ipi_placeholder_photo,
+		'photo' => $ipi_images_uri . 'marta.jpeg',
 	),
 );
 ?>
@@ -63,9 +65,10 @@ $ipi_team = array(
 	<?php while ( have_posts() ) : the_post(); ?>
 
 		<header class="entry-header section-header">
+			<span class="eyebrow"><?php esc_html_e( 'Quem cuida de você', 'ipi-theme' ); ?></span>
 			<?php the_title( '<h1 class="entry-title">', '</h1>' ); ?>
 			<p>
-				<?php esc_html_e( 'Cada consulta no IPI é conduzida por médicos especialistas em Infectologia, com registro ativo no Conselho Regional de Medicina de Pernambuco.', 'ipi-theme' ); ?>
+				<?php esc_html_e( 'Conheça os médicos por trás de cada consulta no IPI — todos especialistas em Infectologia, com registro ativo no Conselho Regional de Medicina de Pernambuco, para você se sentir seguro em cada etapa do cuidado.', 'ipi-theme' ); ?>
 			</p>
 		</header>
 
@@ -93,7 +96,4 @@ $ipi_team = array(
 </main><!-- #primary -->
 
 <?php
-// TODO: substituir $ipi_placeholder_photo por uma foto real e individual
-// de cada médico (arquivo .jpg/.webp em /images/, ~800x1000px) e remover
-// esta foto de teste antes de publicar o site.
 get_footer();

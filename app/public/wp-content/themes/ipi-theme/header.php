@@ -19,7 +19,7 @@ $ipi_whatsapp        = get_theme_mod( 'ipi_theme_whatsapp_url', '' );
 <head>
 	<meta charset="<?php bloginfo( 'charset' ); ?>">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta name="theme-color" content="#0a6e79">
+	<meta name="theme-color" content="#667058">
 	<?php wp_head(); ?>
 </head>
 
@@ -43,28 +43,25 @@ $ipi_whatsapp        = get_theme_mod( 'ipi_theme_whatsapp_url', '' );
 		<div class="container header-inner">
 			<div class="site-branding">
 				<?php
+				// Logo definitiva enviada pelo cliente via Personalizador
+				// (Aparência → Personalizar → Identidade do Site) tem
+				// prioridade; enquanto isso não é configurado, cai para a
+				// logo oficial do IPI já embutida no tema (identidade
+				// visual aprovada — ver images/ipi-logo.jpg).
 				if ( has_custom_logo() ) :
 					the_custom_logo();
 				else :
-					?>
-					<hgroup>
-						<?php if ( is_front_page() && is_home() ) : ?>
-							<h1 class="site-title">
-								<a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home"><?php bloginfo( 'name' ); ?></a>
-							</h1>
-						<?php else : ?>
-							<p class="site-title">
-								<a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home"><?php bloginfo( 'name' ); ?></a>
-							</p>
-						<?php endif; ?>
-						<?php
-						$ipi_description = get_bloginfo( 'description', 'display' );
-						if ( $ipi_description || is_customize_preview() ) :
-							?>
-							<p class="site-description"><?php echo esc_html( $ipi_description ); ?></p>
-						<?php endif; ?>
-					</hgroup>
-					<?php
+					$ipi_logo_url  = get_template_directory_uri() . '/images/ipi-logo.jpg';
+					$ipi_logo_link = '<a href="' . esc_url( home_url( '/' ) ) . '" class="custom-logo-link" rel="home"><img src="' . esc_url( $ipi_logo_url ) . '" class="custom-logo" alt="' . esc_attr( get_bloginfo( 'name' ) ) . '" width="240" height="64" /></a>';
+
+					// Na home, o nome do site precisa estar em um heading (H1) por
+					// SEO/acessibilidade; nas demais páginas isso cabe ao <h1> do
+					// próprio conteúdo, então a marca vira só um link.
+					if ( is_front_page() && is_home() ) {
+						echo '<h1 class="site-logo-heading">' . $ipi_logo_link . '</h1>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- montado acima com esc_url()/esc_attr().
+					} else {
+						echo $ipi_logo_link; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- montado acima com esc_url()/esc_attr().
+					}
 				endif;
 				?>
 			</div><!-- .site-branding -->

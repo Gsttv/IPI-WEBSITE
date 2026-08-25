@@ -42,6 +42,76 @@ if ( $ipi_front_page ) {
 
 $ipi_whatsapp = get_theme_mod( 'ipi_theme_whatsapp_url', '' );
 $ipi_phone    = get_theme_mod( 'ipi_theme_phone', '' );
+$ipi_email    = get_theme_mod( 'ipi_theme_email', '' );
+$ipi_address  = get_theme_mod( 'ipi_theme_address', "Empresarial RioMar Trade Center 5 — Sala 211\nAvenida República do Líbano, 251 — Pina, Recife/PE" );
+$ipi_hours    = __( 'Segunda a sexta, das 8h às 18h (sextas-feiras, atendimento até às 17h)', 'ipi-theme' );
+$ipi_instagram = get_theme_mod( 'ipi_theme_social_instagram', 'https://www.instagram.com/ipinfecto' );
+
+// Fotos individuais de cada médico, nomeadas pelo primeiro nome em
+// /images/. A badge "Responsável Técnica" não é exibida no card da
+// equipe a pedido do cliente — essa informação segue no rodapé do site,
+// conforme exigência do CFM.
+$ipi_images_uri = get_template_directory_uri() . '/images/';
+
+$ipi_team = array(
+	array(
+		'name'  => 'Dr. Paulo Sérgio Ramos',
+		'crm'   => 'CRM-PE 11049',
+		'role'  => __( 'Infectologia', 'ipi-theme' ),
+		'photo' => $ipi_images_uri . 'paulo.jpeg',
+	),
+	array(
+		'name'  => 'Dra. Fabiana Gonzaga',
+		'crm'   => 'CRM-PE 16724 | RQE 2246',
+		'role'  => __( 'Infectologia', 'ipi-theme' ),
+		'photo' => $ipi_images_uri . 'fabiana.jpeg',
+	),
+	array(
+		'name'  => 'Dra. Marcelia Soares',
+		'crm'   => 'CRM-PE 19196',
+		'role'  => __( 'Infectologia', 'ipi-theme' ),
+		'photo' => $ipi_images_uri . 'marcelia.jpeg',
+	),
+	array(
+		'name'  => 'Dr. Lucas Caheté',
+		'crm'   => 'CRM-PE 19711',
+		'role'  => __( 'Infectologia', 'ipi-theme' ),
+		'photo' => $ipi_images_uri . 'lucas.jpeg',
+	),
+	array(
+		'name'  => 'Dra. Marta Iglis',
+		'crm'   => 'CRM-PE 17246',
+		'role'  => __( 'Infectologia', 'ipi-theme' ),
+		'photo' => $ipi_images_uri . 'marta.jpeg',
+	),
+);
+
+$ipi_faqs = array(
+	array(
+		'question' => __( 'Quais convênios o IPI aceita?', 'ipi-theme' ),
+		'answer'   => __( 'Para confirmar se o seu convênio é aceito, fale com a nossa equipe pelo WhatsApp ou telefone — respondemos rapidamente com todas as informações atualizadas sobre planos de saúde.', 'ipi-theme' ),
+	),
+	array(
+		'question' => __( 'Preciso de encaminhamento médico para marcar uma consulta?', 'ipi-theme' ),
+		'answer'   => __( 'Não. Você pode agendar uma consulta particular diretamente com nossos especialistas, sem necessidade de encaminhamento. Caso utilize convênio, recomendamos verificar se o seu plano exige guia de encaminhamento.', 'ipi-theme' ),
+	),
+	array(
+		'question' => __( 'O IPI atende casos de urgência?', 'ipi-theme' ),
+		'answer'   => __( 'Nosso atendimento é feito por consulta agendada, de segunda a sexta. Em caso de sintomas graves ou risco à saúde, procure imediatamente um pronto-socorro. Para orientação sobre agendamento prioritário, fale conosco pelo WhatsApp.', 'ipi-theme' ),
+	),
+	array(
+		'question' => __( 'O atendimento é sigiloso?', 'ipi-theme' ),
+		'answer'   => __( 'Sim. O sigilo do seu atendimento é garantido pelo Código de Ética Médica e é um compromisso inegociável do IPI — do primeiro contato ao acompanhamento contínuo, sua privacidade é protegida em todas as etapas.', 'ipi-theme' ),
+	),
+	array(
+		'question' => __( 'Preciso levar exames anteriores para a consulta?', 'ipi-theme' ),
+		'answer'   => __( 'Não é obrigatório, mas se você já tiver exames ou laudos anteriores, leve-os — eles ajudam o médico a entender seu histórico com mais precisão logo na primeira consulta.', 'ipi-theme' ),
+	),
+	array(
+		'question' => __( 'Quais as formas de pagamento para consulta particular?', 'ipi-theme' ),
+		'answer'   => __( 'Aceitamos as principais formas de pagamento. Para detalhes sobre valores e condições, entre em contato com nossa equipe pelo WhatsApp.', 'ipi-theme' ),
+	),
+);
 
 $ipi_specialties = array(
 	array(
@@ -132,6 +202,56 @@ $ipi_specialties = array(
 		</div>
 	</div>
 
+	<section id="sobre" class="section">
+		<div class="container container--narrow entry-content">
+			<header class="section-header">
+				<span class="eyebrow"><?php esc_html_e( 'Quem somos', 'ipi-theme' ); ?></span>
+				<h2><?php esc_html_e( 'Cuidado especializado, do diagnóstico ao acompanhamento', 'ipi-theme' ); ?></h2>
+			</header>
+			<p>
+				<?php esc_html_e( 'O Instituto Pernambucano de Infectologia (IPI) existe para oferecer, em Recife, um espaço de referência no diagnóstico e tratamento de doenças infecciosas — com o rigor técnico de uma equipe especializada e o acolhimento que todo paciente merece ao cuidar da própria saúde.', 'ipi-theme' ); ?>
+			</p>
+			<p>
+				<?php esc_html_e( 'Sabemos que buscar ajuda para uma condição infecciosa muitas vezes vem acompanhado de dúvidas, urgência ou receio. Por isso, conduzimos cada consulta com escuta atenta, sigilo absoluto e decisões clínicas baseadas em evidência — nunca em pressa.', 'ipi-theme' ); ?>
+			</p>
+		</div>
+
+		<div class="container">
+			<header class="section-header">
+				<h3><?php esc_html_e( 'Nossa equipe médica', 'ipi-theme' ); ?></h3>
+				<p><?php esc_html_e( 'Cada consulta no IPI é conduzida por médicos especialistas, com registro ativo no Conselho Regional de Medicina de Pernambuco.', 'ipi-theme' ); ?></p>
+			</header>
+
+			<div class="grid">
+				<?php foreach ( $ipi_team as $ipi_doctor ) : ?>
+					<article class="team-card">
+						<img
+							class="team-photo"
+							src="<?php echo esc_url( $ipi_doctor['photo'] ); ?>"
+							alt="<?php echo esc_attr( $ipi_doctor['name'] ); ?>"
+							loading="lazy"
+							decoding="async"
+						/>
+						<div class="team-body">
+							<h4 class="team-name"><?php echo esc_html( $ipi_doctor['name'] ); ?></h4>
+							<span class="badge"><?php echo esc_html( $ipi_doctor['role'] ); ?></span>
+							<p class="team-crm"><?php echo esc_html( $ipi_doctor['crm'] ); ?></p>
+						</div>
+					</article>
+				<?php endforeach; ?>
+			</div>
+
+			<?php $ipi_team_page = get_page_by_path( 'corpo-clinico' ); ?>
+			<?php if ( $ipi_team_page ) : ?>
+				<p>
+					<a class="btn btn-secondary" href="<?php echo esc_url( get_permalink( $ipi_team_page ) ); ?>">
+						<?php esc_html_e( 'Conheça quem vai cuidar de você', 'ipi-theme' ); ?>
+					</a>
+				</p>
+			<?php endif; ?>
+		</div>
+	</section>
+
 	<section id="especialidades" class="section">
 		<div class="container">
 			<header class="section-header">
@@ -159,6 +279,75 @@ $ipi_specialties = array(
 			</div>
 		</section>
 	<?php endif; ?>
+
+	<section id="faq" class="section">
+		<div class="container container--narrow">
+			<header class="section-header">
+				<span class="eyebrow"><?php esc_html_e( 'Perguntas que ouvimos bastante', 'ipi-theme' ); ?></span>
+				<h2><?php esc_html_e( 'Ficou com alguma dúvida?', 'ipi-theme' ); ?></h2>
+				<p><?php esc_html_e( 'Reunimos aqui as perguntas mais comuns dos nossos pacientes. Não encontrou a sua? Fale com a gente, é rapidinho.', 'ipi-theme' ); ?></p>
+			</header>
+
+			<div class="faq-list">
+				<?php foreach ( $ipi_faqs as $ipi_faq ) : ?>
+					<details class="faq-item">
+						<summary class="faq-question"><?php echo esc_html( $ipi_faq['question'] ); ?></summary>
+						<p class="faq-answer"><?php echo esc_html( $ipi_faq['answer'] ); ?></p>
+					</details>
+				<?php endforeach; ?>
+			</div>
+		</div>
+	</section>
+
+	<section id="contato" class="section section--alt">
+		<div class="container">
+			<header class="section-header">
+				<span class="eyebrow"><?php esc_html_e( 'Fale com a gente', 'ipi-theme' ); ?></span>
+				<h2><?php esc_html_e( 'Estamos prontos para te atender', 'ipi-theme' ); ?></h2>
+				<p><?php esc_html_e( 'Escolha o canal mais conveniente para você — respondemos com atenção e agilidade.', 'ipi-theme' ); ?></p>
+			</header>
+
+			<div class="contact-grid">
+				<?php if ( $ipi_whatsapp ) : ?>
+					<a class="contact-card" href="<?php echo esc_url( $ipi_whatsapp ); ?>" rel="noopener noreferrer" target="_blank">
+						<span class="contact-card-label"><?php esc_html_e( 'WhatsApp', 'ipi-theme' ); ?></span>
+						<span class="contact-card-value"><?php esc_html_e( '📲 Agende sua consulta', 'ipi-theme' ); ?></span>
+					</a>
+				<?php endif; ?>
+
+				<?php if ( $ipi_phone ) : ?>
+					<a class="contact-card" href="<?php echo esc_attr( ipi_theme_get_tel_href( $ipi_phone ) ); ?>">
+						<span class="contact-card-label"><?php esc_html_e( 'Telefone', 'ipi-theme' ); ?></span>
+						<span class="contact-card-value"><?php echo esc_html( $ipi_phone ); ?></span>
+					</a>
+				<?php endif; ?>
+
+				<?php if ( $ipi_email ) : ?>
+					<a class="contact-card" href="<?php echo esc_attr( 'mailto:' . $ipi_email ); ?>">
+						<span class="contact-card-label"><?php esc_html_e( 'E-mail', 'ipi-theme' ); ?></span>
+						<span class="contact-card-value"><?php echo esc_html( $ipi_email ); ?></span>
+					</a>
+				<?php endif; ?>
+
+				<div class="contact-card">
+					<span class="contact-card-label"><?php esc_html_e( 'Endereço', 'ipi-theme' ); ?></span>
+					<span class="contact-card-value"><?php echo nl2br( esc_html( $ipi_address ) ); ?></span>
+				</div>
+
+				<div class="contact-card">
+					<span class="contact-card-label"><?php esc_html_e( 'Horário de funcionamento', 'ipi-theme' ); ?></span>
+					<span class="contact-card-value"><?php echo esc_html( $ipi_hours ); ?></span>
+				</div>
+
+				<?php if ( $ipi_instagram ) : ?>
+					<a class="contact-card" href="<?php echo esc_url( $ipi_instagram ); ?>" rel="noopener noreferrer" target="_blank">
+						<span class="contact-card-label"><?php esc_html_e( 'Instagram', 'ipi-theme' ); ?></span>
+						<span class="contact-card-value">@ipinfecto</span>
+					</a>
+				<?php endif; ?>
+			</div>
+		</div>
+	</section>
 
 	<section class="section">
 		<div class="container">
@@ -198,8 +387,9 @@ $ipi_specialties = array(
 		<section class="section section--alt">
 			<div class="container">
 				<header class="section-header">
-					<span class="eyebrow"><?php esc_html_e( 'Blog', 'ipi-theme' ); ?></span>
-					<h2><?php esc_html_e( 'Notícias e conteúdo educativo', 'ipi-theme' ); ?></h2>
+					<span class="eyebrow"><?php esc_html_e( 'Conteúdos', 'ipi-theme' ); ?></span>
+					<h2><?php esc_html_e( 'Vídeos, artigos e materiais educativos', 'ipi-theme' ); ?></h2>
+					<p><?php esc_html_e( 'Conteúdo produzido pela nossa equipe médica para te ajudar a entender melhor a sua saúde — em texto, imagem e vídeo.', 'ipi-theme' ); ?></p>
 				</header>
 
 				<div class="posts-grid">

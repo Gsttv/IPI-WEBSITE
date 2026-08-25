@@ -6,54 +6,55 @@
 
 Referência: clínicas premium e hospitais modernos (linha Sírio-Libanês/Einstein no Brasil; One Medical, Forward, Tia internacionalmente). Quatro princípios guiam toda decisão abaixo:
 
-1. **Confiança antes de tudo.** Cor fria (petróleo) como base, alto contraste, nada de saturação agressiva. Quem chega ao site pode estar ansioso ou fragilizado — a interface não pode competir por atenção.
+1. **Confiança antes de tudo.** Cor contida (verde-sálvia da marca) como base, alto contraste, nada de saturação agressiva. Quem chega ao site pode estar ansioso ou fragilizado — a interface não pode competir por atenção.
 2. **Premium é espaço, não decoração.** Whitespace generoso, sombras suaves em vez de bordas duras, cantos arredondados consistentes. Luxo aqui significa "não aglomerado", não "cheio de efeitos".
 3. **Acessível por padrão, não por exceção.** Público inclui pacientes idosos, imunossuprimidos, com baixa visão. Contraste AA é piso, não meta. Alvos de toque ≥ 44px.
 4. **Consistência reduz carga cognitiva.** Um único vocabulário de cor, tipografia, espaçamento e elevação — repetido, nunca reinventado por seção.
 
 Esta especificação **substitui e formaliza** os tokens ad hoc já usados no tema (`style.css`/`theme.json`); os valores de marca já em produção foram preservados como âncora das escalas abaixo para não exigir retrabalho.
 
----
-
-## 1. Paleta principal — "Petróleo"
-
-Azul-petróleo profundo. Cor de marca, usada em header, links, botões primários, ícones de destaque.
-
-| Token | Hex | Uso |
-|---|---|---|
-| primary-50 | `#F2F9FA` | Fundos muito sutis (hover de linha, zebra de tabela) |
-| primary-100 | `#E6F3F4` | Fundos de badge/ícone, seções alternadas leves |
-| primary-200 | `#C7E4E7` | Bordas em componentes sobre fundo claro da marca |
-| primary-300 | `#9ED0D5` | Elementos decorativos, gráficos, ilustrações |
-| primary-400 | `#66B3BA` | Estados hover em superfícies claras |
-| primary-500 | `#338F97` | Uso decorativo de média intensidade |
-| **primary-600** | **`#0A6E79`** | **Base da marca** — botão primário, links, header, foco de navegação |
-| primary-700 | `#075C65` | Hover/active de botão primário |
-| primary-800 | `#054A52` | Texto sobre fundo primary-100, dark mode futuro |
-| primary-900 | `#033238` | Texto de alto contraste sobre tons claros da marca |
-| primary-950 | `#011B1E` | Máximo contraste, uso raro (ex: overlay escuro) |
-
-**Contraste:** primary-600 sobre branco = 5.9:1 (AA para texto normal). Para texto pequeno/fino, preferir primary-700+.
+> **Atualização (identidade visual final):** a versão anterior deste documento usava um azul-petróleo (`#0A6E79`) como cor de marca provisória, definida antes da identidade visual oficial. Com a aprovação do logo (`images/ipi-logo.jpg`, a partir de `images/Versão 03.jpg`) e da proposta em `images/Identidade Visual_Instituto.pdf` — verde-sálvia orgânico, remetendo à rede de médicos conectados e ao elemento "vírus" estilizado —, as escalas 1 e 2 abaixo foram recalculadas a partir do verde real da logo (`#667058`, extraído por amostragem de pixel do arquivo final) e de um terracota complementar. Os princípios de design (seção "Princípios de design") continuam válidos — só a cor de marca mudou de família (petróleo → verde-sálvia). Personalidade de marca definida na proposta: **Colaborativo, Preciso, Moderno, Humano, Científico**; pilares: Ciência, Colaboração, Precisão, Cuidado.
 
 ---
 
-## 2. Paleta secundária — "Verde Vitalidade"
+## 1. Paleta principal — "Verde Instituto"
 
-Verde acinzentado (sage), mais contido que um verde de sistema. Uso decorativo/marca — badges, ícones de "eyebrow", botões secundários preenchidos, nunca para comunicar estado (isso é papel da cor de Sucesso, seção 4).
+Verde-sálvia/oliva, extraído da logo oficial do IPI. Cor de marca, usada em header, links, botões primários, ícones de destaque.
 
 | Token | Hex | Uso |
 |---|---|---|
-| secondary-50 | `#EAF7F2` | Fundos sutis |
-| secondary-100 | `#CFEEE1` | Badges, tags |
-| secondary-200 | `#9EDCC3` | Bordas decorativas |
-| secondary-300 | `#6BC5A3` | Ilustrações, gráficos |
-| secondary-400 | `#3EAC85` | Hover claro |
-| secondary-500 | `#279A73` | Uso decorativo médio |
-| **secondary-600** | **`#1C8C6B`** | **Base** — "eyebrows", botões secundários preenchidos, ícones de vitalidade/prevenção |
-| secondary-700 | `#146F55` | Hover/active |
-| secondary-800 | `#0F5641` | Texto sobre secondary-100 |
-| secondary-900 | `#0A3C2E` | Alto contraste |
-| secondary-950 | `#05221A` | Uso raro |
+| primary-50 | `#F8FAF5` | Fundos muito sutis (hover de linha, zebra de tabela) |
+| primary-100 | `#EEF2E9` | Fundos de badge/ícone, seções alternadas leves |
+| primary-200 | `#DAE0D1` | Bordas em componentes sobre fundo claro da marca |
+| primary-300 | `#BAC4AB` | Elementos decorativos, gráficos, ilustrações |
+| primary-400 | `#96A385` | Estados hover em superfícies claras |
+| primary-500 | `#7A8768` | Uso decorativo de média intensidade |
+| **primary-600** | **`#667058`** | **Base da marca** — cor exata da logo (botão primário, links, header, foco de navegação) |
+| primary-700 | `#49513D` | Hover/active de botão primário |
+| primary-800 | `#3F4733` | Texto sobre fundo primary-100, dark mode futuro |
+| primary-900 | `#2A3121` | Texto de alto contraste sobre tons claros da marca |
+| primary-950 | `#1B2013` | Máximo contraste, uso raro (ex: overlay escuro) |
+
+**Contraste:** primary-600 sobre branco ≈ 6.3:1 (AA para texto normal). Para texto pequeno/fino, preferir primary-700+.
+
+---
+
+## 2. Paleta secundária — "Terracota"
+
+Terracota/argila quente, complementar ao verde-sálvia principal — mesma lógica de paleta "sálvia + terracota" comum em saúde moderna/humanizada. Uso decorativo/marca — badges, ícones de "eyebrow", botões secundários preenchidos, nunca para comunicar estado (isso é papel da cor de Sucesso, seção 4).
+
+| Token | Hex | Uso |
+|---|---|---|
+| secondary-50 | `#FAF3EF` | Fundos sutis |
+| secondary-100 | `#F4E5DC` | Badges, tags |
+| secondary-200 | `#EEDACE` | Bordas decorativas |
+| secondary-400 | `#CD9270` | Ilustrações, gráficos, hover claro |
+| secondary-500 | `#C47A4F` | Uso decorativo médio |
+| **secondary-600** | **`#B6673A`** | **Base** — "eyebrows", botões secundários preenchidos |
+| secondary-700 | `#95532D` | Hover/active |
+| secondary-800 | `#764123` | Texto sobre secondary-100 |
+
+> **Por que abandonar o segundo verde do sistema anterior?** Com a marca em si já sendo verde, manter "Verde Vitalidade" como secundária criava dois verdes competindo — a terracota dá contraste de fato e mantém a mesma separação conceitual: Secundária é **identidade de marca**, Sucesso (seção 4) é **feedback de sistema**.
 
 > **Por que dois verdes no sistema (Secundária e Sucesso)?** São conceitos diferentes: Secundária é **identidade de marca** (aparece mesmo quando nada "deu certo"); Sucesso é **feedback de sistema** (só aparece após uma ação positiva). Manter separados evita que o usuário confunda "cor da marca" com "confirmação".
 
@@ -61,22 +62,22 @@ Verde acinzentado (sage), mais contido que um verde de sistema. Uso decorativo/m
 
 ## 3. Escala de cinzas — "Neutro"
 
-Cinza com leve viés frio (não puro), para harmonizar com o petróleo da marca. Base de texto, fundo e bordas em toda a interface.
+Cinza com leve viés quente quase imperceptível (mesma matiz do verde-sálvia, saturação bem baixa), para harmonizar com a marca. Base de texto, fundo e bordas em toda a interface.
 
 | Token | Hex | Uso |
 |---|---|---|
 | neutral-0 | `#FFFFFF` | Fundo padrão, cards |
-| neutral-50 | `#F7FAFA` | Fundo de página sutil |
-| neutral-100 | `#F4F8F9` | Seções alternadas (`.section--alt`) |
-| neutral-200 | `#E8EFF0` | Divisores leves |
-| neutral-300 | `#DDE6E7` | Bordas padrão (cards, inputs, tabelas) |
-| neutral-400 | `#C1CDCF` | Bordas em estado desabilitado |
-| neutral-500 | `#97A6A9` | Placeholder, ícones inativos |
-| neutral-600 | `#72868A` | Texto terciário |
-| neutral-700 | `#52666B` | Texto secundário (metadados, legendas) |
-| neutral-800 | `#37474B` | Texto de títulos secundários |
-| neutral-900 | `#1C2B2E` | Texto principal do corpo |
-| neutral-950 | `#0D1517` | Texto de máximo contraste, nunca preto puro |
+| neutral-50 | `#F8FAF6` | Fundo de página sutil |
+| neutral-100 | `#F5F7F3` | Seções alternadas (`.section--alt`) |
+| neutral-200 | `#EAEDE5` | Divisores leves |
+| neutral-300 | `#E1E5DC` | Bordas padrão (cards, inputs, tabelas) |
+| neutral-400 | `#C5CABB` | Bordas em estado desabilitado |
+| neutral-500 | `#97A085` | Placeholder, ícones inativos |
+| neutral-600 | `#7A8368` | Texto terciário |
+| neutral-700 | `#606657` | Texto secundário (metadados, legendas) |
+| neutral-800 | `#3A3F32` | Texto de títulos secundários |
+| neutral-900 | `#242720` | Texto principal do corpo |
+| neutral-950 | `#15170F` | Texto de máximo contraste, nunca preto puro |
 
 ---
 
@@ -198,15 +199,15 @@ Regra: **um único valor de radius por "família" de componente** — nunca mist
 
 ## 9. Sombras (elevação)
 
-Sombras com leve tingimento na cor da marca (petróleo) em vez de preto puro — detalhe premium que aparece em produtos de saúde de alto padrão.
+Sombras com leve tingimento na cor de texto/marca (`#242720`, o mesmo tom quente usado no neutral-900) em vez de preto puro — detalhe premium que aparece em produtos de saúde de alto padrão.
 
 | Token | Valor (camadas) | Uso |
 |---|---|---|
-| shadow-xs | `0 1px 2px rgba(10,46,51,.06)` | Hover sutil em linha de lista |
-| shadow-sm | `0 2px 6px rgba(10,46,51,.08), 0 1px 2px rgba(10,46,51,.04)` | Card em repouso |
-| shadow-md | `0 8px 24px rgba(10,46,51,.12), 0 2px 6px rgba(10,46,51,.06)` | Card em hover, dropdown, menu de submenu |
-| shadow-lg | `0 20px 48px rgba(10,46,51,.16), 0 8px 16px rgba(10,46,51,.08)` | Modal, popover grande |
-| shadow-xl | `0 32px 64px rgba(10,46,51,.20), 0 12px 24px rgba(10,46,51,.10)` | Elemento flutuante premium (ex: card de agendamento sticky) |
+| shadow-xs | `0 1px 2px rgba(36,39,32,.06)` | Hover sutil em linha de lista |
+| shadow-sm | `0 2px 6px rgba(36,39,32,.08), 0 1px 2px rgba(36,39,32,.04)` | Card em repouso |
+| shadow-md | `0 8px 24px rgba(36,39,32,.12), 0 2px 6px rgba(36,39,32,.06)` | Card em hover, dropdown, menu de submenu |
+| shadow-lg | `0 20px 48px rgba(36,39,32,.16), 0 8px 16px rgba(36,39,32,.08)` | Modal, popover grande |
+| shadow-xl | `0 32px 64px rgba(36,39,32,.20), 0 12px 24px rgba(36,39,32,.10)` | Elemento flutuante premium (ex: card de agendamento sticky) |
 | shadow-focus | `0 0 0 4px rgba(245,166,35,.35)` | Anel de foco de teclado (usa warning-500) — nunca remover, é requisito de acessibilidade |
 
 ---

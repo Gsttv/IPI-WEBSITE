@@ -10,7 +10,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 ?>
 <article id="post-<?php the_ID(); ?>" <?php post_class( 'card' ); ?>>
-	<?php ipi_theme_post_thumbnail(); ?>
+	<div class="card-media">
+		<?php ipi_theme_post_thumbnail(); ?>
+		<?php ipi_theme_post_format_badge(); ?>
+	</div>
 
 	<header class="entry-header">
 		<?php
