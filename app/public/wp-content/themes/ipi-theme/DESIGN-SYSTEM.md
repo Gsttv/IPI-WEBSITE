@@ -131,34 +131,35 @@ Vermelho — validação de formulário, cancelamentos, e a faixa de emergência
 
 ## 5. Fontes
 
-| Papel | Fonte | Peso(s) | Fallback / entrega |
-|---|---|---|---|
-| **Títulos** (H1–H4, display) | **Manrope** | SemiBold 600, Bold 700, ExtraBold 800 (hero) | Geométrica-humanista, caráter premium sem ser fria. Variável, licença SIL Open Font License (gratuita) |
-| **Corpo/UI** (parágrafos, botões, formulários, navegação) | **Inter** | Regular 400, Medium 500, SemiBold 600 | Altíssima legibilidade em telas pequenas, ótimos acentos em português, números tabulares (datas, CRM, valores). Variável, SIL OFL |
-| **Fallback do sistema** (enquanto a fonte carrega / falha de rede) | `-apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif` | — | Mantém o princípio de performance já adotado: `font-display: swap`, arquivos WOFF2 auto-hospedados (sem chamada a fontes externas/Google Fonts) |
+Definição final de identidade (substitui a recomendação anterior de Manrope + Inter): **General Sans**, em duas variações apenas, de propósito — um sistema tipográfico de 2 pesos, não multi-peso.
 
-**Por que não serifada:** hospitais tradicionais usam serifa para transmitir autoridade; hospitais **modernos** premium (a referência pedida) majoritariamente usam sans-serif humanista — a sensação de "premium" vem da tipografia + espaçamento + cor, não de uma serifa. Mantém-se, assim, o alinhamento com "hospitais modernos" citado no briefing.
+| Papel | Fonte | Peso | Fallback / entrega |
+|---|---|---|---|
+| **Títulos** (H1–H6) | **General Sans Bold** | 700 | Auto-hospedada em `assets/fonts/` (WOFF2), licença ITF Free Font License (Fontshare) — gratuita para uso e auto-hospedagem |
+| **Texto corrido / UI** (parágrafos, botões, formulários, navegação) | **General Sans Light** | 300 | Mesma fonte, mesma licença; itálico (Light Italic / Bold Italic) incluído para `<em>`/citações |
+| **Fallback do sistema** (enquanto a fonte carrega / falha de rede) | `-apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif` | — | `font-display: swap` — texto visível imediatamente no fallback, troca suave quando a General Sans carrega. Preload das duas variações no `<head>` (ver `inc/performance.php`) evita atraso perceptível |
+
+**Só dois pesos, de propósito:** qualquer elemento que peça um peso intermediário (ex.: nav/badges historicamente em 600) recai automaticamente no peso disponível mais próximo — o navegador nunca sintetiza um "bold falso", só escolhe entre os dois reais já carregados. Mantém o arquivo de fontes pequeno (~94KB para os 4 arquivos) e a decisão de marca explícita: Light informa, Bold decide.
 
 ---
 
 ## 6. Escala tipográfica
 
-Fluida (`clamp()`), mobile → desktop. Continua a abordagem já usada no tema.
+Fluida (`clamp()`), mobile → desktop. Continua a abordagem já usada no tema — agora com General Sans Bold para todo nível de título e General Sans Light para todo nível de corpo.
 
 | Nível | Fonte/Peso | Tamanho (fluido) | Line-height | Letter-spacing | Uso |
 |---|---|---|---|---|---|
-| Display | Manrope ExtraBold 800 | 44px → 72px | 1.1 | -0.02em | Hero da home, só um por página |
-| H1 | Manrope Bold 700 | 36px → 48px | 1.15 | -0.01em | Título de página |
-| H2 | Manrope Bold 700 | 28px → 36px | 1.2 | -0.01em | Título de seção |
-| H3 | Manrope SemiBold 600 | 22px → 28px | 1.25 | normal | Subtítulo, título de card grande |
-| H4 | Manrope SemiBold 600 | 18px → 22px | 1.3 | normal | Título de card padrão, label de destaque |
-| Body Large (lede) | Inter Regular 400 | 18px | 1.6 | normal | Parágrafo de introdução/resumo |
-| Body (base) | Inter Regular 400 | 16px → 17px | 1.6 | normal | Texto corrido padrão |
-| Body Small | Inter Regular 400 | 14px | 1.5 | normal | Metadados, texto auxiliar |
-| Caption | Inter Medium 500 | 13px | 1.4 | normal | Legendas de imagem, texto de ajuda de formulário |
-| Overline/Label | Inter SemiBold 600 | 12px | 1.3 | 0.08em (maiúsculas) | "Eyebrows", badges, rótulos de categoria |
+| Display | General Sans Bold 700 | 44px → 72px | 1.1 | -0.02em | Hero da home, só um por página |
+| H1 | General Sans Bold 700 | 36px → 48px | 1.15 | -0.01em | Título de página |
+| H2 | General Sans Bold 700 | 28px → 36px | 1.2 | -0.01em | Título de seção |
+| H3 | General Sans Bold 700 | 22px → 28px | 1.25 | normal | Subtítulo, título de card grande |
+| H4 | General Sans Bold 700 | 18px → 22px | 1.3 | normal | Título de card padrão, label de destaque |
+| Body Large (lede) | General Sans Light 300 | 18px | 1.6 | normal | Parágrafo de introdução/resumo |
+| Body (base) | General Sans Light 300 | 16px → 17px | 1.6 | normal | Texto corrido padrão |
+| Body Small | General Sans Light 300 | 14px | 1.5 | normal | Metadados, texto auxiliar |
+| Caption | General Sans Light 300 | 13px | 1.4 | normal | Legendas de imagem, texto de ajuda de formulário |
+| Overline/Label | General Sans Bold 700 | 12px | 1.3 | 0.08em (maiúsculas) | "Eyebrows", badges, rótulos de categoria — Bold aqui por serem rótulos curtos que precisam de destaque, não corpo de texto |
 
----
 
 ## 7. Espaçamentos
 
@@ -296,4 +297,4 @@ Mobile-first.
 - Os hex marcados em **negrito/base** em cada escala já existem em produção (`style.css`/`theme.json`) — a migração é uma **extensão**, não uma substituição de marca.
 - `theme.json` precisará ganhar as escalas completas (hoje só tem os tons "base"); lembrar de manter `style.css` e `theme.json` sincronizados manualmente (débito técnico já documentado no `readme.txt`).
 - Cores semânticas (Sucesso/Aviso/Erro) ainda não existem como custom properties — hoje só há `--color-danger`. Precisarão ser adicionadas por completo.
-- Fontes Manrope/Inter substituirão a pilha de system-fonts atual — exige auto-hospedar os arquivos WOFF2 (variable font, subset Latin) para manter o princípio de performance (zero requisição externa) já adotado no tema.
+- ✅ Fontes: General Sans (Light para texto, Bold para títulos) já implementada — WOFF2 auto-hospedada em `assets/fonts/`, `@font-face` em `style.css` e `assets/css/editor-style.css`, preload das duas variações via `inc/performance.php`.

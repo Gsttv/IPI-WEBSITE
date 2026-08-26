@@ -29,8 +29,9 @@ Principais características:
   automaticamente se um plugin de SEO dedicado estiver ativo).
 * Skip link, `:focus-visible`, landmarks semânticos e contraste AA por
   padrão — alinhado às diretrizes accessibility-ready do WordPress.org.
-* Zero fontes/scripts de terceiros: usa a pilha de fontes do sistema
-  operacional e enfileira apenas os próprios assets, com `defer`.
+* Zero fontes/scripts externos: General Sans (Light/Bold) auto-hospedada
+  em WOFF2, com `font-display: swap` e preload — nenhuma chamada a fontes
+  externas (Google Fonts etc.).
 * Áreas de widgets: barra lateral do blog + 3 colunas no rodapé.
 * Opções no Personalizador: telefone, WhatsApp, e-mail, endereço, faixa de
   emergência e redes sociais.

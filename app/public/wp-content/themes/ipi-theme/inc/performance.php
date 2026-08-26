@@ -93,3 +93,22 @@ function ipi_theme_image_decoding_attr( array $attr ): array {
 	return $attr;
 }
 add_filter( 'wp_get_attachment_image_attributes', 'ipi_theme_image_decoding_attr' );
+
+/**
+ * Preconecta/precarrega as duas variações da General Sans usadas em toda
+ * página (Light para texto, Bold para títulos) — evita FOIT/layout shift
+ * esperando o CSS ser parseado para só então descobrir que precisa da
+ * fonte. As variações itálicas não entram aqui por serem bem menos usadas
+ * (só dentro de conteúdo em <em>/<i>), não valem o peso extra no preload.
+ */
+function ipi_theme_preload_fonts(): void {
+	$fonts = array( 'GeneralSans-Light.woff2', 'GeneralSans-Bold.woff2' );
+
+	foreach ( $fonts as $font ) {
+		printf(
+			'<link rel="preload" href="%s" as="font" type="font/woff2" crossorigin>' . "\n",
+			esc_url( get_template_directory_uri() . '/assets/fonts/' . $font )
+		);
+	}
+}
+add_action( 'wp_head', 'ipi_theme_preload_fonts', 1 );

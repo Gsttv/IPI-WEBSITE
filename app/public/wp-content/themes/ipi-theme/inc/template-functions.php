@@ -68,3 +68,33 @@ function ipi_theme_fallback_menu(): void {
 	);
 	echo '</ul>';
 }
+
+/**
+ * Impede que itens de menu com link de âncora (ex.: "/#especialidades")
+ * herdem "current-menu-item"/"current_page_item" do WordPress só porque a
+ * âncora vive na mesma página que o item "Início" — o core compara apenas
+ * o caminho da URL e ignora o fragmento "#...", então os dois acabavam
+ * marcados como "página atual" ao mesmo tempo na home.
+ *
+ * @param array<int,string> $classes Classes do <li> do item de menu.
+ * @param WP_Post           $item    Objeto do item de menu.
+ * @return array<int,string>
+ */
+function ipi_theme_nav_menu_anchor_classes( array $classes, $item ): array {
+	if ( ! empty( $item->url ) && str_contains( (string) $item->url, '#' ) ) {
+		$classes = array_diff(
+			$classes,
+			array(
+				'current-menu-item',
+				'current_page_item',
+				'current-menu-ancestor',
+				'current-page-ancestor',
+				'current-menu-parent',
+				'current-page-parent',
+			)
+		);
+	}
+
+	return $classes;
+}
+add_filter( 'nav_menu_css_class', 'ipi_theme_nav_menu_anchor_classes', 10, 2 );

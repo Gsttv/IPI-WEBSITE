@@ -36,6 +36,43 @@ IPI Theme is distributed under the terms of the GNU GPL v2 or later.
    ============================================================= */
 
 /* -------------------------------------------------------------
+   Fontes — General Sans, auto-hospedada (WOFF2), sem requisição
+   externa. Light para texto corrido, Bold para títulos — as duas
+   únicas variações carregadas de propósito (ver DESIGN-SYSTEM.md).
+   ------------------------------------------------------------- */
+@font-face {
+	font-family: "General Sans";
+	src: url("assets/fonts/GeneralSans-Light.woff2") format("woff2");
+	font-weight: 300;
+	font-style: normal;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: "General Sans";
+	src: url("assets/fonts/GeneralSans-LightItalic.woff2") format("woff2");
+	font-weight: 300;
+	font-style: italic;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: "General Sans";
+	src: url("assets/fonts/GeneralSans-Bold.woff2") format("woff2");
+	font-weight: 700;
+	font-style: normal;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: "General Sans";
+	src: url("assets/fonts/GeneralSans-BoldItalic.woff2") format("woff2");
+	font-weight: 700;
+	font-style: italic;
+	font-display: swap;
+}
+
+/* -------------------------------------------------------------
    1. Reset & Base
    ------------------------------------------------------------- */
 *,
@@ -69,6 +106,7 @@ body {
 	background-color: var(--color-bg);
 	color: var(--color-text);
 	font-family: var(--font-body);
+	font-weight: 300;
 	font-size: var(--font-size-base);
 	line-height: 1.6;
 	text-rendering: optimizeSpeed;
@@ -132,8 +170,8 @@ a:focus {
 	--color-danger: #b3261e;
 	--color-focus: #f5a623;
 
-	/* Tipografia — pilha de fontes de sistema (zero requisições externas) */
-	--font-body: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+	/* Tipografia — General Sans auto-hospedada (@font-face acima), com pilha de sistema como fallback enquanto carrega/se falhar */
+	--font-body: "General Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
 	--font-heading: var(--font-body);
 
 	/* Escala tipográfica fluida (clamp: mínimo, ideal com vw, máximo) */
@@ -671,6 +709,122 @@ small {
 	background: var(--color-primary-light);
 }
 
+/* Mapa incorporado — Google Maps sem chave de API, via URL de busca. */
+.map-embed {
+	position: relative;
+	width: 100%;
+	aspect-ratio: 16 / 9;
+	border-radius: var(--radius-lg);
+	overflow: hidden;
+	border: 1px solid var(--color-border);
+	box-shadow: var(--shadow-sm);
+}
+
+.map-embed iframe {
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+	border: 0;
+}
+
+.localizacao-title {
+	margin-bottom: var(--space-lg);
+}
+
+/* Layout de "Contato e Localização": mapa estica pra acompanhar a altura
+   do bloco de texto ao lado, em vez de ficar com altura fixa própria. */
+.map-section-grid {
+	display: grid;
+	grid-template-columns: 1.2fr 0.8fr;
+	gap: var(--space-xl);
+	align-items: stretch;
+}
+
+.map-embed--compact {
+	aspect-ratio: auto;
+	max-width: none;
+	height: 100%;
+	min-height: 320px;
+}
+
+@media (max-width: 880px) {
+	.map-section-grid {
+		grid-template-columns: 1fr;
+	}
+
+	.map-embed--compact {
+		height: auto;
+		aspect-ratio: 16 / 9;
+	}
+}
+/* Bloco "Contato e Localização" — lista de canais com ícone. */
+.contact-info {
+	list-style: none;
+	margin: var(--space-md) 0 0;
+	padding: var(--space-lg);
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-md);
+	background: var(--color-bg-alt);
+	border: 1px solid var(--color-border);
+	border-radius: var(--radius-lg);
+}
+
+.contact-info-item {
+	display: flex;
+	gap: var(--space-sm);
+	align-items: flex-start;
+}
+
+.contact-info-item:not(:last-child) {
+	padding-bottom: var(--space-md);
+	border-bottom: 1px solid var(--color-border);
+}
+
+.contact-info-icon {
+	flex: none;
+	width: 40px;
+	height: 40px;
+	border-radius: 999px;
+	background: var(--color-primary-light);
+	color: var(--color-primary);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.contact-info-icon svg {
+	width: 20px;
+	height: 20px;
+}
+
+.contact-info-item h3 {
+	font-size: var(--font-size-base);
+	margin: 0 0 var(--space-3xs);
+}
+
+.contact-info-item p {
+	margin: 0;
+	color: var(--color-text-muted);
+}
+
+.contact-info-item a {
+	color: var(--color-text);
+	text-decoration: none;
+}
+
+.contact-info-item a:hover,
+.contact-info-item a:focus {
+	color: var(--color-primary);
+	text-decoration: underline;
+}
+
+.contact-info-note {
+	font-size: var(--font-size-sm);
+	font-style: italic;
+}
+
 /* FAQ — accordion nativo via <details>/<summary>, sem dependência de JS. */
 .faq-list {
 	display: flex;
@@ -718,45 +872,6 @@ small {
 .faq-answer {
 	margin: var(--space-xs) 0 0;
 	color: var(--color-text-muted);
-}
-
-/* Contato — grid de canais de atendimento. */
-.contact-grid {
-	display: grid;
-	gap: var(--space-md);
-	grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-}
-
-.contact-card {
-	display: flex;
-	flex-direction: column;
-	gap: var(--space-3xs);
-	background: var(--color-bg);
-	border: 1px solid var(--color-border);
-	border-radius: var(--radius-md);
-	padding: var(--space-md);
-	color: inherit;
-	text-decoration: none;
-	transition: box-shadow 0.15s ease, transform 0.15s ease;
-}
-
-a.contact-card:hover,
-a.contact-card:focus {
-	box-shadow: var(--shadow-md);
-	transform: translateY(-2px);
-	color: inherit;
-}
-
-.contact-card-label {
-	font-size: var(--font-size-sm);
-	font-weight: 700;
-	color: var(--color-primary);
-	text-transform: uppercase;
-	letter-spacing: 0.03em;
-}
-
-.contact-card-value {
-	color: var(--color-text);
 }
 
 /* -------------------------------------------------------------
