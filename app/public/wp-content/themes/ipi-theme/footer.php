@@ -1,6 +1,7 @@
 <?php
 /**
- * Rodapé do tema: colunas de widgets, menu do rodapé, redes sociais e copyright.
+ * Rodapé do tema: identidade, colunas de widgets, menu do rodapé, redes
+ * sociais e copyright.
  *
  * @package IPI_Theme
  */
@@ -12,6 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 $ipi_social_links = ipi_theme_get_social_links();
 $ipi_footer_text  = get_theme_mod( 'ipi_theme_footer_text', __( 'Instituto Pernambucano de Infectologia. Todos os direitos reservados.', 'ipi-theme' ) );
 $ipi_whatsapp_url = get_theme_mod( 'ipi_theme_whatsapp_url', '' );
+$ipi_about_text   = get_theme_mod( 'ipi_theme_about_text', __( 'Cuidado especializado, do diagnóstico ao acompanhamento — sempre perto de você.', 'ipi-theme' ) );
 ?>
 
 	</div><!-- #content -->
@@ -24,7 +26,7 @@ $ipi_whatsapp_url = get_theme_mod( 'ipi_theme_whatsapp_url', '' );
 			target="_blank"
 			aria-label="<?php esc_attr_e( 'Fale com a gente pelo WhatsApp', 'ipi-theme' ); ?>"
 		>
-			<span aria-hidden="true">💬</span>
+			<?php echo ipi_theme_get_icon( 'whatsapp' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- SVG fixo do tema, sem dado de usuário. ?>
 		</a>
 	<?php endif; ?>
 
@@ -39,6 +41,23 @@ $ipi_whatsapp_url = get_theme_mod( 'ipi_theme_whatsapp_url', '' );
 
 	<footer id="colophon" class="site-footer">
 		<div class="container">
+			<div class="footer-about">
+				<?php if ( has_custom_logo() ) : ?>
+					<div class="footer-about-logo"><?php the_custom_logo(); ?></div>
+				<?php else : ?>
+					<img
+						class="footer-about-logo"
+						src="<?php echo esc_url( get_template_directory_uri() . '/images/ipi-logo.png' ); ?>"
+						alt="<?php echo esc_attr( get_bloginfo( 'name' ) ); ?>"
+						width="180"
+						height="48"
+						loading="lazy"
+						decoding="async"
+					/>
+				<?php endif; ?>
+				<p class="footer-about-text"><?php echo esc_html( $ipi_about_text ); ?></p>
+			</div>
+
 			<?php if ( is_active_sidebar( 'footer-1' ) || is_active_sidebar( 'footer-2' ) || is_active_sidebar( 'footer-3' ) ) : ?>
 				<div class="footer-widgets">
 					<?php foreach ( array( 'footer-1', 'footer-2', 'footer-3' ) as $ipi_footer_sidebar ) : ?>
@@ -86,7 +105,8 @@ $ipi_whatsapp_url = get_theme_mod( 'ipi_theme_whatsapp_url', '' );
 						<?php foreach ( $ipi_social_links as $network => $url ) : ?>
 							<li>
 								<a href="<?php echo esc_url( $url ); ?>" rel="noopener noreferrer" target="_blank">
-									<?php echo esc_html( ucfirst( $network ) ); ?>
+									<?php echo ipi_theme_get_icon( $network ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- SVG fixo do tema, sem dado de usuário. ?>
+									<span class="screen-reader-text"><?php echo esc_html( ucfirst( $network ) ); ?></span>
 								</a>
 							</li>
 						<?php endforeach; ?>

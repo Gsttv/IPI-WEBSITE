@@ -47,11 +47,15 @@ $ipi_whatsapp        = get_theme_mod( 'ipi_theme_whatsapp_url', '' );
 				// (Aparência → Personalizar → Identidade do Site) tem
 				// prioridade; enquanto isso não é configurado, cai para a
 				// logo oficial do IPI já embutida no tema (identidade
-				// visual aprovada — ver images/ipi-logo.jpg).
+				// visual aprovada — ver images/ipi-logo.png). Usamos o PNG
+				// com fundo transparente (gerado a partir do ipi-logo.jpg
+				// original) em vez do JPG — o header flutua transparente
+				// sobre o hero na home, e um fundo branco sólido no logo
+				// apareceria como uma caixa por cima do degradê.
 				if ( has_custom_logo() ) :
 					the_custom_logo();
 				else :
-					$ipi_logo_url  = get_template_directory_uri() . '/images/ipi-logo.jpg';
+					$ipi_logo_url  = get_template_directory_uri() . '/images/ipi-logo.png';
 					$ipi_logo_link = '<a href="' . esc_url( home_url( '/' ) ) . '" class="custom-logo-link" rel="home"><img src="' . esc_url( $ipi_logo_url ) . '" class="custom-logo" alt="' . esc_attr( get_bloginfo( 'name' ) ) . '" width="240" height="64" /></a>';
 
 					// Na home, o nome do site precisa estar em um heading (H1) por
@@ -64,6 +68,10 @@ $ipi_whatsapp        = get_theme_mod( 'ipi_theme_whatsapp_url', '' );
 					}
 				endif;
 				?>
+			<span class="header-trust-badge">
+				<span class="header-trust-badge-dot" aria-hidden="true"></span>
+				<?php esc_html_e( 'Cuidado · Prevenção · Confiança', 'ipi-theme' ); ?>
+			</span>
 			</div><!-- .site-branding -->
 
 			<button
@@ -92,16 +100,17 @@ $ipi_whatsapp        = get_theme_mod( 'ipi_theme_whatsapp_url', '' );
 				endif;
 				?>
 			</nav>
-
 			<?php if ( $ipi_phone || $ipi_whatsapp ) : ?>
 				<div class="header-cta">
 					<?php if ( $ipi_whatsapp ) : ?>
-						<a class="btn btn-primary" href="<?php echo esc_url( $ipi_whatsapp ); ?>" rel="noopener noreferrer" target="_blank">
-							<?php esc_html_e( 'Agendar Consulta', 'ipi-theme' ); ?>
+						<a class="btn btn-primary btn-cta" href="<?php echo esc_url( $ipi_whatsapp ); ?>" rel="noopener noreferrer" target="_blank">
+							<?php esc_html_e( 'Agendar uma consulta', 'ipi-theme' ); ?>
+							<span class="btn-cta-arrow" aria-hidden="true">→</span>
 						</a>
 					<?php elseif ( $ipi_phone ) : ?>
-						<a class="btn btn-primary" href="<?php echo esc_attr( ipi_theme_get_tel_href( $ipi_phone ) ); ?>">
+						<a class="btn btn-primary btn-cta" href="<?php echo esc_attr( ipi_theme_get_tel_href( $ipi_phone ) ); ?>">
 							<?php esc_html_e( 'Ligar agora', 'ipi-theme' ); ?>
+							<span class="btn-cta-arrow" aria-hidden="true">→</span>
 						</a>
 					<?php endif; ?>
 				</div>

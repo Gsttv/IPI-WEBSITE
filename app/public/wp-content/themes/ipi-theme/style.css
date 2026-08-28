@@ -340,25 +340,38 @@ small {
 	position: sticky;
 	top: 0;
 	z-index: 40;
-	background: var(--color-bg);
-	border-bottom: 1px solid var(--color-border);
-	transition: box-shadow 0.2s ease;
+	padding: var(--space-sm) var(--space-sm) 0;
+	background: transparent;
+	transition: padding 0.25s ease;
 }
 
-.site-header.is-scrolled {
-	box-shadow: var(--shadow-sm);
-}
-
-.submenu-toggle {
-	display: none;
-}
-
+/* .header-inner acumula .container (max-width + padding-inline) e vira,
+   além disso, o "cartão" visível do header: fundo, cantos arredondados e
+   sombra sutil — o header flutua com uma pequena margem em vez de ocupar
+   a largura inteira como um bloco rígido. */
 .header-inner {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
 	gap: var(--space-md);
 	min-height: var(--header-height);
+	/* .container trava em 1200px (--container-max) — largo o bastante pro
+	   conteúdo do site, mas apertado para logo + selo + 6 itens de menu +
+	   botão na mesma linha. O header, especificamente, pode ser mais largo
+	   sem afetar a largura do conteúdo do resto do site. */
+	max-width: 1400px;
+	background: var(--color-bg);
+	border-radius: var(--radius-lg);
+	box-shadow: var(--shadow-sm);
+	transition: box-shadow 0.25s ease, background-color 0.25s ease;
+}
+
+.site-header.is-scrolled .header-inner {
+	box-shadow: var(--shadow-md);
+}
+
+.submenu-toggle {
+	display: none;
 }
 
 .site-branding {
@@ -369,8 +382,38 @@ small {
 }
 
 .site-branding img {
-	max-height: 56px;
+	max-height: 64px;
 	width: auto;
+}
+
+/* Selo institucional discreto perto da logo — some antes do menu mobile
+   pra não apertar o header em telas menores; é um complemento visual,
+   não informação essencial de navegação. */
+.header-trust-badge {
+	display: none;
+	align-items: center;
+	gap: var(--space-3xs);
+	padding-left: var(--space-md);
+	margin-left: var(--space-2xs);
+	border-left: 1px solid var(--color-border);
+	color: var(--color-text-muted);
+	font-size: var(--font-size-sm);
+	font-weight: 700;
+	white-space: nowrap;
+}
+
+.header-trust-badge-dot {
+	width: 6px;
+	height: 6px;
+	border-radius: 999px;
+	background: var(--color-primary);
+	flex: none;
+}
+
+@media (min-width: 1560px) {
+	.header-trust-badge {
+		display: inline-flex;
+	}
 }
 
 /* Reset de heading: na home, o wrapper do logo é um <h1> por SEO/
@@ -442,25 +485,40 @@ small {
 	padding: 0;
 	display: flex;
 	align-items: center;
-	gap: var(--space-md);
+	gap: var(--space-sm);
 }
 
+/* Item de menu: sem sublinhado permanente por estar selecionado/atual —
+   só um traço fino que desliza da esquerda pra direita no hover/foco,
+   via ::after com scaleX (não desloca layout, não usa border). */
 .primary-navigation a {
+	position: relative;
 	display: inline-block;
 	padding: 0.5em 0;
 	color: var(--color-text);
 	text-decoration: none;
 	font-weight: 600;
-	border-bottom: 2px solid transparent;
+	white-space: nowrap;
 }
 
-.primary-navigation a:hover,
-.primary-navigation a:focus,
-.primary-navigation .current-menu-item > a,
-.primary-navigation .current_page_item > a,
-.primary-navigation a.is-current-section {
-	color: var(--color-primary);
-	border-bottom-color: var(--color-primary);
+.primary-navigation a::after {
+	content: "";
+	position: absolute;
+	left: 0;
+	bottom: 0;
+	width: 100%;
+	height: 2px;
+	background: var(--color-primary);
+	transform: scaleX(0);
+	transform-origin: left;
+	transition: transform 0.25s ease;
+}
+
+/* Um único indicador de hover — só a linha animada, sem também trocar a
+   cor do texto (os dois juntos ficariam exagerados para o tom do site). */
+.primary-navigation a:hover::after,
+.primary-navigation a:focus-visible::after {
+	transform: scaleX(1);
 }
 
 .primary-navigation .sub-menu {
@@ -495,6 +553,43 @@ small {
 	display: none;
 }
 
+/* Home: o header flutua transparente sobre o gradiente do hero até o
+   usuário rolar — sem cartão branco pesado cobrindo a primeira dobra.
+   Reaproveita a mesma classe "is-scrolled" que já existe (alternada pelo
+   scroll listener único de assets/js/main.js) só que aqui também troca
+   o fundo, não só a sombra. */
+body.header-overlay-hero .site-header {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+}
+
+body.header-overlay-hero .header-inner {
+	background: transparent;
+	box-shadow: none;
+}
+
+body.header-overlay-hero .site-header.is-scrolled .header-inner {
+	background: var(--color-bg);
+	box-shadow: var(--shadow-sm);
+}
+
+/* Menu mobile aberto: fundo sólido mesmo sem scroll, senão os itens do
+   menu flutuam ilegíveis por cima do conteúdo da página atrás deles. */
+body.header-overlay-hero .site-header.is-menu-open .header-inner {
+	background: var(--color-bg);
+	box-shadow: var(--shadow-sm);
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.site-header,
+	.header-inner,
+	.primary-navigation a::after {
+		transition: none;
+	}
+}
+
 /* -------------------------------------------------------------
    7. Componentes
    ------------------------------------------------------------- */
@@ -510,6 +605,7 @@ small {
 	border: 2px solid transparent;
 	cursor: pointer;
 	font-size: var(--font-size-base);
+	white-space: nowrap;
 	transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease, transform 0.15s ease;
 }
 
@@ -527,6 +623,29 @@ small {
 .btn-primary:focus {
 	background: var(--color-primary-dark);
 	color: #fff;
+}
+
+/* CTA de agendamento (header + hero) — pílula com seta que desliza no
+   hover. Modificador aplicado sobre .btn.btn-primary, não substitui o
+   botão padrão usado no resto do site (cards, banner de CTA etc.). */
+.btn-cta {
+	border-radius: 999px;
+}
+
+.btn-cta-arrow {
+	display: inline-block;
+	transition: transform 0.2s ease;
+}
+
+.btn-cta:hover .btn-cta-arrow,
+.btn-cta:focus-visible .btn-cta-arrow {
+	transform: translateX(4px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.btn-cta-arrow {
+		transition: none;
+	}
 }
 
 .btn-secondary {
@@ -624,12 +743,41 @@ small {
 	font-size: var(--font-size-sm);
 }
 
+.team-roles {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--space-3xs);
+}
+
+.team-cta {
+	display: inline-flex;
+	margin-top: var(--space-sm);
+	font-size: var(--font-size-sm);
+	padding: 0.6em 1.1em;
+}
+
 /* -------------------------------------------------------------
    8. Front page — seções institucionais
    ------------------------------------------------------------- */
 .hero {
 	background: linear-gradient(160deg, var(--color-primary-light) 0%, var(--color-bg) 60%);
 	padding-block: var(--space-2xl);
+}
+
+/* Compensa o header fixo/flutuante da home (ver seção 6) para o título do
+   hero nunca ficar embaixo da logo/navegação, mesmo com o header
+   transparente sobreposto ao degradê. */
+body.header-overlay-hero .hero {
+	padding-top: calc(var(--header-height) + var(--space-xl));
+}
+
+.hero-value-line {
+	margin-top: var(--space-md);
+	color: var(--color-text-muted);
+	font-size: var(--font-size-sm);
+	font-weight: 700;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
 }
 
 .hero-inner {
@@ -1095,9 +1243,37 @@ small {
    12. Footer
    ------------------------------------------------------------- */
 .site-footer {
-	background: #0c2b30;
-	color: #cfe3e5;
+	/* Antes usava #0c2b30 (azul-petróleo) — resíduo da paleta anterior ao
+	   rebranding pro verde-sálvia. Agora usa os tokens atuais, coerente
+	   com o resto do site. */
+	background: var(--color-text);
+	color: var(--color-primary-light);
 	margin-top: var(--space-2xl);
+}
+
+.footer-about {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: var(--space-md);
+	padding-top: var(--space-2xl);
+}
+
+.footer-about-logo {
+	max-height: 48px;
+	width: auto;
+	/* A logo tem o desenho em tom escuro (verde-sálvia) — sobre o rodapé
+	   escuro, invertemos a luminosidade pra ela continuar legível, sem
+	   precisar de um segundo arquivo de logo "negativo". */
+	filter: brightness(0) invert(1);
+	opacity: 0.92;
+}
+
+.footer-about-text {
+	margin: 0;
+	max-width: 46ch;
+	color: var(--color-primary-light);
+	opacity: 0.85;
 }
 
 .footer-widgets {
@@ -1145,6 +1321,28 @@ small {
 	gap: var(--space-sm);
 	margin: 0;
 	padding: 0;
+}
+
+.social-links a {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 36px;
+	height: 36px;
+	border-radius: 999px;
+	background: rgba(255, 255, 255, 0.08);
+	transition: background-color 0.15s ease, transform 0.15s ease;
+}
+
+.social-links a:hover,
+.social-links a:focus-visible {
+	background: rgba(255, 255, 255, 0.16);
+	transform: translateY(-2px);
+}
+
+.social-links svg {
+	width: 18px;
+	height: 18px;
 }
 
 .footer-bottom-nav ul {
@@ -1250,9 +1448,19 @@ select:focus {
 
 .whatsapp-fab {
 	bottom: var(--space-md);
-	background: #25d366;
+	/* Verde-escuro oficial do WhatsApp (não o verde claro de ação) — o
+	   ícone branco em cima do verde claro (#25D366) não teria contraste
+	   suficiente (isso passava despercebido com o emoji antigo, que tem
+	   cor própria e ignora esta propriedade). #075E54 dá ~7.7:1 de
+	   contraste com branco, folgado acima do mínimo AA (4.5:1). */
+	background: #075e54;
 	color: #fff;
 	text-decoration: none;
+}
+
+.whatsapp-fab svg {
+	width: 28px;
+	height: 28px;
 }
 
 .back-to-top {

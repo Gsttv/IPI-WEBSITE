@@ -24,38 +24,42 @@ get_header();
 // Dra. Fabiana Gonzaga a pedido do cliente — todos os médicos aparecem no
 // grid com o mesmo peso visual. A informação de responsabilidade técnica
 // segue exibida no rodapé do site, conforme exigência do CFM.
+//
+// Lista em ordem alfabética pelo primeiro nome. O campo "role" é um array
+// porque alguns médicos têm mais de uma especialidade (ex.: Lucas também
+// atende Hepatologia, Paulo também atende Clínica Médica).
 $ipi_images_uri = get_template_directory_uri() . '/images/';
 
 $ipi_team = array(
 	array(
-		'name'  => 'Dr. Paulo Sérgio Ramos',
-		'crm'   => 'CRM-PE 11049',
-		'role'  => __( 'Infectologia', 'ipi-theme' ),
-		'photo' => $ipi_images_uri . 'paulo.jpeg',
-	),
-	array(
 		'name'  => 'Dra. Fabiana Gonzaga',
 		'crm'   => 'CRM-PE 16724 | RQE 2246',
-		'role'  => __( 'Infectologia', 'ipi-theme' ),
+		'role'  => array( __( 'Infectologia', 'ipi-theme' ) ),
 		'photo' => $ipi_images_uri . 'fabiana.jpeg',
-	),
-	array(
-		'name'  => 'Dra. Marcelia Soares',
-		'crm'   => 'CRM-PE 19196',
-		'role'  => __( 'Infectologia', 'ipi-theme' ),
-		'photo' => $ipi_images_uri . 'marcelia.jpeg',
 	),
 	array(
 		'name'  => 'Dr. Lucas Caheté',
 		'crm'   => 'CRM-PE 19711',
-		'role'  => __( 'Infectologia', 'ipi-theme' ),
+		'role'  => array( __( 'Infectologia', 'ipi-theme' ), __( 'Hepatologia', 'ipi-theme' ) ),
 		'photo' => $ipi_images_uri . 'lucas.jpeg',
+	),
+	array(
+		'name'  => 'Dra. Marcelia Soares',
+		'crm'   => 'CRM-PE 19196',
+		'role'  => array( __( 'Infectologia', 'ipi-theme' ) ),
+		'photo' => $ipi_images_uri . 'marcelia.jpeg',
 	),
 	array(
 		'name'  => 'Dra. Marta Iglis',
 		'crm'   => 'CRM-PE 17246',
-		'role'  => __( 'Infectologia', 'ipi-theme' ),
+		'role'  => array( __( 'Infectologia', 'ipi-theme' ) ),
 		'photo' => $ipi_images_uri . 'marta.jpeg',
+	),
+	array(
+		'name'  => 'Dr. Paulo Sérgio Ramos',
+		'crm'   => 'CRM-PE 11049',
+		'role'  => array( __( 'Infectologia', 'ipi-theme' ), __( 'Clínica Médica', 'ipi-theme' ) ),
+		'photo' => $ipi_images_uri . 'paulo.jpeg',
 	),
 );
 ?>
@@ -74,6 +78,7 @@ $ipi_team = array(
 
 		<div class="grid">
 			<?php foreach ( $ipi_team as $ipi_doctor ) : ?>
+				<?php $ipi_doctor_wa = ipi_theme_get_doctor_whatsapp_link( $ipi_doctor['name'] ); ?>
 				<article class="team-card">
 					<img
 						class="team-photo"
@@ -84,8 +89,17 @@ $ipi_team = array(
 					/>
 					<div class="team-body">
 						<h3 class="team-name"><?php echo esc_html( $ipi_doctor['name'] ); ?></h3>
-						<span class="badge"><?php echo esc_html( $ipi_doctor['role'] ); ?></span>
+						<div class="team-roles">
+							<?php foreach ( $ipi_doctor['role'] as $ipi_role ) : ?>
+								<span class="badge"><?php echo esc_html( $ipi_role ); ?></span>
+							<?php endforeach; ?>
+						</div>
 						<p class="team-crm"><?php echo esc_html( $ipi_doctor['crm'] ); ?></p>
+						<?php if ( $ipi_doctor_wa ) : ?>
+							<a class="btn btn-secondary team-cta" href="<?php echo esc_url( $ipi_doctor_wa ); ?>" rel="noopener noreferrer" target="_blank">
+								<?php esc_html_e( 'Agendar consulta', 'ipi-theme' ); ?>
+							</a>
+						<?php endif; ?>
 					</div>
 				</article>
 			<?php endforeach; ?>

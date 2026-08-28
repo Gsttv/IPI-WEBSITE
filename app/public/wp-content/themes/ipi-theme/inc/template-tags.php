@@ -176,3 +176,50 @@ if ( ! function_exists( 'ipi_theme_get_tel_href' ) ) :
 		return 'tel:' . preg_replace( '/[^0-9+]/', '', $phone );
 	}
 endif;
+
+if ( ! function_exists( 'ipi_theme_get_doctor_whatsapp_link' ) ) :
+	/**
+	 * Monta o link do WhatsApp com uma mensagem pré-preenchida pedindo
+	 * consulta com um médico específico — usado nos botões dos cards da
+	 * equipe (home e página Corpo Clínico). Centraliza a lógica pra não
+	 * duplicar a montagem da URL/mensagem em cada template.
+	 */
+	function ipi_theme_get_doctor_whatsapp_link( string $doctor_name ): string {
+		$whatsapp = get_theme_mod( 'ipi_theme_whatsapp_url', '' );
+
+		if ( ! $whatsapp ) {
+			return '';
+		}
+
+		$message = sprintf(
+			/* translators: %s: nome do médico (já inclui "Dr."/"Dra."). */
+			__( 'Olá! Gostaria de agendar uma consulta com %s.', 'ipi-theme' ),
+			$doctor_name
+		);
+
+		$separator = str_contains( $whatsapp, '?' ) ? '&' : '?';
+
+		return $whatsapp . $separator . 'text=' . rawurlencode( $message );
+	}
+endif;
+
+if ( ! function_exists( 'ipi_theme_get_icon' ) ) :
+	/**
+	 * Retorna o markup de um ícone SVG inline (24×24, `currentColor`) para
+	 * uso em links de contato/redes sociais — evita depender de imagens
+	 * genéricas ou de uma biblioteca de ícones externa. Ícones desenhados
+	 * como representações simplificadas de cada marca (formas básicas),
+	 * não uma reprodução pixel-a-pixel do logotipo oficial de terceiros.
+	 */
+	function ipi_theme_get_icon( string $name ): string {
+		$icons = array(
+			'whatsapp'  => '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C6.5 2 2 6.5 2 12c0 1.8.5 3.5 1.3 5L2 22l5.2-1.4c1.4.8 3.1 1.2 4.8 1.2 5.5 0 10-4.5 10-10S17.5 2 12 2Zm0 18.2c-1.6 0-3.1-.4-4.4-1.2l-.3-.2-3.1.8.8-3-.2-.3C4 14.9 3.6 13.5 3.6 12c0-4.6 3.8-8.4 8.4-8.4s8.4 3.8 8.4 8.4-3.8 8.2-8.4 8.2Zm4.6-6.1c-.3-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1-.2.3-.6.8-.8 1-.1.2-.3.2-.5.1-.3-.1-1.1-.4-2.1-1.3-.8-.7-1.3-1.5-1.5-1.8-.1-.3 0-.4.1-.5l.4-.5c.1-.1.2-.3.2-.4.1-.2 0-.3 0-.4-.1-.1-.6-1.4-.8-2-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.5.1-.7.3-.2.3-.9.9-.9 2.2s1 2.5 1.1 2.7c.1.2 2 3 4.7 4.2.7.3 1.2.5 1.6.6.7.2 1.3.2 1.8.1.5-.1 1.5-.6 1.8-1.2.2-.6.2-1.1.2-1.2 0-.2-.2-.2-.5-.4Z"/></svg>',
+			'facebook'  => '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M14 4h3a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-3v3h3.3a1 1 0 0 1 1 1.2l-.6 3A1 1 0 0 1 16.7 17H14v6a1 1 0 0 1-1 1h-3a1 1 0 0 1-1-1v-6H7a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h2V9a5 5 0 0 1 5-5Z"/></svg>',
+			'instagram' => '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17" cy="7" r="0.8" fill="currentColor" stroke="none"/></svg>',
+			'linkedin'  => '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="3" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="7.5" cy="8" r="1.3"/><path d="M6.7 10.8h1.6V17H6.7v-6.2Zm3.4 0h1.5v.9c.4-.6 1.1-1.1 2.1-1.1 1.6 0 2.6 1 2.6 3v3.4h-1.6v-3.1c0-1-.4-1.6-1.3-1.6-.9 0-1.4.6-1.4 1.6v3.1h-1.9v-6.2Z" stroke="none"/></svg>',
+			'youtube'   => '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="2.5" y="5.5" width="19" height="13" rx="4"/><path d="M10.5 9.3v5.4l4.8-2.7-4.8-2.7Z" fill="currentColor" stroke="none"/></svg>',
+		);
+
+		return $icons[ $name ] ?? '';
+	}
+endif;

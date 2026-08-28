@@ -31,11 +31,20 @@
 		menu.classList.add( 'menu' );
 	}
 
+	const masthead = document.getElementById( 'masthead' );
+
 	button.addEventListener( 'click', function () {
 		const isOpen = siteNavigation.classList.contains( 'is-open' );
 
 		siteNavigation.classList.toggle( 'is-open' );
 		button.setAttribute( 'aria-expanded', String( ! isOpen ) );
+
+		// Com o menu mobile aberto, o header precisa de fundo sólido mesmo
+		// no estado "transparente sobre o hero" da home — senão os itens
+		// do menu ficam flutuando ilegíveis por cima do conteúdo da página.
+		if ( masthead ) {
+			masthead.classList.toggle( 'is-menu-open', ! isOpen );
+		}
 	} );
 
 	// Fecha o menu mobile ao pressionar Escape.
@@ -43,6 +52,9 @@
 		if ( event.key === 'Escape' && siteNavigation.classList.contains( 'is-open' ) ) {
 			siteNavigation.classList.remove( 'is-open' );
 			button.setAttribute( 'aria-expanded', 'false' );
+			if ( masthead ) {
+				masthead.classList.remove( 'is-menu-open' );
+			}
 			button.focus();
 		}
 	} );
@@ -80,6 +92,9 @@
 			if ( window.innerWidth > 782 ) {
 				siteNavigation.classList.remove( 'is-open' );
 				button.setAttribute( 'aria-expanded', 'false' );
+				if ( masthead ) {
+					masthead.classList.remove( 'is-menu-open' );
+				}
 			}
 		}, 150 );
 	} );

@@ -26,8 +26,8 @@ get_header();
 $ipi_front_page = ( 'page' === get_option( 'show_on_front' ) ) ? get_queried_object() : null;
 $ipi_front_page = ( $ipi_front_page instanceof WP_Post ) ? $ipi_front_page : null;
 
-$ipi_hero_title   = __( 'Diagnóstico preciso e tratamento humanizado para doenças infecciosas', 'ipi-theme' );
-$ipi_hero_lede    = __( 'O IPI é referência em Recife no cuidado com doenças infecciosas — da consulta especializada ao acompanhamento contínuo, com uma equipe médica dedicada a te ouvir antes de tratar.', 'ipi-theme' );
+$ipi_hero_title   = __( 'Cuidado especializado em Infectologia', 'ipi-theme' );
+$ipi_hero_lede    = __( 'Atendimento médico baseado em conhecimento, prevenção e cuidado.', 'ipi-theme' );
 $ipi_hero_content = '';
 
 if ( $ipi_front_page ) {
@@ -78,34 +78,34 @@ $ipi_images_uri = get_template_directory_uri() . '/images/';
 
 $ipi_team = array(
 	array(
-		'name'  => 'Dr. Paulo Sérgio Ramos',
-		'crm'   => 'CRM-PE 11049',
-		'role'  => __( 'Infectologia', 'ipi-theme' ),
-		'photo' => $ipi_images_uri . 'paulo.jpeg',
-	),
-	array(
 		'name'  => 'Dra. Fabiana Gonzaga',
 		'crm'   => 'CRM-PE 16724 | RQE 2246',
-		'role'  => __( 'Infectologia', 'ipi-theme' ),
+		'role'  => array( __( 'Infectologia', 'ipi-theme' ) ),
 		'photo' => $ipi_images_uri . 'fabiana.jpeg',
-	),
-	array(
-		'name'  => 'Dra. Marcelia Soares',
-		'crm'   => 'CRM-PE 19196',
-		'role'  => __( 'Infectologia', 'ipi-theme' ),
-		'photo' => $ipi_images_uri . 'marcelia.jpeg',
 	),
 	array(
 		'name'  => 'Dr. Lucas Caheté',
 		'crm'   => 'CRM-PE 19711',
-		'role'  => __( 'Infectologia', 'ipi-theme' ),
+		'role'  => array( __( 'Infectologia', 'ipi-theme' ), __( 'Hepatologia', 'ipi-theme' ) ),
 		'photo' => $ipi_images_uri . 'lucas.jpeg',
+	),
+	array(
+		'name'  => 'Dra. Marcelia Soares',
+		'crm'   => 'CRM-PE 19196',
+		'role'  => array( __( 'Infectologia', 'ipi-theme' ) ),
+		'photo' => $ipi_images_uri . 'marcelia.jpeg',
 	),
 	array(
 		'name'  => 'Dra. Marta Iglis',
 		'crm'   => 'CRM-PE 17246',
-		'role'  => __( 'Infectologia', 'ipi-theme' ),
+		'role'  => array( __( 'Infectologia', 'ipi-theme' ) ),
 		'photo' => $ipi_images_uri . 'marta.jpeg',
+	),
+	array(
+		'name'  => 'Dr. Paulo Sérgio Ramos',
+		'crm'   => 'CRM-PE 11049',
+		'role'  => array( __( 'Infectologia', 'ipi-theme' ), __( 'Clínica Médica', 'ipi-theme' ) ),
+		'photo' => $ipi_images_uri . 'paulo.jpeg',
 	),
 );
 
@@ -176,23 +176,26 @@ $ipi_specialties = array(
 
 				<div class="hero-actions">
 					<?php if ( $ipi_whatsapp ) : ?>
-						<a class="btn btn-primary" href="<?php echo esc_url( $ipi_whatsapp ); ?>" rel="noopener noreferrer" target="_blank">
-							<?php esc_html_e( '📲 Agende sua consulta', 'ipi-theme' ); ?>
+						<a class="btn btn-primary btn-cta" href="<?php echo esc_url( $ipi_whatsapp ); ?>" rel="noopener noreferrer" target="_blank">
+							<?php esc_html_e( 'Agendar uma consulta', 'ipi-theme' ); ?>
+							<span class="btn-cta-arrow" aria-hidden="true">→</span>
 						</a>
 					<?php elseif ( $ipi_phone ) : ?>
-						<a class="btn btn-primary" href="<?php echo esc_attr( ipi_theme_get_tel_href( $ipi_phone ) ); ?>">
+						<a class="btn btn-primary btn-cta" href="<?php echo esc_attr( ipi_theme_get_tel_href( $ipi_phone ) ); ?>">
 							<?php esc_html_e( 'Ligar agora', 'ipi-theme' ); ?>
+							<span class="btn-cta-arrow" aria-hidden="true">→</span>
 						</a>
 					<?php else : ?>
-						<a class="btn btn-primary" href="#especialidades">
+						<a class="btn btn-primary btn-cta" href="#especialidades">
 							<?php esc_html_e( 'Conheça nossas especialidades', 'ipi-theme' ); ?>
+							<span class="btn-cta-arrow" aria-hidden="true">→</span>
 						</a>
 					<?php endif; ?>
-					<?php $ipi_about_page = get_page_by_path( 'sobre' ); ?>
-					<a class="btn btn-secondary" href="<?php echo esc_url( $ipi_about_page ? get_permalink( $ipi_about_page ) : home_url( '/' ) ); ?>">
-						<?php esc_html_e( 'Sobre o Instituto', 'ipi-theme' ); ?>
-					</a>
 				</div>
+
+				<p class="hero-value-line">
+					<?php esc_html_e( 'Cuidado · Prevenção · Confiança', 'ipi-theme' ); ?>
+				</p>
 			</div>
 
 			<div class="hero-media" aria-hidden="true">
@@ -244,9 +247,9 @@ $ipi_specialties = array(
 				<h3><?php esc_html_e( 'Nossa equipe médica', 'ipi-theme' ); ?></h3>
 				<p><?php esc_html_e( 'Cada consulta no IPI é conduzida por médicos especialistas, com registro ativo no Conselho Regional de Medicina de Pernambuco.', 'ipi-theme' ); ?></p>
 			</header>
-
 			<div class="grid">
 				<?php foreach ( $ipi_team as $ipi_doctor ) : ?>
+					<?php $ipi_doctor_wa = ipi_theme_get_doctor_whatsapp_link( $ipi_doctor['name'] ); ?>
 					<article class="team-card">
 						<img
 							class="team-photo"
@@ -257,8 +260,17 @@ $ipi_specialties = array(
 						/>
 						<div class="team-body">
 							<h4 class="team-name"><?php echo esc_html( $ipi_doctor['name'] ); ?></h4>
-							<span class="badge"><?php echo esc_html( $ipi_doctor['role'] ); ?></span>
+							<div class="team-roles">
+								<?php foreach ( $ipi_doctor['role'] as $ipi_role ) : ?>
+									<span class="badge"><?php echo esc_html( $ipi_role ); ?></span>
+								<?php endforeach; ?>
+							</div>
 							<p class="team-crm"><?php echo esc_html( $ipi_doctor['crm'] ); ?></p>
+							<?php if ( $ipi_doctor_wa ) : ?>
+								<a class="btn btn-secondary team-cta" href="<?php echo esc_url( $ipi_doctor_wa ); ?>" rel="noopener noreferrer" target="_blank">
+									<?php esc_html_e( 'Agendar consulta', 'ipi-theme' ); ?>
+								</a>
+							<?php endif; ?>
 						</div>
 					</article>
 				<?php endforeach; ?>

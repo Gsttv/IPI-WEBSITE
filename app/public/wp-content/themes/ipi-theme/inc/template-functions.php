@@ -24,6 +24,13 @@ function ipi_theme_body_classes( array $classes ): array {
 		$classes[] = 'singular';
 	}
 
+	// Header flutua transparente sobre o hero da home até o usuário rolar
+	// a página (ver style.css, seção 6, e o toggle de scroll já existente
+	// em assets/js/main.js — reaproveitado, sem listener novo).
+	if ( is_front_page() ) {
+		$classes[] = 'header-overlay-hero';
+	}
+
 	return $classes;
 }
 add_filter( 'body_class', 'ipi_theme_body_classes' );
