@@ -28,7 +28,7 @@ function ipi_theme_customize_register( WP_Customize_Manager $wp_customize ): voi
 	$fields = array(
 		'ipi_theme_about_text'     => array(
 			'label'    => __( 'Frase institucional (rodapé, ao lado da logo)', 'ipi-theme' ),
-			'default'  => __( 'Cuidado especializado, do diagnóstico ao acompanhamento — sempre perto de você.', 'ipi-theme' ),
+			'default'  => __( 'Cuidado especializado, do diagnóstico ao acompanhamento.', 'ipi-theme' ),
 			'sanitize' => 'sanitize_text_field',
 			'type'     => 'text',
 		),

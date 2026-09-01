@@ -66,13 +66,48 @@ add_filter( 'excerpt_more', 'ipi_theme_excerpt_more' );
  * evitando uma navegação vazia para o visitante.
  */
 function ipi_theme_fallback_menu(): void {
-	echo '<ul id="primary-menu" class="menu">';
-	wp_list_pages(
+	// Menu padrão do IPI enquanto o cliente não cria um Menu de verdade em
+	// Aparência → Menus (nesse caso, has_nav_menu( 'primary' ) passa a ser
+	// true e este fallback nem roda). Os itens de âncora (#sobre etc.) só
+	// fazem sentido a partir da home — por isso levam para home_url( '/' )
+	// . '#âncora' mesmo quando a visita já está em outra página.
+	$ipi_team_page = get_page_by_path( 'nossa-equipe' );
+
+	$items = array(
 		array(
-			'title_li' => '',
-			'depth'    => 1,
-		)
+			'label' => __( 'Home', 'ipi-theme' ),
+			'url'   => home_url( '/' ),
+		),
+		array(
+			'label' => __( 'Conheça o IPI', 'ipi-theme' ),
+			'url'   => home_url( '/#sobre' ),
+		),
+		array(
+			'label' => __( 'Áreas de Atuação', 'ipi-theme' ),
+			'url'   => home_url( '/#especialidades' ),
+		),
+		array(
+			'label' => __( 'Nossa Equipe', 'ipi-theme' ),
+			'url'   => $ipi_team_page ? get_permalink( $ipi_team_page ) : home_url( '/#sobre' ),
+		),
+		array(
+			'label' => __( 'Dúvidas', 'ipi-theme' ),
+			'url'   => home_url( '/#faq' ),
+		),
+		array(
+			'label' => __( 'Contato', 'ipi-theme' ),
+			'url'   => home_url( '/#localizacao' ),
+		),
 	);
+
+	echo '<ul id="primary-menu" class="menu">';
+	foreach ( $items as $ipi_item ) {
+		printf(
+			'<li><a href="%1$s">%2$s</a></li>',
+			esc_url( $ipi_item['url'] ),
+			esc_html( $ipi_item['label'] )
+		);
+	}
 	echo '</ul>';
 }
 

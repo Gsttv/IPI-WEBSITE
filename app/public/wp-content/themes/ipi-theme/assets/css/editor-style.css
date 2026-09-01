@@ -10,7 +10,7 @@
 @font-face {
 	font-family: "General Sans";
 	src: url("../fonts/GeneralSans-Light.woff2") format("woff2");
-	font-weight: 300;
+	font-weight: 300 500;
 	font-style: normal;
 	font-display: swap;
 }
@@ -18,7 +18,7 @@
 @font-face {
 	font-family: "General Sans";
 	src: url("../fonts/GeneralSans-Bold.woff2") format("woff2");
-	font-weight: 700;
+	font-weight: 600 800;
 	font-style: normal;
 	font-display: swap;
 }

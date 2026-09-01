@@ -17,12 +17,13 @@
 				{ "slug": "primary", "name": "Verde institucional", "color": "#667058" },
 				{ "slug": "primary-dark", "name": "Verde institucional (escuro)", "color": "#49513d" },
 				{ "slug": "primary-light", "name": "Verde institucional (claro)", "color": "#eef2e9" },
-				{ "slug": "secondary", "name": "Terracota", "color": "#b6673a" },
-				{ "slug": "accent", "name": "Destaque", "color": "#f5a623" },
+				{ "slug": "cream", "name": "Creme", "color": "#e5dccc" },
+				{ "slug": "ink", "name": "Marrom escuro", "color": "#473f30" },
+				{ "slug": "accent", "name": "Destaque (aviso/foco)", "color": "#f5a623" },
 				{ "slug": "text", "name": "Texto", "color": "#242720" },
 				{ "slug": "text-muted", "name": "Texto secundário", "color": "#606657" },
 				{ "slug": "background", "name": "Fundo", "color": "#ffffff" },
-				{ "slug": "background-alt", "name": "Fundo alternativo", "color": "#f5f7f3" },
+				{ "slug": "background-alt", "name": "Fundo alternativo", "color": "#f6f3ef" },
 				{ "slug": "danger", "name": "Alerta/Emergência", "color": "#b3261e" }
 			]
 		},

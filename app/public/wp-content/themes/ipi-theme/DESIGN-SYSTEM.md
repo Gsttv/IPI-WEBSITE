@@ -13,7 +13,7 @@ Referência: clínicas premium e hospitais modernos (linha Sírio-Libanês/Einst
 
 Esta especificação **substitui e formaliza** os tokens ad hoc já usados no tema (`style.css`/`theme.json`); os valores de marca já em produção foram preservados como âncora das escalas abaixo para não exigir retrabalho.
 
-> **Atualização (identidade visual final):** a versão anterior deste documento usava um azul-petróleo (`#0A6E79`) como cor de marca provisória, definida antes da identidade visual oficial. Com a aprovação do logo (`images/ipi-logo.jpg`, a partir de `images/Versão 03.jpg`) e da proposta em `images/Identidade Visual_Instituto.pdf` — verde-sálvia orgânico, remetendo à rede de médicos conectados e ao elemento "vírus" estilizado —, as escalas 1 e 2 abaixo foram recalculadas a partir do verde real da logo (`#667058`, extraído por amostragem de pixel do arquivo final) e de um terracota complementar. Os princípios de design (seção "Princípios de design") continuam válidos — só a cor de marca mudou de família (petróleo → verde-sálvia). Personalidade de marca definida na proposta: **Colaborativo, Preciso, Moderno, Humano, Científico**; pilares: Ciência, Colaboração, Precisão, Cuidado.
+> **Atualização (kit de identidade visual completo):** a versão anterior deste documento usava um azul-petróleo (`#0A6E79`) como cor de marca provisória, definida antes da identidade visual oficial existir. Depois, uma revisão intermediária trocou para o verde real do logo mas ainda inventou uma "terracota" secundária sem base em nenhum material do cliente. Esta versão usa o **kit de identidade completo** entregue pelo cliente (`wp-admin/images/IPI • IDV/`: 4 versões do logo em SVG/PNG/JPG/PDF, aplicações em peças reais — cartão de visita, adesivo de porta, assinatura de e-mail, wallpaper —, e as fontes oficiais da marca). Três achados corrigem o restante do documento: **(1)** a marca é um sistema verde + creme + marrom escuro, sem segunda cor saturada (seção 2); **(2)** a tipografia oficial é General Sans, não Manrope/Inter (seção 5); **(3)** o próprio logo é o símbolo "IPI" estilizado como uma rede orgânica de formas conectadas, remetendo à colônia/vírus e ao coletivo médico. Personalidade de marca (do PDF de proposta): **Colaborativo, Preciso, Moderno, Humano, Científico**; pilares: Ciência, Colaboração, Precisão, Cuidado.
 
 ---
 
@@ -39,24 +39,18 @@ Verde-sálvia/oliva, extraído da logo oficial do IPI. Cor de marca, usada em he
 
 ---
 
-## 2. Paleta secundária — "Terracota"
+## 2. Par neutro de marca — "Creme & Marrom escuro"
 
-Terracota/argila quente, complementar ao verde-sálvia principal — mesma lógica de paleta "sálvia + terracota" comum em saúde moderna/humanizada. Uso decorativo/marca — badges, ícones de "eyebrow", botões secundários preenchidos, nunca para comunicar estado (isso é papel da cor de Sucesso, seção 4).
+O kit de identidade oficial (pasta `IPI • IDV`) não define uma segunda cor saturada — a marca é deliberadamente um sistema de **dois neutros + uma tinta**, não "primária + destaque colorido". As quatro versões oficiais do logo (`Marca/SVG|PNG|JPG/Versão 01–04`) e as peças aplicadas (cartão de visita, adesivo de porta, assinatura de e-mail) confirmam o padrão: verde sobre branco/creme, **ou** creme sobre marrom escuro. Nunca um terceiro tom entra na mistura.
 
 | Token | Hex | Uso |
 |---|---|---|
-| secondary-50 | `#FAF3EF` | Fundos sutis |
-| secondary-100 | `#F4E5DC` | Badges, tags |
-| secondary-200 | `#EEDACE` | Bordas decorativas |
-| secondary-400 | `#CD9270` | Ilustrações, gráficos, hover claro |
-| secondary-500 | `#C47A4F` | Uso decorativo médio |
-| **secondary-600** | **`#B6673A`** | **Base** — "eyebrows", botões secundários preenchidos |
-| secondary-700 | `#95532D` | Hover/active |
-| secondary-800 | `#764123` | Texto sobre secondary-100 |
+| **cream** | **`#E5DCCC`** | Creme da marca — painéis/destaques decorativos, versão do logo para fundo escuro. **Não usar como cor de texto sobre branco** (contraste insuficiente) |
+| cream-tint | `#F6F3EF` | Diluição quase branca do creme — fundo de seções alternadas (`.section--alt`), bordas sutis |
+| **ink** | **`#473F30`** | Marrom escuro da marca — fundo de painéis "assinatura" (rodapé, faixa de CTA final), como nas peças aplicadas |
+| ink-hover | `#5B513E` | Hover/active sobre fundo ink |
 
-> **Por que abandonar o segundo verde do sistema anterior?** Com a marca em si já sendo verde, manter "Verde Vitalidade" como secundária criava dois verdes competindo — a terracota dá contraste de fato e mantém a mesma separação conceitual: Secundária é **identidade de marca**, Sucesso (seção 4) é **feedback de sistema**.
-
-> **Por que dois verdes no sistema (Secundária e Sucesso)?** São conceitos diferentes: Secundária é **identidade de marca** (aparece mesmo quando nada "deu certo"); Sucesso é **feedback de sistema** (só aparece após uma ação positiva). Manter separados evita que o usuário confunda "cor da marca" com "confirmação".
+> **Por que abandonar a paleta "Terracota" de uma revisão anterior deste documento?** Aquela paleta foi uma decisão de design **inventada** antes de o kit de identidade completo (pasta `wp-admin/images/IPI • IDV`) ter sido revisado — não existe terracota em nenhuma das 4 versões de logo, no PDF de proposta ou nas peças aplicadas (cartões, adesivos, assinatura de e-mail) fornecidas pelo cliente. O par creme/marrom escuro descrito acima é o que a marca *de fato* usa.
 
 ---
 
@@ -131,7 +125,7 @@ Vermelho — validação de formulário, cancelamentos, e a faixa de emergência
 
 ## 5. Fontes
 
-Definição final de identidade (substitui a recomendação anterior de Manrope + Inter): **General Sans**, em duas variações apenas, de propósito — um sistema tipográfico de 2 pesos, não multi-peso.
+Definição final de identidade (substitui a recomendação anterior de Manrope + Inter, escrita antes de o kit `IPI • IDV/Fontes/` ter sido revisado): **General Sans**, em duas variações apenas, de propósito — um sistema tipográfico de 2 pesos, não multi-peso. É a fonte que o próprio logo já usa.
 
 | Papel | Fonte | Peso | Fallback / entrega |
 |---|---|---|---|
@@ -139,7 +133,9 @@ Definição final de identidade (substitui a recomendação anterior de Manrope 
 | **Texto corrido / UI** (parágrafos, botões, formulários, navegação) | **General Sans Light** | 300 | Mesma fonte, mesma licença; itálico (Light Italic / Bold Italic) incluído para `<em>`/citações |
 | **Fallback do sistema** (enquanto a fonte carrega / falha de rede) | `-apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif` | — | `font-display: swap` — texto visível imediatamente no fallback, troca suave quando a General Sans carrega. Preload das duas variações no `<head>` (ver `inc/performance.php`) evita atraso perceptível |
 
-**Só dois pesos, de propósito:** qualquer elemento que peça um peso intermediário (ex.: nav/badges historicamente em 600) recai automaticamente no peso disponível mais próximo — o navegador nunca sintetiza um "bold falso", só escolhe entre os dois reais já carregados. Mantém o arquivo de fontes pequeno (~94KB para os 4 arquivos) e a decisão de marca explícita: Light informa, Bold decide.
+**Só dois pesos, de propósito:** qualquer elemento que peça um peso intermediário (ex.: nav/badges historicamente em 600) recai automaticamente no peso disponível mais próximo — o navegador nunca sintetiza um "bold falso", só escolhe entre os dois reais já carregados (`@font-face` declara faixas `300–500` e `600–800`, ver `style.css` seção 0). Mantém o arquivo de fontes pequeno (~94KB para os 4 arquivos WOFF2) e a decisão de marca explícita: Light informa, Bold decide.
+
+**Por que não serifada:** hospitais tradicionais usam serifa para transmitir autoridade; hospitais **modernos** premium (a referência pedida) majoritariamente usam sans-serif humanista — a sensação de "premium" vem da tipografia + espaçamento + cor, não de uma serifa.
 
 ---
 
@@ -255,7 +251,7 @@ Elevação padrão: `shadow-xs` em repouso → `shadow-sm`/`shadow-md` no hover 
 | Select | Mesmo tratamento do texto + ícone chevron neutral-600 |
 | Checkbox | 20×20px, radius-sm, borda 2px neutral-300; marcado: fundo primary-600, ícone check branco |
 | Radio | 20×20px, radius-full, mesma lógica de cor do checkbox |
-| Label | Acima do campo, Inter SemiBold, Body Small, cor neutral-800; asterisco de obrigatório em error-600 |
+| Label | Acima do campo, General Sans Bold, Body Small, cor neutral-800; asterisco de obrigatório em error-600 |
 | Texto de ajuda | Abaixo do campo, Caption, neutral-600 |
 | **Estado de erro** | Borda error-600, texto de ajuda em error-700, ícone de alerta à direita |
 | **Estado validado/sucesso** | Borda success-600, ícone de check à direita — útil em validação de CPF/carteirinha de convênio |
@@ -297,4 +293,4 @@ Mobile-first.
 - Os hex marcados em **negrito/base** em cada escala já existem em produção (`style.css`/`theme.json`) — a migração é uma **extensão**, não uma substituição de marca.
 - `theme.json` precisará ganhar as escalas completas (hoje só tem os tons "base"); lembrar de manter `style.css` e `theme.json` sincronizados manualmente (débito técnico já documentado no `readme.txt`).
 - Cores semânticas (Sucesso/Aviso/Erro) ainda não existem como custom properties — hoje só há `--color-danger`. Precisarão ser adicionadas por completo.
-- ✅ Fontes: General Sans (Light para texto, Bold para títulos) já implementada — WOFF2 auto-hospedada em `assets/fonts/`, `@font-face` em `style.css` e `assets/css/editor-style.css`, preload das duas variações via `inc/performance.php`.
+- ✅ Fontes: General Sans (Light para texto, Bold para títulos) já implementada, substituindo a recomendação anterior de Manrope/Inter — WOFF2 auto-hospedada em `assets/fonts/`, `@font-face` em `style.css` (seção 0) e `assets/css/editor-style.css`, preload das duas variações via `inc/performance.php`.

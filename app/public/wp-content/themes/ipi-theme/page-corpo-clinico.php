@@ -35,31 +35,36 @@ $ipi_team = array(
 		'name'  => 'Dra. Fabiana Gonzaga',
 		'crm'   => 'CRM-PE 16724 | RQE 2246',
 		'role'  => array( __( 'Infectologia', 'ipi-theme' ) ),
-		'photo' => $ipi_images_uri . 'fabiana.jpeg',
+		'photo' => $ipi_images_uri . 'doc-fabiana.jpg',
+		'education' => array(),
 	),
 	array(
 		'name'  => 'Dr. Lucas Caheté',
 		'crm'   => 'CRM-PE 19711',
 		'role'  => array( __( 'Infectologia', 'ipi-theme' ), __( 'Hepatologia', 'ipi-theme' ) ),
-		'photo' => $ipi_images_uri . 'lucas.jpeg',
+		'photo' => $ipi_images_uri . 'doc-lucas.jpg',
+		'education' => array(),
 	),
 	array(
 		'name'  => 'Dra. Marcelia Soares',
 		'crm'   => 'CRM-PE 19196',
 		'role'  => array( __( 'Infectologia', 'ipi-theme' ) ),
-		'photo' => $ipi_images_uri . 'marcelia.jpeg',
+		'photo' => $ipi_images_uri . 'doc-marcelia.jpg',
+		'education' => array(),
 	),
 	array(
 		'name'  => 'Dra. Marta Iglis',
 		'crm'   => 'CRM-PE 17246',
 		'role'  => array( __( 'Infectologia', 'ipi-theme' ) ),
-		'photo' => $ipi_images_uri . 'marta.jpeg',
+		'photo' => $ipi_images_uri . 'doc-marta.jpg',
+		'education' => array(),
 	),
 	array(
 		'name'  => 'Dr. Paulo Sérgio Ramos',
 		'crm'   => 'CRM-PE 11049',
 		'role'  => array( __( 'Infectologia', 'ipi-theme' ), __( 'Clínica Médica', 'ipi-theme' ) ),
-		'photo' => $ipi_images_uri . 'paulo.jpeg',
+		'photo' => $ipi_images_uri . 'doc-paulo.jpg',
+		'education' => array(),
 	),
 );
 ?>
@@ -76,7 +81,7 @@ $ipi_team = array(
 			</p>
 		</header>
 
-		<div class="grid">
+		<div class="team-grid">
 			<?php foreach ( $ipi_team as $ipi_doctor ) : ?>
 				<?php $ipi_doctor_wa = ipi_theme_get_doctor_whatsapp_link( $ipi_doctor['name'] ); ?>
 				<article class="team-card">
@@ -99,6 +104,16 @@ $ipi_team = array(
 							<a class="btn btn-secondary team-cta" href="<?php echo esc_url( $ipi_doctor_wa ); ?>" rel="noopener noreferrer" target="_blank">
 								<?php esc_html_e( 'Agendar consulta', 'ipi-theme' ); ?>
 							</a>
+						<?php endif; ?>
+						<?php if ( ! empty( $ipi_doctor['education'] ) ) : ?>
+							<details class="team-education">
+								<summary class="team-education-summary"><?php esc_html_e( 'Formação e especializações', 'ipi-theme' ); ?></summary>
+								<ul class="team-education-list">
+									<?php foreach ( $ipi_doctor['education'] as $ipi_education_item ) : ?>
+										<li><?php echo esc_html( $ipi_education_item ); ?></li>
+									<?php endforeach; ?>
+								</ul>
+							</details>
 						<?php endif; ?>
 					</div>
 				</article>

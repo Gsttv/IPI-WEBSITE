@@ -26,13 +26,25 @@ get_header();
 $ipi_front_page = ( 'page' === get_option( 'show_on_front' ) ) ? get_queried_object() : null;
 $ipi_front_page = ( $ipi_front_page instanceof WP_Post ) ? $ipi_front_page : null;
 
-$ipi_hero_title   = __( 'Cuidado especializado em Infectologia', 'ipi-theme' );
-$ipi_hero_lede    = __( 'Atendimento médico baseado em conhecimento, prevenção e cuidado.', 'ipi-theme' );
-$ipi_hero_content = '';
+// Título do hero como uma frase só, de propósito — nada de duas frases
+// cortadas em blocos separados. O contraste de peso/cor entre as duas
+// metades (peso cheio e tinta escura na primeira, peso leve e verde da
+// marca na segunda) continua, só que fluindo inline na mesma sentença,
+// não empilhado em linhas forçadas. Só é possível dividir assim porque o
+// texto é fixo; se o cliente configurar uma Página estática como home
+// (com título próprio), a marcação abaixo cai para texto simples — não
+// faz sentido dividir automaticamente um título arbitrário do wp-admin.
+$ipi_hero_title_lead  = __( 'Diagnóstico preciso,', 'ipi-theme' );
+$ipi_hero_title_rest  = __( 'cuidado humanizado.', 'ipi-theme' );
+$ipi_hero_title       = $ipi_hero_title_lead . ' ' . $ipi_hero_title_rest;
+$ipi_hero_title_split = true;
+$ipi_hero_lede         = __( 'Da consulta especializada ao acompanhamento contínuo — uma equipe dedicada a te ouvir antes de tratar.', 'ipi-theme' );
+$ipi_hero_content      = '';
 
 if ( $ipi_front_page ) {
 	if ( $ipi_front_page->post_title ) {
-		$ipi_hero_title = get_the_title( $ipi_front_page );
+		$ipi_hero_title       = get_the_title( $ipi_front_page );
+		$ipi_hero_title_split = false;
 	}
 	if ( has_excerpt( $ipi_front_page ) ) {
 		$ipi_hero_lede = get_the_excerpt( $ipi_front_page );
@@ -81,31 +93,36 @@ $ipi_team = array(
 		'name'  => 'Dra. Fabiana Gonzaga',
 		'crm'   => 'CRM-PE 16724 | RQE 2246',
 		'role'  => array( __( 'Infectologia', 'ipi-theme' ) ),
-		'photo' => $ipi_images_uri . 'fabiana.jpeg',
+		'photo' => $ipi_images_uri . 'doc-fabiana.jpg',
+		'education' => array(),
 	),
 	array(
 		'name'  => 'Dr. Lucas Caheté',
 		'crm'   => 'CRM-PE 19711',
 		'role'  => array( __( 'Infectologia', 'ipi-theme' ), __( 'Hepatologia', 'ipi-theme' ) ),
-		'photo' => $ipi_images_uri . 'lucas.jpeg',
+		'photo' => $ipi_images_uri . 'doc-lucas.jpg',
+		'education' => array(),
 	),
 	array(
 		'name'  => 'Dra. Marcelia Soares',
 		'crm'   => 'CRM-PE 19196',
 		'role'  => array( __( 'Infectologia', 'ipi-theme' ) ),
-		'photo' => $ipi_images_uri . 'marcelia.jpeg',
+		'photo' => $ipi_images_uri . 'doc-marcelia.jpg',
+		'education' => array(),
 	),
 	array(
 		'name'  => 'Dra. Marta Iglis',
 		'crm'   => 'CRM-PE 17246',
 		'role'  => array( __( 'Infectologia', 'ipi-theme' ) ),
-		'photo' => $ipi_images_uri . 'marta.jpeg',
+		'photo' => $ipi_images_uri . 'doc-marta.jpg',
+		'education' => array(),
 	),
 	array(
 		'name'  => 'Dr. Paulo Sérgio Ramos',
 		'crm'   => 'CRM-PE 11049',
 		'role'  => array( __( 'Infectologia', 'ipi-theme' ), __( 'Clínica Médica', 'ipi-theme' ) ),
-		'photo' => $ipi_images_uri . 'paulo.jpeg',
+		'photo' => $ipi_images_uri . 'doc-paulo.jpg',
+		'education' => array(),
 	),
 );
 
@@ -163,58 +180,96 @@ $ipi_specialties = array(
 		'text'  => __( 'Consultas de retorno e monitoramento de tratamentos de longo prazo, para que você nunca esteja sozinho durante o cuidado com a sua saúde.', 'ipi-theme' ),
 	),
 );
+
+// Doenças e condições específicas tratadas pela equipe — complementa os
+// cards de especialidade acima (que são frentes de atendimento, não uma
+// lista de diagnósticos) com os termos que o paciente de fato procura
+// (ex.: "infectologista sífilis Recife"). Agrupado por afinidade clínica;
+// cada grupo aparece como um bloco de "chips" na seção de especialidades.
+$ipi_conditions = array(
+	array(
+		'group' => __( 'ISTs, HIV e saúde sexual', 'ipi-theme' ),
+		'items' => array(
+			__( 'HIV/Aids', 'ipi-theme' ),
+			__( 'Sífilis', 'ipi-theme' ),
+			__( 'HPV', 'ipi-theme' ),
+			__( 'Herpes genital', 'ipi-theme' ),
+			__( 'Candidíase', 'ipi-theme' ),
+			__( 'PrEP (profilaxia pré-exposição)', 'ipi-theme' ),
+			__( 'Avaliação após exposição sexual de risco', 'ipi-theme' ),
+		),
+	),
+	array(
+		'group' => __( 'Infecções e doenças transmissíveis', 'ipi-theme' ),
+		'items' => array(
+			__( 'Infecção hospitalar', 'ipi-theme' ),
+			__( 'Infecções bacterianas', 'ipi-theme' ),
+			__( 'COVID-19', 'ipi-theme' ),
+			__( 'Hepatites virais', 'ipi-theme' ),
+			__( 'Toxoplasmose', 'ipi-theme' ),
+			__( 'Esquistossomose', 'ipi-theme' ),
+			__( 'Doenças parasitárias', 'ipi-theme' ),
+		),
+	),
+	array(
+		'group' => __( 'Outras condições acompanhadas', 'ipi-theme' ),
+		'items' => array(
+			__( 'Herpes zoster', 'ipi-theme' ),
+			__( 'Infecções urinárias de repetição', 'ipi-theme' ),
+			__( 'Dermatopatias infecciosas', 'ipi-theme' ),
+			__( 'Investigação de febre prolongada', 'ipi-theme' ),
+		),
+	),
+);
 ?>
 
 <main id="primary" class="site-main">
 
 	<section class="hero">
-		<div class="container hero-inner">
+		<div class="hero-inner">
 			<div class="hero-content">
-				<span class="eyebrow"><?php esc_html_e( 'Instituto Pernambucano de Infectologia', 'ipi-theme' ); ?></span>
-				<h1><?php echo esc_html( $ipi_hero_title ); ?></h1>
-				<p class="lede"><?php echo esc_html( $ipi_hero_lede ); ?></p>
-
-				<div class="hero-actions">
-					<?php if ( $ipi_whatsapp ) : ?>
-						<a class="btn btn-primary btn-cta" href="<?php echo esc_url( $ipi_whatsapp ); ?>" rel="noopener noreferrer" target="_blank">
-							<?php esc_html_e( 'Agendar uma consulta', 'ipi-theme' ); ?>
-							<span class="btn-cta-arrow" aria-hidden="true">→</span>
-						</a>
-					<?php elseif ( $ipi_phone ) : ?>
-						<a class="btn btn-primary btn-cta" href="<?php echo esc_attr( ipi_theme_get_tel_href( $ipi_phone ) ); ?>">
-							<?php esc_html_e( 'Ligar agora', 'ipi-theme' ); ?>
-							<span class="btn-cta-arrow" aria-hidden="true">→</span>
-						</a>
+				<?php
+				// Sem eyebrow (logo + nome do Instituto) e sem botão de CTA
+				// aqui — os dois já estão no header, que fica fixo/flutuante
+				// por cima do hero (ver body.header-overlay-hero). Repetir
+				// os dois de novo a poucos pixels de distância é redundância
+				// visual, não reforço de marca.
+				?>
+				<h1>
+					<?php if ( $ipi_hero_title_split ) : ?>
+						<span class="hero-title-lead"><?php echo esc_html( $ipi_hero_title_lead ); ?></span>
+						<span class="hero-title-accent"><?php echo esc_html( $ipi_hero_title_rest ); ?></span>
 					<?php else : ?>
-						<a class="btn btn-primary btn-cta" href="#especialidades">
-							<?php esc_html_e( 'Conheça nossas especialidades', 'ipi-theme' ); ?>
-							<span class="btn-cta-arrow" aria-hidden="true">→</span>
-						</a>
+						<?php echo esc_html( $ipi_hero_title ); ?>
 					<?php endif; ?>
-				</div>
-
-				<p class="hero-value-line">
-					<?php esc_html_e( 'Cuidado · Prevenção · Confiança', 'ipi-theme' ); ?>
-				</p>
+				</h1>
+				<p class="lede"><?php echo esc_html( $ipi_hero_lede ); ?></p>
 			</div>
 
-			<div class="hero-media" aria-hidden="true">
-				<?php if ( $ipi_front_page && has_post_thumbnail( $ipi_front_page ) ) : ?>
-					<?php
-					// get_the_post_thumbnail() recebe o post explicitamente, em vez de
-					// depender do ponteiro global $post — mais seguro fora de um loop.
-					echo get_the_post_thumbnail(
-						$ipi_front_page,
-						'ipi-hero',
-						array(
-							'fetchpriority' => 'high',
-							'loading'       => 'eager',
-						)
-					);
-					?>
-				<?php else : ?>
-					<span style="font-size: 4rem;">🏥</span>
-				<?php endif; ?>
+			<div class="hero-media-wrap">
+				<div class="hero-media">
+					<?php if ( $ipi_front_page && has_post_thumbnail( $ipi_front_page ) ) : ?>
+						<?php
+						// get_the_post_thumbnail() recebe o post explicitamente, em vez de
+						// depender do ponteiro global $post — mais seguro fora de um loop.
+						echo get_the_post_thumbnail(
+							$ipi_front_page,
+							'ipi-hero',
+							array(
+								'fetchpriority' => 'high',
+								'loading'       => 'eager',
+							)
+						);
+						?>
+					<?php else : ?>
+						<img
+							src="<?php echo esc_url( get_template_directory_uri() . '/images/ipi-equipe-hero.jpg' ); ?>"
+							alt="<?php esc_attr_e( 'Equipe médica do IPI', 'ipi-theme' ); ?>"
+							fetchpriority="high"
+							loading="eager"
+						/>
+					<?php endif; ?>
+				</div>
 			</div>
 		</div>
 	</section>
@@ -229,7 +284,7 @@ $ipi_specialties = array(
 	</div>
 
 	<section id="sobre" class="section">
-		<div class="container container--narrow entry-content">
+		<div class="container entry-content">
 			<header class="section-header">
 				<span class="eyebrow"><?php esc_html_e( 'Quem somos', 'ipi-theme' ); ?></span>
 				<h2><?php esc_html_e( 'Cuidado especializado, do diagnóstico ao acompanhamento', 'ipi-theme' ); ?></h2>
@@ -247,7 +302,7 @@ $ipi_specialties = array(
 				<h3><?php esc_html_e( 'Nossa equipe médica', 'ipi-theme' ); ?></h3>
 				<p><?php esc_html_e( 'Cada consulta no IPI é conduzida por médicos especialistas, com registro ativo no Conselho Regional de Medicina de Pernambuco.', 'ipi-theme' ); ?></p>
 			</header>
-			<div class="grid">
+			<div class="team-grid">
 				<?php foreach ( $ipi_team as $ipi_doctor ) : ?>
 					<?php $ipi_doctor_wa = ipi_theme_get_doctor_whatsapp_link( $ipi_doctor['name'] ); ?>
 					<article class="team-card">
@@ -271,12 +326,22 @@ $ipi_specialties = array(
 									<?php esc_html_e( 'Agendar consulta', 'ipi-theme' ); ?>
 								</a>
 							<?php endif; ?>
+							<?php if ( ! empty( $ipi_doctor['education'] ) ) : ?>
+								<details class="team-education">
+									<summary class="team-education-summary"><?php esc_html_e( 'Formação e especializações', 'ipi-theme' ); ?></summary>
+									<ul class="team-education-list">
+										<?php foreach ( $ipi_doctor['education'] as $ipi_education_item ) : ?>
+											<li><?php echo esc_html( $ipi_education_item ); ?></li>
+										<?php endforeach; ?>
+									</ul>
+								</details>
+							<?php endif; ?>
 						</div>
 					</article>
 				<?php endforeach; ?>
 			</div>
 
-			<?php $ipi_team_page = get_page_by_path( 'corpo-clinico' ); ?>
+			<?php $ipi_team_page = get_page_by_path( 'nossa-equipe' ); ?>
 			<?php if ( $ipi_team_page ) : ?>
 				<p>
 					<a class="btn btn-secondary" href="<?php echo esc_url( get_permalink( $ipi_team_page ) ); ?>">
@@ -296,27 +361,59 @@ $ipi_specialties = array(
 			</header>
 
 			<div class="grid">
-				<?php foreach ( $ipi_specialties as $ipi_item ) : ?>
-					<div class="card">
+				<?php
+				foreach ( $ipi_specialties as $ipi_item ) :
+					// Cada especialidade vira uma página própria no wp-admin quando
+					// o cliente criar uma Página com slug igual ao título (ex.: título
+					// "HIV/Aids e ISTs" → slug "hiv-aids-e-ists", gerado pelo próprio
+					// WordPress a partir do título digitado). Até lá, o card continua
+					// funcionando como um resumo estático — nada quebra.
+					$ipi_specialty_page = get_page_by_path( sanitize_title( $ipi_item['title'] ) );
+					$ipi_card_tag       = $ipi_specialty_page ? 'a' : 'div';
+					?>
+					<<?php echo esc_html( $ipi_card_tag ); ?>
+						class="card card--link"
+						<?php echo $ipi_specialty_page ? 'href="' . esc_url( get_permalink( $ipi_specialty_page ) ) . '"' : ''; ?>
+					>
 						<div class="card-icon" aria-hidden="true"><?php echo esc_html( $ipi_item['icon'] ); ?></div>
 						<h3><?php echo esc_html( $ipi_item['title'] ); ?></h3>
 						<p><?php echo esc_html( $ipi_item['text'] ); ?></p>
+						<?php if ( $ipi_specialty_page ) : ?>
+							<span class="card-link-affordance" aria-hidden="true"><?php esc_html_e( 'Saiba mais', 'ipi-theme' ); ?> →</span>
+						<?php endif; ?>
+					</<?php echo esc_html( $ipi_card_tag ); ?>>
+				<?php endforeach; ?>
+			</div>
+
+			<div class="conditions-list">
+				<h3 class="conditions-list-title"><?php esc_html_e( 'Algumas doenças e condições que acompanhamos', 'ipi-theme' ); ?></h3>
+				<?php foreach ( $ipi_conditions as $ipi_condition_group ) : ?>
+					<div class="conditions-group">
+						<span class="conditions-group-label"><?php echo esc_html( $ipi_condition_group['group'] ); ?></span>
+						<ul class="conditions-chips">
+							<?php foreach ( $ipi_condition_group['items'] as $ipi_condition_item ) : ?>
+								<li><?php echo esc_html( $ipi_condition_item ); ?></li>
+							<?php endforeach; ?>
+						</ul>
 					</div>
 				<?php endforeach; ?>
+				<p class="conditions-list-note">
+					<?php esc_html_e( 'Lista não exaustiva — fale com a gente pelo WhatsApp para confirmar se tratamos a sua condição.', 'ipi-theme' ); ?>
+				</p>
 			</div>
 		</div>
 	</section>
 
 	<?php if ( $ipi_hero_content ) : ?>
 		<section class="section section--alt">
-			<div class="container container--narrow entry-content">
+			<div class="container entry-content">
 				<?php echo wp_kses_post( $ipi_hero_content ); ?>
 			</div>
 		</section>
 	<?php endif; ?>
 
 	<section id="faq" class="section">
-		<div class="container container--narrow">
+		<div class="container">
 			<header class="section-header">
 				<span class="eyebrow"><?php esc_html_e( 'Perguntas que ouvimos bastante', 'ipi-theme' ); ?></span>
 				<h2><?php esc_html_e( 'Ficou com alguma dúvida?', 'ipi-theme' ); ?></h2>
@@ -402,7 +499,10 @@ $ipi_specialties = array(
 
 	<section id="localizacao" class="section">
 		<div class="container">
-			<h2 class="localizacao-title"><?php esc_html_e( 'Contato e Localização', 'ipi-theme' ); ?></h2>
+			<header class="section-header">
+				<span class="eyebrow"><?php esc_html_e( 'Fale com a gente', 'ipi-theme' ); ?></span>
+				<h2><?php esc_html_e( 'Contato e Localização', 'ipi-theme' ); ?></h2>
+			</header>
 
 			<div class="map-section-grid">
 					<ul class="contact-info">
@@ -479,9 +579,6 @@ $ipi_specialties = array(
 			</div>
 		</div>
 	</section>
-
-	</section>
-
 
 </main><!-- #primary -->
 

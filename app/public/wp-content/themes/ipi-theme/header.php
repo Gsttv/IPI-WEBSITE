@@ -68,10 +68,6 @@ $ipi_whatsapp        = get_theme_mod( 'ipi_theme_whatsapp_url', '' );
 					}
 				endif;
 				?>
-			<span class="header-trust-badge">
-				<span class="header-trust-badge-dot" aria-hidden="true"></span>
-				<?php esc_html_e( 'Cuidado · Prevenção · Confiança', 'ipi-theme' ); ?>
-			</span>
 			</div><!-- .site-branding -->
 
 			<button
@@ -104,7 +100,7 @@ $ipi_whatsapp        = get_theme_mod( 'ipi_theme_whatsapp_url', '' );
 				<div class="header-cta">
 					<?php if ( $ipi_whatsapp ) : ?>
 						<a class="btn btn-primary btn-cta" href="<?php echo esc_url( $ipi_whatsapp ); ?>" rel="noopener noreferrer" target="_blank">
-							<?php esc_html_e( 'Agendar uma consulta', 'ipi-theme' ); ?>
+							<?php esc_html_e( 'Agendar consulta', 'ipi-theme' ); ?>
 							<span class="btn-cta-arrow" aria-hidden="true">→</span>
 						</a>
 					<?php elseif ( $ipi_phone ) : ?>

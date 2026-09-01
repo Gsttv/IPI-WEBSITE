@@ -36,14 +36,18 @@ IPI Theme is distributed under the terms of the GNU GPL v2 or later.
    ============================================================= */
 
 /* -------------------------------------------------------------
-   Fontes — General Sans, auto-hospedada (WOFF2), sem requisição
-   externa. Light para texto corrido, Bold para títulos — as duas
-   únicas variações carregadas de propósito (ver DESIGN-SYSTEM.md).
+   0. Fontes da marca — General Sans, auto-hospedada em WOFF2 (menor que
+   o .otf original do kit de identidade), zero requisição externa. Só
+   existem dois pesos estáticos (Bold e Light) mais suas itálicas; em vez
+   de deixar o navegador "sintetizar" negrito a partir do Light (borrado),
+   a fonte Bold cobre toda a faixa 600–800 e a Light cobre 300–500 — o CSS
+   do tema só usa font-weight 400/600/700, então cada peso sempre resolve
+   para um arquivo real.
    ------------------------------------------------------------- */
 @font-face {
 	font-family: "General Sans";
 	src: url("assets/fonts/GeneralSans-Light.woff2") format("woff2");
-	font-weight: 300;
+	font-weight: 300 500;
 	font-style: normal;
 	font-display: swap;
 }
@@ -51,7 +55,7 @@ IPI Theme is distributed under the terms of the GNU GPL v2 or later.
 @font-face {
 	font-family: "General Sans";
 	src: url("assets/fonts/GeneralSans-LightItalic.woff2") format("woff2");
-	font-weight: 300;
+	font-weight: 300 500;
 	font-style: italic;
 	font-display: swap;
 }
@@ -59,7 +63,7 @@ IPI Theme is distributed under the terms of the GNU GPL v2 or later.
 @font-face {
 	font-family: "General Sans";
 	src: url("assets/fonts/GeneralSans-Bold.woff2") format("woff2");
-	font-weight: 700;
+	font-weight: 600 800;
 	font-style: normal;
 	font-display: swap;
 }
@@ -67,7 +71,7 @@ IPI Theme is distributed under the terms of the GNU GPL v2 or later.
 @font-face {
 	font-family: "General Sans";
 	src: url("assets/fonts/GeneralSans-BoldItalic.woff2") format("woff2");
-	font-weight: 700;
+	font-weight: 600 800;
 	font-style: italic;
 	font-display: swap;
 }
@@ -154,19 +158,25 @@ a:focus {
    theme.json — não existe build automatizado sincronizando os dois.
    ------------------------------------------------------------- */
 :root {
-	/* Cores institucionais — extraídas da identidade visual oficial do IPI
-	   (logo "Versão 03.jpg", verde-sálvia/oliva). Substitui a paleta azul-
-	   petróleo provisória usada antes da identidade final ser aprovada. */
-	--color-primary: #667058;        /* verde-sálvia principal, da marca */
+	/* Cores institucionais — extraídas do kit de identidade visual completo
+	   do IPI (pasta "IPI • IDV": logo em SVG/PNG, PDF de proposta). É um
+	   sistema de três tons, não "primária + destaque colorido": verde-sálvia
+	   (tinta principal), creme (neutro claro/aplicação sobre fundo escuro) e
+	   marrom escuro (tinta escura/fundo "assinatura", como visto nas peças
+	   aplicadas — cartão de visita, adesivo de porta etc.). Nada de cor
+	   quente saturada tipo terracota: não existe no kit aprovado. */
+	--color-primary: #667058;        /* verde-sálvia — tinta principal da marca */
 	--color-primary-dark: #49513d;
 	--color-primary-light: #eef2e9;
-	--color-secondary: #b6673a;      /* terracota quente, complementa o verde da marca */
-	--color-accent: #f5a623;         /* alerta/destaque pontual (ex: campanhas) */
+	--color-cream: #e5dccc;          /* creme da marca — painéis/destaques decorativos, não usar como texto sobre branco */
+	--color-ink: #473f30;            /* marrom escuro da marca — fundo de seções "assinatura" (rodapé, faixas de destaque) */
+	--color-ink-hover: #5b513e;
+	--color-accent: #f5a623;         /* âmbar semântico: aviso/foco de teclado — não é cor de marca */
 	--color-text: #242720;
 	--color-text-muted: #606657;
 	--color-bg: #ffffff;
-	--color-bg-alt: #f5f7f3;
-	--color-border: #e1e5dc;
+	--color-bg-alt: #f6f3ef;
+	--color-border: #e7e2da;
 	--color-danger: #b3261e;
 	--color-focus: #f5a623;
 
@@ -213,14 +223,19 @@ h4,
 h5,
 h6 {
 	font-family: var(--font-heading);
-	color: var(--color-text);
+	/* --color-ink (marrom escuro da marca), não --color-text (neutro de UI
+	   genérico) — títulos usam o mesmo tom escuro do rodapé/CTA, pra ficar
+	   mais quente/coerente com a marca do que um preto qualquer. */
+	color: var(--color-ink);
 	line-height: 1.2;
 	font-weight: 700;
 	margin: 0 0 var(--space-sm);
+	text-wrap: balance;
 }
 
 h1 {
 	font-size: var(--font-size-3xl);
+	line-height: 1.08;
 }
 
 h2 {
@@ -325,7 +340,7 @@ small {
 
 .section-header .eyebrow {
 	display: inline-block;
-	color: var(--color-secondary);
+	color: var(--color-primary);
 	font-weight: 700;
 	letter-spacing: 0.06em;
 	text-transform: uppercase;
@@ -386,36 +401,6 @@ small {
 	width: auto;
 }
 
-/* Selo institucional discreto perto da logo — some antes do menu mobile
-   pra não apertar o header em telas menores; é um complemento visual,
-   não informação essencial de navegação. */
-.header-trust-badge {
-	display: none;
-	align-items: center;
-	gap: var(--space-3xs);
-	padding-left: var(--space-md);
-	margin-left: var(--space-2xs);
-	border-left: 1px solid var(--color-border);
-	color: var(--color-text-muted);
-	font-size: var(--font-size-sm);
-	font-weight: 700;
-	white-space: nowrap;
-}
-
-.header-trust-badge-dot {
-	width: 6px;
-	height: 6px;
-	border-radius: 999px;
-	background: var(--color-primary);
-	flex: none;
-}
-
-@media (min-width: 1560px) {
-	.header-trust-badge {
-		display: inline-flex;
-	}
-}
-
 /* Reset de heading: na home, o wrapper do logo é um <h1> por SEO/
    acessibilidade, mas não deve herdar o tamanho de fonte de título. */
 .site-logo-heading {
@@ -430,7 +415,7 @@ small {
 }
 
 .site-title a {
-	color: var(--color-text);
+	color: var(--color-primary-dark);
 	text-decoration: none;
 }
 
@@ -449,7 +434,7 @@ small {
 	border-radius: var(--radius-sm);
 	padding: 0.5em 0.9em;
 	font: inherit;
-	color: var(--color-text);
+	color: var(--color-primary-dark);
 	cursor: pointer;
 }
 
@@ -495,7 +480,7 @@ small {
 	position: relative;
 	display: inline-block;
 	padding: 0.5em 0;
-	color: var(--color-text);
+	color: var(--color-primary-dark);
 	text-decoration: none;
 	font-weight: 600;
 	white-space: nowrap;
@@ -674,6 +659,35 @@ body.header-overlay-hero .site-header.is-menu-open .header-inner {
 	transform: translateY(-2px);
 }
 
+/* Variante clicável do card: quando a especialidade já tem uma Página
+   própria no wp-admin, o card inteiro vira link — ver front-page.php. */
+.card--link {
+	display: block;
+	color: inherit;
+	text-decoration: none;
+	border-color: transparent;
+}
+
+.card--link:hover,
+.card--link:focus {
+	border-color: var(--color-primary);
+	color: inherit;
+}
+
+.card-link-affordance {
+	display: inline-block;
+	margin-top: var(--space-sm);
+	color: var(--color-primary);
+	font-weight: 600;
+	font-size: var(--font-size-sm);
+	transition: transform 0.15s ease;
+}
+
+.card--link:hover .card-link-affordance,
+.card--link:focus .card-link-affordance {
+	transform: translateX(4px);
+}
+
 .card-icon {
 	width: 48px;
 	height: 48px;
@@ -687,10 +701,72 @@ body.header-overlay-hero .site-header.is-menu-open .header-inner {
 	font-size: 1.5rem;
 }
 
+/* Lista de doenças/condições tratadas — complementa os cards de
+   especialidade (que são frentes de atendimento, não diagnósticos) com
+   termos específicos que o paciente busca. Chips com contorno, não
+   preenchidos — são ~25 itens; preenchidos (como .badge) pesariam demais
+   visualmente nessa quantidade. */
+.conditions-list {
+	margin-top: var(--space-xl);
+	padding-top: var(--space-xl);
+	border-top: 1px solid var(--color-border);
+}
+
+.conditions-list-title {
+	font-size: var(--font-size-lg);
+	margin-bottom: var(--space-md);
+}
+
+.conditions-group {
+	margin-bottom: var(--space-md);
+}
+
+.conditions-group-label {
+	display: block;
+	font-weight: 700;
+	font-size: var(--font-size-sm);
+	color: var(--color-primary-dark);
+	margin-bottom: var(--space-2xs);
+}
+
+.conditions-chips {
+	list-style: none;
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--space-2xs);
+	margin: 0;
+	padding: 0;
+}
+
+.conditions-chips li {
+	padding: 0.35em 0.85em;
+	border: 1px solid var(--color-border);
+	border-radius: 999px;
+	font-size: var(--font-size-sm);
+	color: var(--color-text-muted);
+}
+
+.conditions-list-note {
+	margin: var(--space-md) 0 0;
+	font-size: var(--font-size-sm);
+	color: var(--color-text-muted);
+	font-style: italic;
+}
+
 .grid {
 	display: grid;
 	gap: var(--space-md);
 	grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+}
+
+/* Grid só da equipe médica — cards bem maiores que o padrão genérico
+   (.grid, usado em especialidades/posts), porque a foto do médico precisa
+   ter presença. minmax mais largo = menos colunas por linha em telas
+   médias, de propósito. */
+.team-grid {
+	display: grid;
+	gap: var(--space-lg);
+	grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
 }
 
 .badge {
@@ -729,12 +805,12 @@ body.header-overlay-hero .site-header.is-menu-open .header-inner {
 }
 
 .team-body {
-	padding: var(--space-md);
+	padding: var(--space-lg) var(--space-md) var(--space-md);
 }
 
 .team-name {
 	margin: 0 0 var(--space-3xs);
-	font-size: var(--font-size-lg);
+	font-size: var(--font-size-xl);
 }
 
 .team-crm {
@@ -756,39 +832,161 @@ body.header-overlay-hero .site-header.is-menu-open .header-inner {
 	padding: 0.6em 1.1em;
 }
 
+/* Dropdown de formação acadêmica/especializações — mesmo padrão nativo
+   <details>/<summary> do FAQ (seção 8), sem JS. Fica recolhido por
+   padrão pra não pesar o card; só aparece quando o médico tem pelo menos
+   um item cadastrado no array 'education' (ver front-page.php/page-
+   corpo-clinico.php) — nada de mostrar um dropdown vazio. */
+.team-education {
+	margin-top: var(--space-sm);
+	border-top: 1px solid var(--color-border);
+	padding-top: var(--space-sm);
+}
+
+.team-education-summary {
+	cursor: pointer;
+	list-style: none;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: var(--space-2xs);
+	font-weight: 700;
+	font-size: var(--font-size-sm);
+	color: var(--color-primary-dark);
+}
+
+.team-education-summary::-webkit-details-marker {
+	display: none;
+}
+
+.team-education-summary::after {
+	content: "+";
+	flex-shrink: 0;
+	font-size: 1.2em;
+	color: var(--color-primary);
+	transition: transform 0.15s ease;
+}
+
+.team-education[open] .team-education-summary::after {
+	transform: rotate(45deg);
+}
+
+.team-education-list {
+	list-style: none;
+	margin: var(--space-2xs) 0 0;
+	padding: 0;
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-3xs);
+	font-size: var(--font-size-sm);
+	color: var(--color-text-muted);
+}
+
+.team-education-list li {
+	padding-left: var(--space-sm);
+	position: relative;
+}
+
+.team-education-list li::before {
+	content: "";
+	position: absolute;
+	left: 0;
+	top: 0.6em;
+	width: 5px;
+	height: 5px;
+	border-radius: 999px;
+	background: var(--color-primary);
+}
+
 /* -------------------------------------------------------------
    8. Front page — seções institucionais
    ------------------------------------------------------------- */
+/* A seção em si não tem padding-block: a altura do hero passa a ser
+   ditada só pela coluna de texto (.hero-content, com seu próprio padding
+   interno) — a foto acompanha essa altura via align-items:stretch no
+   .hero-inner, "grudada" do topo ao fim da seção sem margem nenhuma
+   (nem a que o header flutuante exigiria — isso vira padding-top só do
+   texto, não da seção toda). É o que deixa a foto "até lá em cima". */
 .hero {
+	position: relative;
 	background: linear-gradient(160deg, var(--color-primary-light) 0%, var(--color-bg) 60%);
+	/* .hero-inner não tem mais .container — a foto "vaza" até a borda
+	   direita da viewport de propósito (ver .hero-media-wrap). overflow
+	   aqui é só uma trava de segurança contra scroll horizontal, caso
+	   algum arredondamento de sub-pixel empurre 1px além de 100vw. */
+	overflow-x: clip;
+}
+
+/* Compensa o header fixo/flutuante da home (ver seção 6): texto E foto
+   começam logo abaixo do header, não por baixo dele — o padding é da
+   seção inteira, não só do texto, senão a foto ficaria "vazando" por
+   trás do header. */
+body.header-overlay-hero .hero {
+	padding-top: var(--header-height);
+}
+
+/* Mini-hero das páginas internas (ex.: uma especialidade) — mesma família
+   visual do hero da home, só que compacto, para dar identidade própria a
+   cada página sem repetir o hero grande da home. */
+.specialty-hero {
+	background: linear-gradient(160deg, var(--color-primary-light) 0%, var(--color-bg) 70%);
+	padding-block: var(--space-xl);
+	margin-bottom: var(--space-lg);
+}
+
+.specialty-hero h1 {
+	margin-bottom: var(--space-2xs);
+}
+
+.specialty-hero .lede {
+	font-size: var(--font-size-lg);
+	color: var(--color-text-muted);
+	margin-bottom: 0;
+}
+
+.cta-banner--inline {
+	margin-block: var(--space-lg);
+}
+
+/* Hero em "full bleed": a coluna de texto respeita a mesma margem
+   esquerda do resto do site (replicando o inset do .container via
+   calc(), já que esta div não usa mais a classe .container), mas a
+   coluna da foto não tem limite à direita — estica até a borda da
+   viewport. align-items:stretch (não center): a coluna da foto some
+   qualquer altura própria (sem aspect-ratio) e copia a altura da coluna
+   de texto — ver .hero-media abaixo. */
+.hero-inner {
+	display: grid;
+	grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.4fr);
+	gap: var(--space-xl);
+	align-items: stretch;
+}
+
+.hero-content {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	padding-left: max(var(--space-md), calc((100vw - var(--container-max)) / 2 + var(--space-md)));
 	padding-block: var(--space-2xl);
 }
 
-/* Compensa o header fixo/flutuante da home (ver seção 6) para o título do
-   hero nunca ficar embaixo da logo/navegação, mesmo com o header
-   transparente sobreposto ao degradê. */
-body.header-overlay-hero .hero {
-	padding-top: calc(var(--header-height) + var(--space-xl));
-}
-
-.hero-value-line {
-	margin-top: var(--space-md);
-	color: var(--color-text-muted);
-	font-size: var(--font-size-sm);
-	font-weight: 700;
-	letter-spacing: 0.08em;
-	text-transform: uppercase;
-}
-
-.hero-inner {
-	display: grid;
-	grid-template-columns: 1.1fr 0.9fr;
-	gap: var(--space-xl);
-	align-items: center;
-}
-
+/* Tamanho próprio pro H1 do hero — um pouco mais contido que o --font-
+   size-3xl padrão (usado em H1 de página interna) e com letter-spacing
+   negativo: mais precisão/"tecnológico", menos blocão de texto. */
 .hero-content h1 {
+	font-size: clamp(2rem, 1.55rem + 2.1vw, 3.25rem);
+	letter-spacing: -0.02em;
 	margin-bottom: var(--space-sm);
+}
+
+/* Título como frase única, com contraste de peso/cor dentro dela — não
+   duas frases cortadas em blocos: "Diagnóstico preciso," cheio e escuro
+   carrega o rigor técnico, "cuidado humanizado." em Light e verde da
+   marca carrega o lado humano. Inline mesmo (sem display:block): o
+   navegador quebra a linha onde couber, como uma frase normal. */
+.hero-title-accent {
+	color: var(--color-primary);
+	font-weight: 300;
 }
 
 .hero-content .lede {
@@ -804,16 +1002,52 @@ body.header-overlay-hero .hero {
 	gap: var(--space-sm);
 }
 
+/* Moldura em camadas: um bloco creme levemente deslocado atrás da foto —
+   o mesmo tipo de detalhe editorial visto nas peças de apresentação da
+   marca (cartão de visita com duas camadas). position:relative aqui,
+   z-index na foto, para o ::before "vazar" pelos cantos sem recortar. */
+.hero-media-wrap {
+	position: relative;
+}
+
+/* Halo orgânico e desfocado atrás da foto — não uma moldura de cantos
+   retos, um respiro de cor que "vaza" ao redor do card, como uma mancha
+   de luz. Três manchas radiais em tons da marca (verde clarinho + creme),
+   desfocadas com blur() em vez de recortadas — é o que dá o efeito
+   pintura/orgânico em vez de "card com sombra deslocada". */
+.hero-media-wrap::before {
+	content: "";
+	position: absolute;
+	inset: -14% -16%;
+	background:
+		radial-gradient(circle at 22% 18%, var(--color-primary-light) 0%, transparent 55%),
+		radial-gradient(circle at 82% 78%, var(--color-cream) 0%, transparent 50%),
+		radial-gradient(circle at 50% 100%, var(--color-primary-light) 0%, transparent 45%);
+	filter: blur(36px);
+	z-index: 0;
+}
+
 .hero-media {
-	border-radius: var(--radius-lg);
+	position: relative;
+	z-index: 1;
+	/* Sem aspect-ratio: a altura vem 100% do stretch do grid (acompanha
+	   .hero-content — ver .hero-inner). Só os cantos da esquerda
+	   arredondados — em cima, embaixo e à direita a foto encosta nas
+	   bordas da seção/viewport (bleed); um canto ali ficaria "flutuando"
+	   cortado. */
+	width: 100%;
+	height: 100%;
+	border-radius: var(--radius-lg) 0 0 var(--radius-lg);
 	overflow: hidden;
-	box-shadow: var(--shadow-md);
-	aspect-ratio: 4 / 3;
+	box-shadow: var(--shadow-lg, var(--shadow-md));
 	background: var(--color-primary-light);
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	color: var(--color-primary);
+}
+
+.hero-media img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	object-position: top center;
 }
 
 .trust-strip {
@@ -829,9 +1063,15 @@ body.header-overlay-hero .hero {
 	font-weight: 600;
 }
 
+/* Painel "assinatura" em marrom escuro + creme — mesma dupla de cor do
+   rodapé e das peças aplicadas da marca (cartão de visita, adesivo de
+   porta), reservada para o momento de maior intenção de conversão da
+   página. O verde já aparece em botões/links o tempo todo; aqui a
+   variação de tom cria uma pausa visual antes do rodapé. */
 .cta-banner {
-	background: var(--color-primary);
-	color: #fff;
+	position: relative;
+	background: var(--color-ink);
+	color: var(--color-cream);
 	border-radius: var(--radius-lg);
 	padding: var(--space-xl);
 	display: flex;
@@ -839,22 +1079,39 @@ body.header-overlay-hero .hero {
 	gap: var(--space-md);
 	align-items: center;
 	justify-content: space-between;
+	overflow: hidden;
+}
+
+.cta-banner::after {
+	content: "";
+	position: absolute;
+	inset: 0;
+	background-image: url("images/ipi-icone-creme.svg");
+	background-repeat: no-repeat;
+	background-position: right -60px bottom -60px;
+	background-size: 320px;
+	opacity: 0.5;
+	pointer-events: none;
+}
+
+.cta-banner > * {
+	position: relative;
 }
 
 .cta-banner h2,
 .cta-banner p {
-	color: #fff;
+	color: var(--color-cream);
 	margin-bottom: 0;
 }
 
 .cta-banner .btn-secondary {
-	background: #fff;
-	color: var(--color-primary);
-	border-color: #fff;
+	background: var(--color-cream);
+	color: var(--color-ink);
+	border-color: var(--color-cream);
 }
 
 .cta-banner .btn-secondary:hover {
-	background: var(--color-primary-light);
+	background: #fff;
 }
 
 /* Mapa incorporado — Google Maps sem chave de API, via URL de busca. */
@@ -874,10 +1131,6 @@ body.header-overlay-hero .hero {
 	width: 100%;
 	height: 100%;
 	border: 0;
-}
-
-.localizacao-title {
-	margin-bottom: var(--space-lg);
 }
 
 /* Layout de "Contato e Localização": mapa estica pra acompanhar a altura
@@ -978,6 +1231,10 @@ body.header-overlay-hero .hero {
 	display: flex;
 	flex-direction: column;
 	gap: var(--space-sm);
+	/* Mesma largura de leitura do .section-header acima (sem herdar isso
+	   do container pai, que fica largo/consistente com as outras seções
+	   da página — só o conteúdo de texto que se estreita). */
+	max-width: var(--container-narrow);
 }
 
 .faq-item {
@@ -1243,11 +1500,11 @@ body.header-overlay-hero .hero {
    12. Footer
    ------------------------------------------------------------- */
 .site-footer {
-	/* Antes usava #0c2b30 (azul-petróleo) — resíduo da paleta anterior ao
-	   rebranding pro verde-sálvia. Agora usa os tokens atuais, coerente
-	   com o resto do site. */
-	background: var(--color-text);
-	color: var(--color-primary-light);
+	/* Painel "assinatura" em marrom escuro + texto creme — a mesma dupla
+	   usada nas peças aplicadas da marca (cartão de visita, adesivo de
+	   porta), não um tom qualquer escurecido do verde. */
+	background: var(--color-ink);
+	color: var(--color-cream);
 	margin-top: var(--space-2xl);
 }
 
@@ -1263,8 +1520,9 @@ body.header-overlay-hero .hero {
 	max-height: 48px;
 	width: auto;
 	/* A logo tem o desenho em tom escuro (verde-sálvia) — sobre o rodapé
-	   escuro, invertemos a luminosidade pra ela continuar legível, sem
-	   precisar de um segundo arquivo de logo "negativo". */
+	   escuro (marrom, ver --color-ink acima), invertemos a luminosidade
+	   pra ela continuar legível, sem precisar de um segundo arquivo de
+	   logo "negativo". */
 	filter: brightness(0) invert(1);
 	opacity: 0.92;
 }
@@ -1272,7 +1530,7 @@ body.header-overlay-hero .hero {
 .footer-about-text {
 	margin: 0;
 	max-width: 46ch;
-	color: var(--color-primary-light);
+	color: var(--color-cream);
 	opacity: 0.85;
 }
 
@@ -1288,7 +1546,7 @@ body.header-overlay-hero .hero {
 }
 
 .site-footer a {
-	color: #cfe3e5;
+	color: var(--color-cream);
 }
 
 .site-footer a:hover,
@@ -1304,14 +1562,6 @@ body.header-overlay-hero .hero {
 	gap: var(--space-sm);
 	justify-content: space-between;
 	font-size: var(--font-size-sm);
-}
-
-.footer-legal {
-	width: 100%;
-	margin: 0;
-	color: rgba(255, 255, 255, 0.65);
-	font-size: var(--font-size-sm);
-	order: 10;
 }
 
 .social-links {
@@ -1548,7 +1798,7 @@ select:focus {
 		border: 1px solid var(--color-border);
 		border-radius: var(--radius-sm);
 		cursor: pointer;
-		color: var(--color-text);
+		color: var(--color-primary-dark);
 	}
 
 	.submenu-toggle::before {
@@ -1563,10 +1813,26 @@ select:focus {
 
 	.hero-inner {
 		grid-template-columns: 1fr;
+		/* Abaixo de 782px o hero vira 1 coluna só — o "bleed"/stretch da
+		   foto até a borda e a altura de 100% só fazem sentido no layout
+		   de 2 colunas. Aqui a seção volta a se comportar como um
+		   .container normal, com a foto no tamanho dela mesma. */
+		padding-inline: var(--space-md);
+	}
+
+	.hero-content {
+		padding-left: 0;
+		padding-block: var(--space-lg);
+	}
+
+	.hero-media-wrap {
+		order: -1;
 	}
 
 	.hero-media {
-		order: -1;
+		height: auto;
+		aspect-ratio: 6 / 5;
+		border-radius: var(--radius-lg);
 	}
 
 	.content-area-with-sidebar {
