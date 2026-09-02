@@ -105,9 +105,28 @@ html {
 	}
 }
 
+/* Fundo da página inteira: UM sistema de gradiente só, no body — não um
+   gradiente próprio no hero mais um fundo separado no resto da página.
+   A faixa do topo (1º layer, 900px, "top") é o mesmo wash verde-sálvia
+   que dava identidade ao hero; as manchas radiais (demais layers) seguem
+   por baixo dela até o fim do documento. Como é tudo a mesma imagem de
+   fundo, .hero e .specialty-hero não têm mais "background" próprio —
+   ficam transparentes e deixam este gradiente único aparecer por trás,
+   sem costura entre seção e página. Opacidades baixas de propósito: é
+   textura ambiente, não pode competir com o conteúdo nem reduzir
+   contraste de texto. */
 body {
 	margin: 0;
-	background-color: var(--color-bg);
+	background-color: var(--color-canvas);
+	background-repeat: no-repeat;
+	background-position: top center, 0 0, 0 0, 0 0, 0 0;
+	background-size: 100% 900px, auto, auto, auto, auto;
+	background-image:
+		linear-gradient(160deg, var(--color-primary-light) 0%, transparent 100%),
+		radial-gradient(circle at 8% -6%, rgba(102, 112, 88, 0.08) 0%, transparent 42%),
+		radial-gradient(circle at 100% 18%, rgba(229, 220, 204, 0.55) 0%, transparent 46%),
+		radial-gradient(circle at 10% 55%, rgba(229, 220, 204, 0.35) 0%, transparent 40%),
+		radial-gradient(circle at 96% 96%, rgba(102, 112, 88, 0.06) 0%, transparent 40%);
 	color: var(--color-text);
 	font-family: var(--font-body);
 	font-weight: 300;
@@ -176,6 +195,13 @@ a:focus {
 	--color-text-muted: #606657;
 	--color-bg: #ffffff;
 	--color-bg-alt: #f6f3ef;
+	/* Base do "canvas" da página (body) — ver seção 1. Separado de
+	   --color-bg (branco puro, usado nas superfícies: cards, header,
+	   botões) de propósito, senão card e página ficam achatados, sem
+	   contraste entre si. O hero termina nesta mesma cor (ver .hero
+	   e .specialty-hero) pra não criar um corte visível entre o fim
+	   do hero e o início do canvas normal da página. */
+	--color-canvas: #fbfaf6;
 	--color-border: #e7e2da;
 	--color-danger: #b3261e;
 	--color-focus: #f5a623;
@@ -650,7 +676,6 @@ body.header-overlay-hero .site-header.is-menu-open .header-inner {
 	border: 1px solid var(--color-border);
 	border-radius: var(--radius-md);
 	padding: var(--space-md);
-	height: 100%;
 	transition: box-shadow 0.15s ease, transform 0.15s ease;
 }
 
@@ -701,60 +726,39 @@ body.header-overlay-hero .site-header.is-menu-open .header-inner {
 	font-size: 1.5rem;
 }
 
-/* Lista de doenças/condições tratadas — complementa os cards de
-   especialidade (que são frentes de atendimento, não diagnósticos) com
-   termos específicos que o paciente busca. Chips com contorno, não
-   preenchidos — são ~25 itens; preenchidos (como .badge) pesariam demais
-   visualmente nessa quantidade. */
-.conditions-list {
-	margin-top: var(--space-xl);
-	padding-top: var(--space-xl);
-	border-top: 1px solid var(--color-border);
-}
-
-.conditions-list-title {
-	font-size: var(--font-size-lg);
-	margin-bottom: var(--space-md);
-}
-
-.conditions-group {
-	margin-bottom: var(--space-md);
-}
-
-.conditions-group-label {
-	display: block;
-	font-weight: 700;
-	font-size: var(--font-size-sm);
-	color: var(--color-primary-dark);
-	margin-bottom: var(--space-2xs);
-}
-
-.conditions-chips {
+/* Diagnósticos específicos dentro do próprio card de especialidade — os
+   termos que o paciente de fato busca (ex.: "infectologista sífilis
+   Recife"), como chips discretos logo abaixo do texto do card. Só existe
+   nos cards com a chave 'conditions' (ver front-page.php) — cada doença
+   aparece em um único card, nunca repetida em outro lugar da seção.
+   Contorno, não preenchido (como .badge): são vários itens por card;
+   preenchido pesaria demais visualmente nessa quantidade. */
+.card-conditions {
 	list-style: none;
 	display: flex;
 	flex-wrap: wrap;
 	gap: var(--space-2xs);
-	margin: 0;
-	padding: 0;
+	margin: var(--space-sm) 0 0;
+	padding: var(--space-sm) 0 0;
+	border-top: 1px solid var(--color-border);
 }
 
-.conditions-chips li {
-	padding: 0.35em 0.85em;
+.card-conditions li {
+	padding: 0.3em 0.75em;
 	border: 1px solid var(--color-border);
 	border-radius: 999px;
 	font-size: var(--font-size-sm);
 	color: var(--color-text-muted);
 }
 
-.conditions-list-note {
-	margin: var(--space-md) 0 0;
-	font-size: var(--font-size-sm);
-	color: var(--color-text-muted);
-	font-style: italic;
-}
-
+/* align-items: start (não o stretch padrão do grid): os cards de
+   especialidade têm quantidades de texto e de chips bem diferentes entre
+   si — com stretch, um card curto era esticado pra igualar a altura do
+   vizinho mais alto na mesma linha, sobrando um vão vazio enorme embaixo
+   do texto. Cada card agora fica só do tamanho do seu próprio conteúdo. */
 .grid {
 	display: grid;
+	align-items: start;
 	gap: var(--space-md);
 	grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
 }
@@ -909,7 +913,10 @@ body.header-overlay-hero .site-header.is-menu-open .header-inner {
    texto, não da seção toda). É o que deixa a foto "até lá em cima". */
 .hero {
 	position: relative;
-	background: linear-gradient(160deg, var(--color-primary-light) 0%, var(--color-bg) 60%);
+	/* Sem background próprio: o wash verde do topo já vem do gradiente
+	   único definido no body (ver seção 1) — o hero fica transparente e
+	   deixa ele aparecer por trás, sem duplicar o efeito nem criar uma
+	   segunda "costura" de cor pra manter sincronizada com a de baixo. */
 	/* .hero-inner não tem mais .container — a foto "vaza" até a borda
 	   direita da viewport de propósito (ver .hero-media-wrap). overflow
 	   aqui é só uma trava de segurança contra scroll horizontal, caso
@@ -920,16 +927,18 @@ body.header-overlay-hero .site-header.is-menu-open .header-inner {
 /* Compensa o header fixo/flutuante da home (ver seção 6): texto E foto
    começam logo abaixo do header, não por baixo dele — o padding é da
    seção inteira, não só do texto, senão a foto ficaria "vazando" por
-   trás do header. */
+   trás do header. Um respiro extra (--space-sm) além da altura do
+   header, pra foto não ficar colada nele. */
 body.header-overlay-hero .hero {
-	padding-top: var(--header-height);
+	padding-top: calc(var(--header-height) + var(--space-sm));
 }
 
 /* Mini-hero das páginas internas (ex.: uma especialidade) — mesma família
    visual do hero da home, só que compacto, para dar identidade própria a
-   cada página sem repetir o hero grande da home. */
+   cada página sem repetir o hero grande da home. Sem background próprio
+   pelo mesmo motivo do .hero: é a primeira seção da página, então o wash
+   do topo do body (ver seção 1) já aparece atrás dela. */
 .specialty-hero {
-	background: linear-gradient(160deg, var(--color-primary-light) 0%, var(--color-bg) 70%);
 	padding-block: var(--space-xl);
 	margin-bottom: var(--space-lg);
 }
@@ -1002,29 +1011,8 @@ body.header-overlay-hero .hero {
 	gap: var(--space-sm);
 }
 
-/* Moldura em camadas: um bloco creme levemente deslocado atrás da foto —
-   o mesmo tipo de detalhe editorial visto nas peças de apresentação da
-   marca (cartão de visita com duas camadas). position:relative aqui,
-   z-index na foto, para o ::before "vazar" pelos cantos sem recortar. */
 .hero-media-wrap {
 	position: relative;
-}
-
-/* Halo orgânico e desfocado atrás da foto — não uma moldura de cantos
-   retos, um respiro de cor que "vaza" ao redor do card, como uma mancha
-   de luz. Três manchas radiais em tons da marca (verde clarinho + creme),
-   desfocadas com blur() em vez de recortadas — é o que dá o efeito
-   pintura/orgânico em vez de "card com sombra deslocada". */
-.hero-media-wrap::before {
-	content: "";
-	position: absolute;
-	inset: -14% -16%;
-	background:
-		radial-gradient(circle at 22% 18%, var(--color-primary-light) 0%, transparent 55%),
-		radial-gradient(circle at 82% 78%, var(--color-cream) 0%, transparent 50%),
-		radial-gradient(circle at 50% 100%, var(--color-primary-light) 0%, transparent 45%);
-	filter: blur(36px);
-	z-index: 0;
 }
 
 .hero-media {
@@ -1137,7 +1125,11 @@ body.header-overlay-hero .hero {
    do bloco de texto ao lado, em vez de ficar com altura fixa própria. */
 .map-section-grid {
 	display: grid;
-	grid-template-columns: 1.2fr 0.8fr;
+	/* Mapa mais largo que o bloco de contato (invertido do que era: mapa
+	   maior, contato menor) — só a largura muda; a altura do mapa
+	   continua vindo do stretch do grid (acompanha a coluna de contato,
+	   não cresce sozinha pra baixo). */
+	grid-template-columns: 0.7fr 1.3fr;
 	gap: var(--space-xl);
 	align-items: stretch;
 }
@@ -1159,14 +1151,16 @@ body.header-overlay-hero .hero {
 		aspect-ratio: 16 / 9;
 	}
 }
-/* Bloco "Contato e Localização" — lista de canais com ícone. */
+/* Bloco "Contato e Localização" — lista de canais com ícone. Mais
+   compacto (padding/gap reduzidos) pra caber bem na coluna mais estreita
+   agora que o mapa ao lado ficou maior — ver .map-section-grid. */
 .contact-info {
 	list-style: none;
 	margin: var(--space-md) 0 0;
-	padding: var(--space-lg);
+	padding: var(--space-md);
 	display: flex;
 	flex-direction: column;
-	gap: var(--space-md);
+	gap: var(--space-sm);
 	background: var(--color-bg-alt);
 	border: 1px solid var(--color-border);
 	border-radius: var(--radius-lg);

@@ -153,11 +153,22 @@ $ipi_faqs = array(
 	),
 );
 
+// Cada especialidade pode trazer, opcionalmente, uma lista "conditions"
+// com os diagnósticos específicos que ela cobre — são os termos que o
+// paciente de fato procura (ex.: "infectologista sífilis Recife"), exibidos
+// como chips dentro do próprio card. Existem só nos cards onde fazem
+// sentido: evita repetir a mesma doença em dois lugares da seção.
 $ipi_specialties = array(
 	array(
-		'icon'  => '🩺',
-		'title' => __( 'Consultas Especializadas', 'ipi-theme' ),
-		'text'  => __( 'Avaliação clínica completa conduzida por infectologistas experientes, com investigação cuidadosa até a definição do diagnóstico e do plano de tratamento mais adequado para você.', 'ipi-theme' ),
+		'icon'       => '🩺',
+		'title'      => __( 'Consultas Especializadas', 'ipi-theme' ),
+		'text'       => __( 'Avaliação clínica completa conduzida por infectologistas experientes, com investigação cuidadosa até a definição do diagnóstico e do plano de tratamento mais adequado para você.', 'ipi-theme' ),
+		'conditions' => array(
+			__( 'Herpes zoster', 'ipi-theme' ),
+			__( 'Infecções urinárias de repetição', 'ipi-theme' ),
+			__( 'Dermatopatias infecciosas', 'ipi-theme' ),
+			__( 'Investigação de febre prolongada', 'ipi-theme' ),
+		),
 	),
 	array(
 		'icon'  => '🔬',
@@ -165,31 +176,10 @@ $ipi_specialties = array(
 		'text'  => __( 'Solicitação e interpretação de exames específicos, em parceria com laboratórios de referência, para um diagnóstico rápido e preciso.', 'ipi-theme' ),
 	),
 	array(
-		'icon'  => '🧬',
-		'title' => __( 'HIV/Aids e ISTs', 'ipi-theme' ),
-		'text'  => __( 'Acompanhamento contínuo, sigiloso e sem julgamentos, com terapia antirretroviral atualizada e suporte em cada etapa do tratamento.', 'ipi-theme' ),
-	),
-	array(
-		'icon'  => '🏥',
-		'title' => __( 'Doenças Infecciosas Complexas', 'ipi-theme' ),
-		'text'  => __( 'Manejo clínico de infecções hospitalares, tropicais e emergentes, com protocolos atualizados e conduta baseada em evidência.', 'ipi-theme' ),
-	),
-	array(
-		'icon'  => '📋',
-		'title' => __( 'Acompanhamento Clínico Contínuo', 'ipi-theme' ),
-		'text'  => __( 'Consultas de retorno e monitoramento de tratamentos de longo prazo, para que você nunca esteja sozinho durante o cuidado com a sua saúde.', 'ipi-theme' ),
-	),
-);
-
-// Doenças e condições específicas tratadas pela equipe — complementa os
-// cards de especialidade acima (que são frentes de atendimento, não uma
-// lista de diagnósticos) com os termos que o paciente de fato procura
-// (ex.: "infectologista sífilis Recife"). Agrupado por afinidade clínica;
-// cada grupo aparece como um bloco de "chips" na seção de especialidades.
-$ipi_conditions = array(
-	array(
-		'group' => __( 'ISTs, HIV e saúde sexual', 'ipi-theme' ),
-		'items' => array(
+		'icon'       => '🧬',
+		'title'      => __( 'HIV/Aids e ISTs', 'ipi-theme' ),
+		'text'       => __( 'Acompanhamento contínuo, sigiloso e sem julgamentos, com terapia antirretroviral atualizada e suporte em cada etapa do tratamento.', 'ipi-theme' ),
+		'conditions' => array(
 			__( 'HIV/Aids', 'ipi-theme' ),
 			__( 'Sífilis', 'ipi-theme' ),
 			__( 'HPV', 'ipi-theme' ),
@@ -200,8 +190,10 @@ $ipi_conditions = array(
 		),
 	),
 	array(
-		'group' => __( 'Infecções e doenças transmissíveis', 'ipi-theme' ),
-		'items' => array(
+		'icon'       => '🏥',
+		'title'      => __( 'Doenças Infecciosas Complexas', 'ipi-theme' ),
+		'text'       => __( 'Manejo clínico de infecções hospitalares, tropicais e emergentes, com protocolos atualizados e conduta baseada em evidência.', 'ipi-theme' ),
+		'conditions' => array(
 			__( 'Infecção hospitalar', 'ipi-theme' ),
 			__( 'Infecções bacterianas', 'ipi-theme' ),
 			__( 'COVID-19', 'ipi-theme' ),
@@ -209,15 +201,6 @@ $ipi_conditions = array(
 			__( 'Toxoplasmose', 'ipi-theme' ),
 			__( 'Esquistossomose', 'ipi-theme' ),
 			__( 'Doenças parasitárias', 'ipi-theme' ),
-		),
-	),
-	array(
-		'group' => __( 'Outras condições acompanhadas', 'ipi-theme' ),
-		'items' => array(
-			__( 'Herpes zoster', 'ipi-theme' ),
-			__( 'Infecções urinárias de repetição', 'ipi-theme' ),
-			__( 'Dermatopatias infecciosas', 'ipi-theme' ),
-			__( 'Investigação de febre prolongada', 'ipi-theme' ),
 		),
 	),
 );
@@ -284,7 +267,7 @@ $ipi_conditions = array(
 	</div>
 
 	<section id="sobre" class="section">
-		<div class="container entry-content">
+		<div class="container">
 			<header class="section-header">
 				<span class="eyebrow"><?php esc_html_e( 'Quem somos', 'ipi-theme' ); ?></span>
 				<h2><?php esc_html_e( 'Cuidado especializado, do diagnóstico ao acompanhamento', 'ipi-theme' ); ?></h2>
@@ -378,28 +361,18 @@ $ipi_conditions = array(
 						<div class="card-icon" aria-hidden="true"><?php echo esc_html( $ipi_item['icon'] ); ?></div>
 						<h3><?php echo esc_html( $ipi_item['title'] ); ?></h3>
 						<p><?php echo esc_html( $ipi_item['text'] ); ?></p>
+						<?php if ( ! empty( $ipi_item['conditions'] ) ) : ?>
+							<ul class="card-conditions">
+								<?php foreach ( $ipi_item['conditions'] as $ipi_condition_item ) : ?>
+									<li><?php echo esc_html( $ipi_condition_item ); ?></li>
+								<?php endforeach; ?>
+							</ul>
+						<?php endif; ?>
 						<?php if ( $ipi_specialty_page ) : ?>
 							<span class="card-link-affordance" aria-hidden="true"><?php esc_html_e( 'Saiba mais', 'ipi-theme' ); ?> →</span>
 						<?php endif; ?>
 					</<?php echo esc_html( $ipi_card_tag ); ?>>
 				<?php endforeach; ?>
-			</div>
-
-			<div class="conditions-list">
-				<h3 class="conditions-list-title"><?php esc_html_e( 'Algumas doenças e condições que acompanhamos', 'ipi-theme' ); ?></h3>
-				<?php foreach ( $ipi_conditions as $ipi_condition_group ) : ?>
-					<div class="conditions-group">
-						<span class="conditions-group-label"><?php echo esc_html( $ipi_condition_group['group'] ); ?></span>
-						<ul class="conditions-chips">
-							<?php foreach ( $ipi_condition_group['items'] as $ipi_condition_item ) : ?>
-								<li><?php echo esc_html( $ipi_condition_item ); ?></li>
-							<?php endforeach; ?>
-						</ul>
-					</div>
-				<?php endforeach; ?>
-				<p class="conditions-list-note">
-					<?php esc_html_e( 'Lista não exaustiva — fale com a gente pelo WhatsApp para confirmar se tratamos a sua condição.', 'ipi-theme' ); ?>
-				</p>
 			</div>
 		</div>
 	</section>
@@ -455,47 +428,10 @@ $ipi_conditions = array(
 	</section>
 
 	<?php
-	$ipi_recent_posts = new WP_Query(
-		array(
-			'post_type'           => 'post',
-			'posts_per_page'      => 3,
-			'ignore_sticky_posts' => true,
-			'no_found_rows'       => true,
-		)
-	);
+	// A seção "Conteúdos" saiu da Home — agora é a própria página
+	// "Conteúdos" (page_for_posts, ver index.php), com link no menu ao
+	// lado de "Contato". Home fica só com o que é específico dela.
 	?>
-
-	<?php if ( $ipi_recent_posts->have_posts() ) : ?>
-		<section class="section section--alt">
-			<div class="container">
-				<header class="section-header">
-					<span class="eyebrow"><?php esc_html_e( 'Conteúdos', 'ipi-theme' ); ?></span>
-					<h2><?php esc_html_e( 'Vídeos, artigos e materiais educativos', 'ipi-theme' ); ?></h2>
-					<p><?php esc_html_e( 'Conteúdo produzido pela nossa equipe médica para te ajudar a entender melhor a sua saúde — em texto, imagem e vídeo.', 'ipi-theme' ); ?></p>
-				</header>
-
-				<div class="posts-grid">
-					<?php
-					while ( $ipi_recent_posts->have_posts() ) :
-						$ipi_recent_posts->the_post();
-						get_template_part( 'template-parts/content' );
-					endwhile;
-					wp_reset_postdata();
-					?>
-				</div>
-
-				<?php
-				$ipi_blog_page_id = (int) get_option( 'page_for_posts' );
-				$ipi_blog_url     = $ipi_blog_page_id ? get_permalink( $ipi_blog_page_id ) : home_url( '/' );
-				?>
-				<p>
-					<a class="btn btn-secondary" href="<?php echo esc_url( $ipi_blog_url ); ?>">
-						<?php esc_html_e( 'Ver todas as publicações', 'ipi-theme' ); ?>
-					</a>
-				</p>
-			</div>
-		</section>
-	<?php endif; ?>
 
 	<section id="localizacao" class="section">
 		<div class="container">
