@@ -56,6 +56,12 @@ function ipi_theme_customize_register( WP_Customize_Manager $wp_customize ): voi
 			'sanitize' => 'sanitize_text_field',
 			'type'     => 'text',
 		),
+		'ipi_theme_map_query'      => array(
+			'label'    => __( 'Endereço para o mapa (Google Maps) — deixe só rua, número, bairro e cidade; nome do prédio, sala/andar confundem a busca e o pino cai no lugar errado', 'ipi-theme' ),
+			'default'  => '',
+			'sanitize' => 'sanitize_text_field',
+			'type'     => 'text',
+		),
 		'ipi_theme_emergency_text' => array(
 			'label'    => __( 'Texto da faixa de emergência (deixe vazio para ocultar)', 'ipi-theme' ),
 			'default'  => '',
