@@ -1,7 +1,8 @@
 <?php
 /**
- * Rodapé do tema: identidade, colunas de widgets, menu do rodapé, redes
- * sociais e copyright.
+ * Rodapé do tema: identidade, colunas de widgets, menu do rodapé e
+ * copyright. O link do Instagram não se repete aqui — já fica na seção
+ * "Contato e Localização" da home; ter os dois virou redundância visual.
  *
  * @package IPI_Theme
  */
@@ -10,7 +11,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-$ipi_social_links = ipi_theme_get_social_links();
 $ipi_footer_text  = get_theme_mod( 'ipi_theme_footer_text', __( 'Instituto Pernambucano de Infectologia. Todos os direitos reservados.', 'ipi-theme' ) );
 $ipi_whatsapp_url = get_theme_mod( 'ipi_theme_whatsapp_url', '' );
 $ipi_about_text   = get_theme_mod( 'ipi_theme_about_text', __( 'Cuidado especializado, do diagnóstico ao acompanhamento.', 'ipi-theme' ) );
@@ -42,19 +42,23 @@ $ipi_about_text   = get_theme_mod( 'ipi_theme_about_text', __( 'Cuidado especial
 	<footer id="colophon" class="site-footer">
 		<div class="container">
 			<div class="footer-about">
-				<?php if ( has_custom_logo() ) : ?>
-					<div class="footer-about-logo"><?php the_custom_logo(); ?></div>
-				<?php else : ?>
-					<img
-						class="footer-about-logo"
-						src="<?php echo esc_url( get_template_directory_uri() . '/images/ipi-logo.png' ); ?>"
-						alt="<?php echo esc_attr( get_bloginfo( 'name' ) ); ?>"
-						width="180"
-						height="48"
-						loading="lazy"
-						decoding="async"
-					/>
-				<?php endif; ?>
+				<?php
+				// Só o ícone (sem o lockup "Instituto Pernambucano de
+				// Infectologia" por extenso) — o nome completo já está no
+				// header, no topo de toda página; aqui, ao lado da frase de
+				// apoio, o ícone sozinho já basta pra identificar a marca.
+				// Versão creme pronta pro fundo escuro do rodapé, sem
+				// precisar de filtro CSS.
+				?>
+				<img
+					class="footer-about-logo"
+					src="<?php echo esc_url( get_template_directory_uri() . '/images/ipi-icone-creme.svg' ); ?>"
+					alt="<?php echo esc_attr( get_bloginfo( 'name' ) ); ?>"
+					width="40"
+					height="40"
+					loading="lazy"
+					decoding="async"
+				/>
 				<p class="footer-about-text"><?php echo esc_html( $ipi_about_text ); ?></p>
 			</div>
 
@@ -88,19 +92,6 @@ $ipi_about_text   = get_theme_mod( 'ipi_theme_about_text', __( 'Cuidado especial
 						);
 						?>
 					</nav>
-				<?php endif; ?>
-
-				<?php if ( ! empty( $ipi_social_links ) ) : ?>
-					<ul class="social-links" aria-label="<?php esc_attr_e( 'Redes sociais', 'ipi-theme' ); ?>">
-						<?php foreach ( $ipi_social_links as $network => $url ) : ?>
-							<li>
-								<a href="<?php echo esc_url( $url ); ?>" rel="noopener noreferrer" target="_blank">
-									<?php echo ipi_theme_get_icon( $network ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- SVG fixo do tema, sem dado de usuário. ?>
-									<span class="screen-reader-text"><?php echo esc_html( ucfirst( $network ) ); ?></span>
-								</a>
-							</li>
-						<?php endforeach; ?>
-					</ul>
 				<?php endif; ?>
 			</div>
 		</div>
