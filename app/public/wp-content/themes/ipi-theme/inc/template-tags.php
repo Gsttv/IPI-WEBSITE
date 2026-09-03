@@ -223,3 +223,66 @@ if ( ! function_exists( 'ipi_theme_get_icon' ) ) :
 		return $icons[ $name ] ?? '';
 	}
 endif;
+
+if ( ! function_exists( 'ipi_theme_get_specialties' ) ) :
+	/**
+	 * Dados dos cards de "O que tratamos" — usados tanto na Home (seção
+	 * #especialidades) quanto na página própria "Áreas de Atuação"
+	 * (page-areas-de-atuacao.php). Centralizado aqui, em vez de duplicado
+	 * nos dois arquivos, pra editar num lugar só e nunca dessincronizar.
+	 *
+	 * Cada item pode trazer, opcionalmente, uma lista 'conditions' com os
+	 * diagnósticos específicos que aquela frente cobre — são os termos que
+	 * o paciente de fato procura (ex.: "infectologista sífilis Recife"),
+	 * exibidos como chips dentro do próprio card. Existem só nos cards
+	 * onde fazem sentido: evita repetir a mesma doença em dois lugares.
+	 */
+	function ipi_theme_get_specialties(): array {
+		return array(
+			array(
+				'icon'       => '🩺',
+				'title'      => __( 'Consultas Especializadas', 'ipi-theme' ),
+				'text'       => __( 'Avaliação clínica completa conduzida por infectologistas experientes, com investigação cuidadosa até a definição do diagnóstico e do plano de tratamento mais adequado para você.', 'ipi-theme' ),
+				'conditions' => array(
+					__( 'Herpes zoster', 'ipi-theme' ),
+					__( 'Infecções urinárias de repetição', 'ipi-theme' ),
+					__( 'Dermatopatias infecciosas', 'ipi-theme' ),
+					__( 'Investigação de febre prolongada', 'ipi-theme' ),
+				),
+			),
+			array(
+				'icon'       => '🧬',
+				'title'      => __( 'HIV/Aids e ISTs', 'ipi-theme' ),
+				'text'       => __( 'Acompanhamento contínuo, sigiloso e sem julgamentos, com terapia antirretroviral atualizada e suporte em cada etapa do tratamento.', 'ipi-theme' ),
+				'conditions' => array(
+					__( 'HIV/Aids', 'ipi-theme' ),
+					__( 'Sífilis', 'ipi-theme' ),
+					__( 'HPV', 'ipi-theme' ),
+					__( 'Herpes genital', 'ipi-theme' ),
+					__( 'Candidíase', 'ipi-theme' ),
+					__( 'PrEP (profilaxia pré-exposição)', 'ipi-theme' ),
+					__( 'Avaliação após exposição sexual de risco', 'ipi-theme' ),
+				),
+			),
+			array(
+				'icon'       => '🏥',
+				'title'      => __( 'Doenças Infecciosas Complexas', 'ipi-theme' ),
+				'text'       => __( 'Manejo clínico de infecções hospitalares, tropicais e emergentes, com protocolos atualizados e conduta baseada em evidência.', 'ipi-theme' ),
+				'conditions' => array(
+					__( 'Infecção hospitalar', 'ipi-theme' ),
+					__( 'Infecções bacterianas', 'ipi-theme' ),
+					__( 'COVID-19', 'ipi-theme' ),
+					__( 'Hepatites virais', 'ipi-theme' ),
+					__( 'Toxoplasmose', 'ipi-theme' ),
+					__( 'Esquistossomose', 'ipi-theme' ),
+					__( 'Doenças parasitárias', 'ipi-theme' ),
+				),
+			),
+			array(
+				'icon'  => '📋',
+				'title' => __( 'Acompanhamento Clínico Contínuo', 'ipi-theme' ),
+				'text'  => __( 'Consultas de retorno e monitoramento de tratamentos de longo prazo, para que você nunca esteja sozinho durante o cuidado com a sua saúde.', 'ipi-theme' ),
+			),
+		);
+	}
+endif;

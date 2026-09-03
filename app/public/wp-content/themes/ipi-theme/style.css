@@ -108,25 +108,34 @@ html {
 /* Fundo da página inteira: UM sistema de gradiente só, no body — não um
    gradiente próprio no hero mais um fundo separado no resto da página.
    A faixa do topo (1º layer, 900px, "top") é o mesmo wash verde-sálvia
-   que dava identidade ao hero; as manchas radiais (demais layers) seguem
+   que dava identidade ao hero; as manchas radiais (layers 2-5) seguem
    por baixo dela até o fim do documento. Como é tudo a mesma imagem de
    fundo, .hero e .specialty-hero não têm mais "background" próprio —
    ficam transparentes e deixam este gradiente único aparecer por trás,
    sem costura entre seção e página. Opacidades baixas de propósito: é
    textura ambiente, não pode competir com o conteúdo nem reduzir
-   contraste de texto. */
+   contraste de texto.
+
+   Layers 6-7: o ícone da marca espalhado pelo fundo — só duas vezes, em
+   posições/tamanhos diferentes (não é padrão repetido tipo papel de
+   parede), pra dar identidade sem virar elemento decorativo repetitivo.
+   Usa ipi-icone-fundo.svg (mesmo ícone, com a opacidade já baixa
+   embutida no arquivo — não dá pra controlar opacidade por camada de
+   background-image via CSS puro). */
 body {
 	margin: 0;
 	background-color: var(--color-canvas);
 	background-repeat: no-repeat;
-	background-position: top center, 0 0, 0 0, 0 0, 0 0;
-	background-size: 100% 900px, auto, auto, auto, auto;
+	background-position: top center, 0 0, 0 0, 0 0, 0 0, 88% 34%, 6% 74%;
+	background-size: 100% 900px, auto, auto, auto, auto, 320px, 240px;
 	background-image:
 		linear-gradient(160deg, var(--color-primary-light) 0%, transparent 100%),
 		radial-gradient(circle at 8% -6%, rgba(102, 112, 88, 0.08) 0%, transparent 42%),
 		radial-gradient(circle at 100% 18%, rgba(229, 220, 204, 0.55) 0%, transparent 46%),
 		radial-gradient(circle at 10% 55%, rgba(229, 220, 204, 0.35) 0%, transparent 40%),
-		radial-gradient(circle at 96% 96%, rgba(102, 112, 88, 0.06) 0%, transparent 40%);
+		radial-gradient(circle at 96% 96%, rgba(102, 112, 88, 0.06) 0%, transparent 40%),
+		url("images/ipi-icone-fundo.svg"),
+		url("images/ipi-icone-fundo.svg");
 	color: var(--color-text);
 	font-family: var(--font-body);
 	font-weight: 300;
@@ -351,8 +360,12 @@ small {
 	flex: 1 0 auto;
 }
 
+/* --space-xl (não --space-2xl): 6rem de padding em cima E embaixo de
+   cada seção somava 12rem (192px) de vão vazio entre duas seções
+   seguidas — grande demais. 4rem por seção (8rem/128px combinado)
+   continua um respiro generoso, sem o vazio exagerado. */
 .section {
-	padding-block: var(--space-2xl);
+	padding-block: var(--space-xl);
 }
 
 .section--alt {
@@ -509,6 +522,10 @@ small {
 	color: var(--color-primary-dark);
 	text-decoration: none;
 	font-weight: 600;
+	/* Meio-termo entre --font-size-sm (ficou pequeno demais) e o
+	   --font-size-base padrão (era o tamanho "problema", grande demais
+	   pro respiro que a logo/botão precisavam). */
+	font-size: 1rem;
 	white-space: nowrap;
 }
 
@@ -676,6 +693,7 @@ body.header-overlay-hero .site-header.is-menu-open .header-inner {
 	border: 1px solid var(--color-border);
 	border-radius: var(--radius-md);
 	padding: var(--space-md);
+	height: 100%;
 	transition: box-shadow 0.15s ease, transform 0.15s ease;
 }
 
@@ -726,6 +744,19 @@ body.header-overlay-hero .site-header.is-menu-open .header-inner {
 	font-size: 1.5rem;
 }
 
+/* Trava de segurança pro título do card: o número de colunas de .grid
+   muda com a largura da tela (auto-fit), então a largura do card não é
+   fixa — em algumas larguras uma palavra sozinha e comprida (ex.:
+   "Acompanhamento") pode não caber na linha. overflow-wrap:break-word só
+   entra em ação nesse caso extremo (a palavra sozinha não cabe nem numa
+   linha própria) — troca vazar pra fora do card por quebrar dentro da
+   palavra. Sem hyphens:auto: esse quebrava palavras que já cabiam bem
+   quebrando entre palavras (ex.: "Infecciosas"), só por preferência
+   estética de ajuste de linha — não era o problema que se queria evitar. */
+.card h3 {
+	overflow-wrap: break-word;
+}
+
 /* Diagnósticos específicos dentro do próprio card de especialidade — os
    termos que o paciente de fato busca (ex.: "infectologista sífilis
    Recife"), como chips discretos logo abaixo do texto do card. Só existe
@@ -751,16 +782,16 @@ body.header-overlay-hero .site-header.is-menu-open .header-inner {
 	color: var(--color-text-muted);
 }
 
-/* align-items: start (não o stretch padrão do grid): os cards de
-   especialidade têm quantidades de texto e de chips bem diferentes entre
-   si — com stretch, um card curto era esticado pra igualar a altura do
-   vizinho mais alto na mesma linha, sobrando um vão vazio enorme embaixo
-   do texto. Cada card agora fica só do tamanho do seu próprio conteúdo. */
+/* Stretch (padrão do grid): cards de uma mesma linha ficam com a mesma
+   altura, igualando ao mais alto. Só vale entre quem cai na mesma linha
+   — com o container no tamanho padrão (1200px) e cards de 300px, "O que
+   tratamos" forma 3+1 em telas de laptop/desktop (o 4º sozinho numa
+   linha à parte, com altura própria); decisão consciente de manter a
+   largura do container como estava, em vez de alargar só essa seção. */
 .grid {
 	display: grid;
-	align-items: start;
 	gap: var(--space-md);
-	grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+	grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
 }
 
 /* Grid só da equipe médica — cards bem maiores que o padrão genérico

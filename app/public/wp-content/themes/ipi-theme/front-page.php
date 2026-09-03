@@ -128,10 +128,6 @@ $ipi_team = array(
 
 $ipi_faqs = array(
 	array(
-		'question' => __( 'Quais convênios o IPI aceita?', 'ipi-theme' ),
-		'answer'   => __( 'Para confirmar se o seu convênio é aceito, fale com a nossa equipe pelo WhatsApp ou telefone — respondemos rapidamente com todas as informações atualizadas sobre planos de saúde.', 'ipi-theme' ),
-	),
-	array(
 		'question' => __( 'Preciso de encaminhamento médico para marcar uma consulta?', 'ipi-theme' ),
 		'answer'   => __( 'Não. Você pode agendar uma consulta particular diretamente com nossos especialistas, sem necessidade de encaminhamento. Caso utilize convênio, recomendamos verificar se o seu plano exige guia de encaminhamento.', 'ipi-theme' ),
 	),
@@ -150,58 +146,6 @@ $ipi_faqs = array(
 	array(
 		'question' => __( 'Quais as formas de pagamento para consulta particular?', 'ipi-theme' ),
 		'answer'   => __( 'Aceitamos as principais formas de pagamento. Para detalhes sobre valores e condições, entre em contato com nossa equipe pelo WhatsApp.', 'ipi-theme' ),
-	),
-);
-
-// Cada especialidade pode trazer, opcionalmente, uma lista "conditions"
-// com os diagnósticos específicos que ela cobre — são os termos que o
-// paciente de fato procura (ex.: "infectologista sífilis Recife"), exibidos
-// como chips dentro do próprio card. Existem só nos cards onde fazem
-// sentido: evita repetir a mesma doença em dois lugares da seção.
-$ipi_specialties = array(
-	array(
-		'icon'       => '🩺',
-		'title'      => __( 'Consultas Especializadas', 'ipi-theme' ),
-		'text'       => __( 'Avaliação clínica completa conduzida por infectologistas experientes, com investigação cuidadosa até a definição do diagnóstico e do plano de tratamento mais adequado para você.', 'ipi-theme' ),
-		'conditions' => array(
-			__( 'Herpes zoster', 'ipi-theme' ),
-			__( 'Infecções urinárias de repetição', 'ipi-theme' ),
-			__( 'Dermatopatias infecciosas', 'ipi-theme' ),
-			__( 'Investigação de febre prolongada', 'ipi-theme' ),
-		),
-	),
-	array(
-		'icon'  => '🔬',
-		'title' => __( 'Diagnóstico Laboratorial', 'ipi-theme' ),
-		'text'  => __( 'Solicitação e interpretação de exames específicos, em parceria com laboratórios de referência, para um diagnóstico rápido e preciso.', 'ipi-theme' ),
-	),
-	array(
-		'icon'       => '🧬',
-		'title'      => __( 'HIV/Aids e ISTs', 'ipi-theme' ),
-		'text'       => __( 'Acompanhamento contínuo, sigiloso e sem julgamentos, com terapia antirretroviral atualizada e suporte em cada etapa do tratamento.', 'ipi-theme' ),
-		'conditions' => array(
-			__( 'HIV/Aids', 'ipi-theme' ),
-			__( 'Sífilis', 'ipi-theme' ),
-			__( 'HPV', 'ipi-theme' ),
-			__( 'Herpes genital', 'ipi-theme' ),
-			__( 'Candidíase', 'ipi-theme' ),
-			__( 'PrEP (profilaxia pré-exposição)', 'ipi-theme' ),
-			__( 'Avaliação após exposição sexual de risco', 'ipi-theme' ),
-		),
-	),
-	array(
-		'icon'       => '🏥',
-		'title'      => __( 'Doenças Infecciosas Complexas', 'ipi-theme' ),
-		'text'       => __( 'Manejo clínico de infecções hospitalares, tropicais e emergentes, com protocolos atualizados e conduta baseada em evidência.', 'ipi-theme' ),
-		'conditions' => array(
-			__( 'Infecção hospitalar', 'ipi-theme' ),
-			__( 'Infecções bacterianas', 'ipi-theme' ),
-			__( 'COVID-19', 'ipi-theme' ),
-			__( 'Hepatites virais', 'ipi-theme' ),
-			__( 'Toxoplasmose', 'ipi-theme' ),
-			__( 'Esquistossomose', 'ipi-theme' ),
-			__( 'Doenças parasitárias', 'ipi-theme' ),
-		),
 	),
 );
 ?>
@@ -343,37 +287,7 @@ $ipi_specialties = array(
 				<p><?php esc_html_e( 'Do diagnóstico ao acompanhamento contínuo, cada especialidade abaixo recebe o mesmo padrão de atenção e cuidado técnico do IPI.', 'ipi-theme' ); ?></p>
 			</header>
 
-			<div class="grid">
-				<?php
-				foreach ( $ipi_specialties as $ipi_item ) :
-					// Cada especialidade vira uma página própria no wp-admin quando
-					// o cliente criar uma Página com slug igual ao título (ex.: título
-					// "HIV/Aids e ISTs" → slug "hiv-aids-e-ists", gerado pelo próprio
-					// WordPress a partir do título digitado). Até lá, o card continua
-					// funcionando como um resumo estático — nada quebra.
-					$ipi_specialty_page = get_page_by_path( sanitize_title( $ipi_item['title'] ) );
-					$ipi_card_tag       = $ipi_specialty_page ? 'a' : 'div';
-					?>
-					<<?php echo esc_html( $ipi_card_tag ); ?>
-						class="card card--link"
-						<?php echo $ipi_specialty_page ? 'href="' . esc_url( get_permalink( $ipi_specialty_page ) ) . '"' : ''; ?>
-					>
-						<div class="card-icon" aria-hidden="true"><?php echo esc_html( $ipi_item['icon'] ); ?></div>
-						<h3><?php echo esc_html( $ipi_item['title'] ); ?></h3>
-						<p><?php echo esc_html( $ipi_item['text'] ); ?></p>
-						<?php if ( ! empty( $ipi_item['conditions'] ) ) : ?>
-							<ul class="card-conditions">
-								<?php foreach ( $ipi_item['conditions'] as $ipi_condition_item ) : ?>
-									<li><?php echo esc_html( $ipi_condition_item ); ?></li>
-								<?php endforeach; ?>
-							</ul>
-						<?php endif; ?>
-						<?php if ( $ipi_specialty_page ) : ?>
-							<span class="card-link-affordance" aria-hidden="true"><?php esc_html_e( 'Saiba mais', 'ipi-theme' ); ?> →</span>
-						<?php endif; ?>
-					</<?php echo esc_html( $ipi_card_tag ); ?>>
-				<?php endforeach; ?>
-			</div>
+			<?php get_template_part( 'template-parts/specialties-grid' ); ?>
 		</div>
 	</section>
 
@@ -400,29 +314,6 @@ $ipi_specialties = array(
 						<p class="faq-answer"><?php echo esc_html( $ipi_faq['answer'] ); ?></p>
 					</details>
 				<?php endforeach; ?>
-			</div>
-		</div>
-	</section>
-
-	<section class="section">
-		<div class="container">
-			<div class="cta-banner">
-				<div>
-					<h2><?php esc_html_e( 'Pronto para cuidar da sua saúde com quem entende do assunto?', 'ipi-theme' ); ?></h2>
-					<p><?php esc_html_e( 'Agende sua consulta com o Instituto Pernambucano de Infectologia e tenha diagnóstico e tratamento conduzidos por especialistas, com toda a atenção que você merece.', 'ipi-theme' ); ?></p>
-				</div>
-				<div class="hero-actions">
-					<?php if ( $ipi_whatsapp ) : ?>
-						<a class="btn btn-secondary" href="<?php echo esc_url( $ipi_whatsapp ); ?>" rel="noopener noreferrer" target="_blank">
-							<?php esc_html_e( '📲 Agende sua consulta', 'ipi-theme' ); ?>
-						</a>
-					<?php endif; ?>
-					<?php if ( $ipi_phone ) : ?>
-						<a class="btn btn-secondary" href="<?php echo esc_attr( ipi_theme_get_tel_href( $ipi_phone ) ); ?>">
-							<?php echo esc_html( $ipi_phone ); ?>
-						</a>
-					<?php endif; ?>
-				</div>
 			</div>
 		</div>
 	</section>
