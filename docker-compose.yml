@@ -41,9 +41,16 @@ services:
       # menu, links de página) resolverem para a URL do container, em vez
       # da URL "http://ipi.local" gravada no banco pelo ambiente Local. Sem
       # isso, precisaríamos reescrever dados serializados no dump — arriscado.
+      #
+      # PUBLIC_URL (opcional, no .env): use pra compartilhar o site por um
+      # túnel público (ex.: localtunnel, ngrok) — defina como a URL pública
+      # completa (ex.: https://algo.loca.lt) antes de "docker compose up".
+      # Sem isso, cai no padrão de sempre (localhost:PORTA). Reverta
+      # (remova/comente PUBLIC_URL no .env e suba de novo) quando terminar
+      # a demonstração, senão o time deixa de acessar por localhost.
       WORDPRESS_CONFIG_EXTRA: |
-        define('WP_HOME', 'http://localhost:${WORDPRESS_PORT:-8080}');
-        define('WP_SITEURL', 'http://localhost:${WORDPRESS_PORT:-8080}');
+        define('WP_HOME', '${PUBLIC_URL:-http://localhost:${WORDPRESS_PORT:-8080}}');
+        define('WP_SITEURL', '${PUBLIC_URL:-http://localhost:${WORDPRESS_PORT:-8080}}');
     volumes:
       # Só o wp-content é montado — o core do WordPress vem da imagem
       # oficial. O time edita o tema aqui e vê o resultado na hora, sem

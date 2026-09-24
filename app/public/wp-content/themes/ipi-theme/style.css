@@ -1972,6 +1972,21 @@ select:focus {
 		display: inline-flex;
 	}
 
+	/* Logo menor no mobile: em telas estreitas, logo (64px de altura,
+	   ~240px de largura) + botão "Menu" não cabem lado a lado na mesma
+	   linha — com .header-inner com flex-wrap (ver abaixo), o botão
+	   "Menu" quebrava pra debaixo da logo em vez de ficar ao lado. */
+	.site-branding img {
+		max-height: 40px;
+	}
+
+	/* Espaço menor entre logo e botão "Menu" nessa primeira linha do
+	   header — o --space-md (24px) padrão do .header-inner sobrava pouco
+	   nas telas mais estreitas dessa faixa. */
+	.header-inner {
+		gap: var(--space-xs);
+	}
+
 	.primary-navigation {
 		display: none;
 		width: 100%;
@@ -2062,6 +2077,15 @@ select:focus {
 
 	.content-area-with-sidebar {
 		grid-template-columns: 1fr;
+	}
+}
+
+/* Celulares bem estreitos (ex.: iPhone SE, 320px): mesmo com a logo já
+   reduzida acima (40px), logo + botão "Menu" ainda não cabem lado a lado
+   nessa largura — reduz mais um pouco só nessa faixa. */
+@media (max-width: 359px) {
+	.site-branding img {
+		max-height: 30px;
 	}
 }
 

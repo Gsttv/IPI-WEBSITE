@@ -107,11 +107,14 @@ $ipi_team = array(
 		'experience' => array(
 			__( 'Médica infectologista, graduada em Medicina pela Universidade de Pernambuco em 2007.', 'ipi-theme' ),
 			__( 'Residência Médica em Infectologia no Hospital das Clínicas de Pernambuco (HC-UFPE), entre 2010 e 2013.', 'ipi-theme' ),
-			__( 'Concursada da Prefeitura do Recife como médica clínica plantonista desde 2009, e da Secretaria de Saúde do Estado de Pernambuco (Hospital Correia Picanço) como infectologista desde 2016 — plantonista e evolucionista.', 'ipi-theme' ),
-			__( 'Atua no Controle de Infecção Hospitalar do Hospital do Câncer de Pernambuco desde 2014.', 'ipi-theme' ),
+			__( 'Infectologista pela Secretaria de Saúde do Estado de Pernambuco (Hospital Correia Picanço) desde 2016 — plantonista e evolucionista.', 'ipi-theme' ),
+			__( 'Médica evolucionista da Unimed Recife.', 'ipi-theme' ),
 		),
 		'education'  => array(),
-		'health_plans' => false,
+		'health_plans' => array(
+			__( 'Unimed Recife', 'ipi-theme' ),
+			__( 'Bradesco Saúde', 'ipi-theme' ),
+		),
 	),
 	array(
 		'name'       => 'Dr. Lucas Caheté',
@@ -139,12 +142,11 @@ $ipi_team = array(
 		'photo'      => $ipi_images_uri . 'doc-marcelia.jpg',
 		'instagram'  => 'https://www.instagram.com/marceliasoaresinfecto',
 		'experience' => array(
-			__( 'Hospital Correia Picanço, 2014', 'ipi-theme' ),
-			__( 'Ambulatório de Infectologia — Prefeitura de Camaragibe, 2014', 'ipi-theme' ),
+			__( 'Médica infectologista, graduada em Medicina pela Faculdade Integral Diferencial em 2010.', 'ipi-theme' ),
+			__( 'Residência Médica em Infectologia no Hospital das Clínicas de Pernambuco (HC-UFPE), entre 2011 e 2014.', 'ipi-theme' ),
+			__( 'Concursada da Secretaria de Saúde do Estado de Pernambuco (Hospital Correia Picanço) como infectologista desde 2014 — plantonista e evolucionista.', 'ipi-theme' ),
 		),
-		'education'  => array(
-			__( 'Especialista em Infectologia — UFPE, 2014', 'ipi-theme' ),
-		),
+		'education'  => array(),
 		'health_plans' => array(
 			__( 'Bradesco Saúde', 'ipi-theme' ),
 			__( 'Sul América Saúde', 'ipi-theme' ),
@@ -164,7 +166,9 @@ $ipi_team = array(
 			__( 'Atuação em enfermaria e ambulatório de doenças infecciosas — HC-UFPE.', 'ipi-theme' ),
 		),
 		'education'  => array(),
-		'health_plans' => array(),
+		'health_plans' => array(
+			__( 'Cassi', 'ipi-theme' ),
+		),
 	),
 	array(
 		'name'       => 'Dr. Paulo Sérgio Ramos',
